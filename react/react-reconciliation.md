@@ -2,7 +2,7 @@
 
 ## React Reconciliation
 
-### Question
+### Question 17f119f9-1be9-4c53-b937-2c270f5855b4
 
 What is React Reconciliation?
 
@@ -12,7 +12,7 @@ Reconciliation is the process by which React updates the DOM to match your compo
 
 ---
 
-### Question
+### Question b9f8a959-f9f6-4c22-8cb9-0198393555b5
 
 - Discuss what would happen when isCompany is toggled in the following code snippet.
 
@@ -45,7 +45,7 @@ const UserInfoForm = () => {
 
 ---
 
-### Question
+### Question f2c9a76e-92ae-487f-a2cb-fb2d59779d84
 
 - what are the key factors in determining indentity of a component in React?
 
@@ -57,7 +57,7 @@ const UserInfoForm = () => {
 
 ---
 
-### Question
+### Question 6a7e2c98-57f4-434e-91f2-e862b0fa63a9
 
 What are the problems with this approach?
 
@@ -77,7 +77,7 @@ Every time a component is created inside another component, it will be re-create
 
 ---
 
-### Question
+### Question 5e9b0e56-b89b-4a54-8351-f4f56a6ff48c
 
 ```javascript
 <>
@@ -105,7 +105,7 @@ Every time a component is created inside another component, it will be re-create
 
 ---
 
-### Question
+### Question 07bb3c06-a13a-4029-8909-983aaac8ff5a
 
 ```javascript
 <div>
@@ -121,7 +121,7 @@ Every time a component is created inside another component, it will be re-create
 
 ---
 
-### Question
+### Question 5f0231c7-8581-49d7-b614-009c51c60181
 
 - What are the virtual DOM of this?
 
@@ -154,7 +154,7 @@ const Component = () => {
 
 ---
 
-### Question
+### Question 5fe1c485-8198-4915-9f42-19c944df8638
 
 - component and dom element identity in React.
 - components with same key but different type, will React reuse the same component or create a new one?
@@ -174,7 +174,7 @@ const Component = () => {
 
 ---
 
-### Question
+### Question 6b7267b5-b635-48b1-b352-922532f97af7
 
 - React 15 - Stack Reconciler
   - what is its data structure?
@@ -192,7 +192,7 @@ const Component = () => {
 
 ---
 
-### Question
+### Question 7215ab54-4c86-4d4e-bf29-1c1001464f74
 
 - React 15 - Stack Reconciler
   - What is the core function of the Stack Reconciler?

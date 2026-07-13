@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+
+# Auto-add missing question UUIDs on changed markdown files, then fail the push
+# so the fixed files can be reviewed and committed.
+node scripts/check-question-uuids.mjs --fix --changed

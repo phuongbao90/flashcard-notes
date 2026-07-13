@@ -1,0 +1,15 @@
+{
+  "name": "github-flashcard-notes",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "prepare": "husky",
+    "check:question-uuids": "node scripts/check-question-uuids.mjs",
+    "fix:question-uuids": "node scripts/check-question-uuids.mjs --fix",
+    "check:question-uuids:changed": "node scripts/check-question-uuids.mjs --changed",
+    "fix:question-uuids:changed": "node scripts/check-question-uuids.mjs --fix --changed"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7"
+  }
+}
