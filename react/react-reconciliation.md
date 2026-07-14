@@ -79,6 +79,8 @@ Every time a component is created inside another component, it will be re-create
 
 ### Question 5e9b0e56-b89b-4a54-8351-f4f56a6ff48c
 
+- Will StaticElement re-mount if list items change
+
 ```javascript
 <>
   {items.map((item) => (
@@ -102,22 +104,6 @@ Every time a component is created inside another component, it will be re-create
   { type: StaticElement }, // Always maintains its second position
 ];
 ```
-
----
-
-### Question 07bb3c06-a13a-4029-8909-983aaac8ff5a
-
-```javascript
-<div>
-  {activeTab === "profile" && <ProfileTab state={sharedState} onStateChange={setSharedState} />}
-  {activeTab === "settings" && <SettingsTab state={sharedState} onStateChange={setSharedState} />}
-  {/* Other tabs */}
-</div>
-```
-
-### Answer
-
-- When switching between tabs, React will unmount the previous tab and mount the new one, which means the state of the previous tab will be lost unless it is lifted up to a common parent or managed in a global state.
 
 ---
 
@@ -233,3 +219,162 @@ function update(component) {
 ```
 
 - JS: ❗ Once a function is running, it runs until it returns. The call stack is filled with function calls, making it impossible to pause or interrupt the execution.
+
+---
+
+### Question
+
+- Fiber - what is a scheduler?
+
+### Answer
+
+- A scheduler is a system that manages the execution of tasks, determining when and how they should be executed.
+- It’s not React itself—it’s a cooperative task scheduler that React uses under the hood.
+- In the context of React Fiber, the scheduler is responsible for prioritizing updates and breaking them into smaller units of work that can be processed incrementally, allowing for better responsiveness and user experience.
+
+---
+
+### Question
+
+- Fiber - what scheduler enables React to do?
+
+### Answer
+
+- Enables Concurrent React
+- Makes rendering interruptible
+- Keeps apps responsive under heavy updates
+- Allows features like:
+  - startTransition
+  - Suspense
+  - selective rendering
+
+---
+
+### Question
+
+- Fiber - key concepts of scheduler
+
+### Answer
+
+1. Priority levels: Different updates can have different priorities,
+
+- Immediate (rare, sync)
+- User-blocking (click, typing)
+- Normal (default updates)
+- Low
+- Idle
+
+👉 Higher priority = runs sooner, can interrupt lower ones
+
+2. Time slicing (cooperative)
+
+- Work is split into small chunks
+- React checks shouldYield()
+- If time is up → pause → resume later
+
+👉 Prevents blocking the UI thread
+
+3. Frame awareness (modern behavior)
+
+- Scheduler tries to finish work before next frame (~16ms)
+- Not fixed time slicing (no hard 5ms anymore)
+- Uses a deadline to decide when to yield
+
+4. Scheduling APIs (simplified)
+
+- Internally, React uses things like:
+  - scheduleCallback(priority, callback)
+  - shouldYield()
+  - cancelCallback()
+
+👉 Think: a priority queue + event loop integration
+
+5. How it runs tasks
+
+- Uses MessageChannel (or similar) to queue macrotasks
+- Avoids blocking like a long while loop
+- Lets browser handle input/paint in between
+
+---
+
+### Question
+
+- Fiber - data structure of a fiber node
+
+### Answer
+
+- A fiber node is a JavaScript object that represents a unit of work in React's rendering process.
+
+---
+
+### Question
+
+- Virtual DOM - What is the virtual DOM?
+
+### Answer
+
+- in-memory representation of Real DOM. It is lightweight JavaScript object which is copy of Real DOM.
+
+---
+
+### Question
+
+- How Virtual DOM works in Fiber Reconciler?
+  App
+  └── ProductDetail
+  ....└── QuantityCount
+  ........└── div
+  ...........├── Button
+  ...........├── Quantity ← shows {count}
+  ...........└── Button
+
+### Answer
+
+- Fiber Reconciler:
+  - React maintains two trees:
+    - current tree → what is currently rendered (committed)
+    - workInProgress tree → the new version being built (double buffering)
+  - How it works:
+    App
+    └── ProductDetail
+    ......└── QuantityCount
+    ............└── div
+    ...............├── Button
+    ...............├── Quantity ← shows {count}
+    ...............└── Button
+    1. State / props change
+    - React marks the Fiber with an update (lane/priority)
+    - Then the scheduler decides when to start work (can delay, batch, or prioritize)
+    2. Render phase (build workInProgress tree)
+       ⚠️ This phase is interruptible (key feature of Fiber)
+       👉 React always schedules work at the root Fiber
+    - React starts from the root and traverses down:
+      - App → ProductDetail → QuantityCount → div → children
+      - At each node, React runs beginWork
+    - At App, no state/props change -> visits App and bails out (skip re-rendering logic but not skipping traversal entirely)
+    - At ProductDetail, no state/props change -> visits ProductDetail and bails out
+    - At QuantityCount, state changed, re-run the component -> new Fiber node created
+    3. Reconciliation happens DURING creation of the new Fiber node
+    - compare new Fiber node with old Fiber node, check component identity (type + key + position)
+    - same identity → reuse the DOM node + Fiber node
+    - commit phase: apply changes to the real DOM
+    - This is a big improvement over React 15:
+      - React does render + diff at the same time
+      - No separate “diff phase”
+    4. Commit phase (apply changes to the real DOM)
+       ⚠️ This phase is NOT interruptible
+    - Apply changes to real DOM
+    - Run effects (useEffect, layout effects)
+
+---
+
+### Question
+
+- How Virtual DOM works in Stack Reconciler?
+
+### Answer
+
+- Stack Reconciler:
+  - Recursive tree traversal
+  - Uses JS call stack as scheduler
+  - Cannot pause, prioritize, or split work
