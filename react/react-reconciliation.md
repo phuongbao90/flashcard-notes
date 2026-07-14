@@ -222,7 +222,7 @@ function update(component) {
 
 ---
 
-### Question
+### Question d805c828-f436-4618-8444-88313b135486
 
 - Fiber - what is a scheduler?
 
@@ -234,7 +234,7 @@ function update(component) {
 
 ---
 
-### Question
+### Question 0aaf66fe-4244-4bb9-92ad-3cc1275ade97
 
 - Fiber - what scheduler enables React to do?
 
@@ -250,7 +250,7 @@ function update(component) {
 
 ---
 
-### Question
+### Question e09d1558-d260-496a-99a9-ac8c636046c1
 
 - Fiber - key concepts of scheduler
 
@@ -297,7 +297,7 @@ function update(component) {
 
 ---
 
-### Question
+### Question ca6dd89d-e9fe-4795-b216-870744d55ddb
 
 - Fiber - data structure of a fiber node
 
@@ -307,7 +307,7 @@ function update(component) {
 
 ---
 
-### Question
+### Question 0c235953-5628-4203-ba53-60634f05f4ed
 
 - Virtual DOM - What is the virtual DOM?
 
@@ -317,7 +317,7 @@ function update(component) {
 
 ---
 
-### Question
+### Question 0b108176-a332-49cf-8e27-d20d0f6fb4df
 
 - How Virtual DOM works in Fiber Reconciler?
   App
@@ -368,7 +368,7 @@ function update(component) {
 
 ---
 
-### Question
+### Question fad3635d-bcb9-490c-ac93-39891dd90c2b
 
 - How Virtual DOM works in Stack Reconciler?
 
