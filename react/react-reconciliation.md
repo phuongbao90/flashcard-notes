@@ -381,7 +381,7 @@ function update(component) {
 
 ---
 
-### Question
+### Question cf0d08ae-89a5-4649-9fc5-57315ad61c81
 
 - Fiber - Explain beginWork and completeWork phases in the Fiber Reconciler.
   - When does reconciliation happen in the Fiber Reconciler?
@@ -420,7 +420,7 @@ function update(component) {
 
 ---
 
-### Question
+### Question f811a7ba-3b4b-46d0-b043-b58ab248b060
 
 - Fiber - How does memorization effect reconciliation in the Fiber Reconciler?
 
