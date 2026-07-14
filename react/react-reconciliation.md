@@ -378,3 +378,57 @@ function update(component) {
   - Recursive tree traversal
   - Uses JS call stack as scheduler
   - Cannot pause, prioritize, or split work
+
+---
+
+### Question
+
+- Fiber - Explain beginWork and completeWork phases in the Fiber Reconciler.
+  - When does reconciliation happen in the Fiber Reconciler?
+
+### Answer
+
+- They both happen during the render phase of the Fiber Reconciler, which is interruptible and can be paused and resumed.
+- During the render phase, React uses a two-step traversal: beginWork (top-down reconciliation) and completeWork (bottom-up finalization and effect collection).
+
+- 🔽 Downward phase (beginWork)
+
+  - React starts from the root and traverses down:
+    - App → ProductDetail → QuantityCount → div → children
+  - At each node:
+    - run beginWork
+  - What it does:
+    - Compare new props/state vs old + is there a pending update?
+    - Decide:
+      - re-render?
+      - bailout?
+    - Generate child fibers
+
+  🔼 Upward phase (completeWork)
+
+  - After reaching the deepest node, React goes back up:
+
+  - Button → Quantity → Button → div → QuantityCount → ProductDetail → App
+  - At each node:
+    - run completeWork
+  - 🔹 What completeWork does:
+    - Finalize the Fiber
+    - Prepare DOM updates (mark what needs to change)
+    - Build the effect list for commit phase
+
+  - 👉 NO real DOM changes happen here
+
+---
+
+### Question
+
+- Fiber - How does memorization effect reconciliation in the Fiber Reconciler?
+
+### Answer
+
+- React will NOT bailout a subtree if there is pending work inside it
+- React.memo
+  - if (props are equal)
+  - → bailout
+  - → skip calling component
+  - → reuse previous subtree
