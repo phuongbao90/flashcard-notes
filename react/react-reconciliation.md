@@ -432,3 +432,97 @@ function update(component) {
   - → bailout
   - → skip calling component
   - → reuse previous subtree
+
+---
+
+### Question
+
+- Discuss what concurency means in React.
+
+### Answer
+
+- React concurrency is not about running your components in parallel threads.
+- It’s about letting React control when and how rendering work happens so the UI stays responsive.
+
+- Concurrent React:
+
+  - Rendering is interruptible
+  - React can:
+  - pause work
+  - resume later
+  - throw away outdated work
+
+  - 👉 Think of it like:
+
+  - React becomes a scheduler, not just a renderer.
+
+---
+
+### Question
+
+- Key mechanisms of React concurrency
+- what are some concurrency APIs in React?
+
+### Answer
+
+1. Time slicing
+
+   - React breaks rendering work into small chunks
+   - It can yield to the main thread to handle user input or other high-priority tasks
+   - This prevents blocking the UI and keeps the app responsive
+   - Work → pause → browser work → resume → repeat
+
+2. Interruptible rendering
+
+   - React can stop rendering work in the middle if a higher-priority update comes in
+   - It can discard outdated work and start fresh with the new update
+
+   ```
+    setInputValue("a"); // high priority
+    setBigListFilter(...); // low priority
+   ```
+
+   React can:
+
+   - stop rendering the big list
+   - handle input first
+
+3. Priority System (lanes)
+
+   - React assigns priorities to updates
+   - High-priority updates (like user input) can interrupt low-priority updates (like rendering a large list)
+   - This ensures that the most important updates are handled first
+
+4. Throw away work
+
+```
+  setSearch("r");
+  setSearch("re");
+  setSearch("rea");
+```
+
+- If state updates again mid-render:
+- React can throw away the previous work and start fresh with the latest state
+
+- Concurrency APIs in React:
+  - `startTransition`: Marks updates as non-urgent, allowing React to prioritize more important updates first.
+  - `useTransition`: A hook that allows you to manage transitions in your components, providing a way to indicate that certain updates can be interrupted or deferred.
+  - `Suspense`: Lets you wait for some code to load or data to be fetched before rendering a component, improving the user experience by avoiding loading states and keeping the UI responsive.
+  - `useDeferredValue`: A hook that allows you to defer the rendering of a value until the next render, helping to keep the UI responsive during high-priority updates.
+
+---
+
+### Question
+
+- What is the connection between React concurrency and the Fiber Reconciler?
+
+### Answer
+
+👉 Fiber = data structure + engine
+👉 Concurrency = capability built on top of Fiber
+
+- Without Fiber:
+
+  - no pausing
+  - no prioritization
+  - no scheduling
