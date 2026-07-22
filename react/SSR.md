@@ -77,3 +77,20 @@ Header          Article ("use client")
   - Faster time-to-first-byte (TTFB)
   - Improved performance for large pages
   - Better user experience, as users can start interacting with the page sooner
+
+---
+### Question
+- What are the benefits of using React SSR over traditional client-side rendering?
+
+### Answer
+- Faster Perceived Load (FCP): Users see fully-formed HTML content instantly while the JavaScript bundle downloads in the background.
+
+- Superior SEO: Search engine bots crawl complete, indexable HTML on first request without needing to execute JavaScript.
+
+- Better Accessibility: Assistive technologies (like screen readers) get immediate access to the DOM structure without waiting for client-side execution.
+
+- Edge & Server Caching: Static or pre-rendered HTML can be cached globally at the CDN level for near-instant response times.
+
+- Reduced Client Workload: Offloads initial rendering from the user's browser, significantly boosting performance on lower-powered devices and slow networks.
+
+Note on Time-to-Interactive (TTI): While SSR dramatically improves First Contentful Paint (FCP), actual interactivity still requires React to hydrate the page. SSR doesn't always decrease TTI compared to CSR, but it makes the app feel vastly faster to the user.
