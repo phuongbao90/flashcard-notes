@@ -2,7 +2,7 @@
 
 ## Server-Side Rendering (SSR)
 
-### Question
+### Question dc61424f-af5c-4cb1-97c0-a73d52cb0ef3
 
 - What is hydration in React SSR?
 
@@ -16,7 +16,7 @@
   - React reuses that HTML
   - React attaches event handlers + builds internal state (Fiber tree)
 ---
-### Question
+### Question 97c51896-a530-45ac-b001-f34ca06f4e07
 - Explain client boundary in React SSR.
 - Give an example of it, what is its purpose?
 
@@ -35,7 +35,7 @@ Header          Article ("use client")
   - The Counter component itself might still be rendered as a Server Component in other situations, if it's imported somewhere else by a Server Component.
 - This means we don't have to add 'use client' to every single file that needs to run on the client. In practice, we only need to add it when we're creating new client boundaries.
 ---
-### Question
+### Question 6b849928-e301-4efc-93b9-9139423110b0
 - Does Server components get included in the JS bundle?
 
 ### Answer
@@ -43,7 +43,7 @@ Header          Article ("use client")
   -  Thus, we can reduce the amount of JavaScript that needs to be sent to the client, which can improve performance and reduce load times.
 
 ---
-### Question
+### Question 023173a2-86a9-4d9e-b34b-329476fa33b3
 - Discuss the significance of the Suspense component in React SSR.
 
 ### Answer
@@ -59,7 +59,7 @@ Header          Article ("use client")
     - ***Interacting with the page before all the components have hydrated***: Interaction Hijacking: When a user clicks an unhydrated component, React intercepts the event during the capture phase, jumps to that specific Suspense boundary, hydrates it synchronously on the spot, and then dispatches the original click.
 
 ---
-### Question
+### Question 1b3e58f9-f778-4e8e-98d1-02f6419b3977
 - Discuss renderToPipeableStream
 
 ### Answer
