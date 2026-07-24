@@ -1,13 +1,13 @@
 # Nextjs
 ## Layout
 
-### Question
+### Question 8db75af3-4fb0-495a-9050-a4004948d874
 - What is the difference between layout.js and template.js in Next.js (App Router)?  
 ### Answer
 - layout.js preserves its state, maintains DOM structure, and does not re-render or re-mount its children components during navigation between  sub-routes.                                                                                                                                     
 - template.js creates a new instance for each child route upon navigation. Every time a user navigates between routes sharing a template, DOM nodes are re-created, state is reset, and useEffect hooks re-fire (useful for page view analytics, enter/exit animations, or resetting form  states).  
 ---
-### Question
+### Question 6d8739ce-f7fd-489f-b26e-32f3216c4f67
 - Why must the Root Layout (app/layout.tsx) contain html and body tags, and what restrictions apply to it? 
 
 ### Answer
@@ -17,7 +17,7 @@
     3. Route groups (group) can define multiple root layouts, but every leaf route must be wrapped by exactly one root layout.
 
 ---
-### Question
+### Question c6e31a91-35eb-4ffe-8d06-1b4c07f266b0
 - How do nested layouts affect performance and data fetching in Server Components?
 
 ### Answer
@@ -35,7 +35,7 @@
 - Layouts enable partial rendering: when navigating between sibling routes (e.g., /dashboard/settings to /dashboard/profile), Next.js re-renders only the leaf page while preserving the parent layout, saving bandwidth and compute.
 
 ---
-### Question
+### Question 0f1842d6-c7a6-40b2-881a-881f831da5de
 - What is a Request Waterfall in nested Layouts & Pages, and how do you prevent it when both layout.tsx and page.tsx fetch async data?
 
 ### Answer
@@ -45,14 +45,14 @@
     3. Preloading / Request Deduping: Use React.cache() or fetch caching to initiate requests early without duplicating HTTP calls across the render tree.
 
 ---
-### Question
+### Question f51e1f15-33c6-4072-b4a9-9ac4c1633462
 - How do Parallel Routes (@slot) work in Next.js layouts, and why is default.js critical when using them?
 
 ### Answer
 - 
 
 ---
-### Question
+### Question bdbaa00c-fbe1-4bbe-a0c6-ce26e2e955c4
 - Explain parallel routes
 - How does it work?
 - key rules
@@ -95,14 +95,14 @@
 
 
 ---
-### Question
+### Question 5a9c615b-5fbc-45ff-9b23-934de4d48f0a
 - explain default.js
 
 ### Answer
 - default.js: file to render as a fallback for unmatched slots during the initial load or full-page reload.
 
 ---
-### Question
+### Question 9c9d5d74-6b34-4dc8-ba1c-7186fad1d824
 - What are possible mistake with parallel routes?
 
 ### Answer
@@ -114,7 +114,7 @@
     - Misunderstanding soft vs hard navigation (big source of bugs)
 
 ---
-### Question
+### Question 588f7e64-4bf8-4c79-ba63-6d4eb7bc7d3a
 - when to use / not to use Parallel routes?
 ### Answer
 - Use parallel routes when you need multiple independent UI regions that:
@@ -130,7 +130,7 @@
         - Then parallel routes add unnecessary complexity
 ---
 
-### Question
+### Question c4ee6cab-cb18-4cdc-8f93-5a52c5218e08
 - In the context of Dashboard, explain the significant of parallel route, what problem does it solve?
 ### Answer
 1. Without parallel route: (using normal layout.tsx)

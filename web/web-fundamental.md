@@ -1,6 +1,6 @@
 # Web fundamental
 
-### Question
+### Question d6cab4d1-ba51-4487-973c-c13168863148
 - explaim credential option in fetch api
 ### Answer
 - controls whether browsers automatically send and store user credentials (such as HTTP cookies including HttpOnly cookies, HTTP Basic Auth headers, and TLS client certificates) when making HTTP requests
@@ -23,7 +23,7 @@
             - Improving cacheability on CDNs (since requests without Cookie headers are easier to cache).
 ---
 
-### Question
+### Question a86c53bf-4bf0-4a01-a482-354990f6f574
 - pure cookie vs hybrid cookie pattern
 ### Answer
 
@@ -32,7 +32,7 @@
     - If your frontend and backend share the exact same domain (e.g. Next.js / monolith), using Pure HttpOnly Cookies for everything is great and very easy!
     - If your frontend and backend are on different domains/ports or you have a mobile app, the Hybrid Pattern is safer and much less headache with browser cookie restrictions.
 ---
-### Question
+### Question b5e973bc-93fc-4640-a50e-a81f59deb1b2
 - what are problems of pure cookie patterns?
 ### Answer
 - Reason 1: Protection Against CSRF (Cross-Site Request Forgery) Attacks
@@ -51,7 +51,7 @@
 
 
 ---
-### Question
+### Question 7a6dcb21-940c-4e45-84a0-647374f03878
 - when using pure cookie pattern, how to protect from csrf?
 ### Answer
 1. Use the SameSite Cookie Attribute (Most Important)
@@ -59,7 +59,7 @@
 2. Restrict APIs to Content-Type: application/json
 Standard HTML forms (form) can only send application/x-www-form-urlencoded, multipart/form-data, or text/plain. They cannot send application/json.
 ---
-### Question
+### Question 45a9dffe-c276-43c2-9671-93adfcf6dbc7
 - explain httpOnly
 ### Answer
 - HttpOnly is a security flag added to an HTTP response header when setting a cookie (Set-Cookie: cookie_name=value; HttpOnly).
@@ -74,7 +74,7 @@ Standard HTML forms (form) can only send application/x-www-form-urlencoded, mult
 
 
 ---
-### Question
+### Question 619e5bcf-3a62-474c-a3c6-0f0c3f7239fc
 - given the backend strictly require Authorization: Bearer token + backend return cookie including jwt + refresh_token
     - how do you handle it in nextjs project
 ### Answer
@@ -86,67 +86,67 @@ Standard HTML forms (form) can only send application/x-www-form-urlencoded, mult
     - simple, use cookies() from 'next/headers'
 
 ---
-### Question
+### Question 7a94bb92-c1b2-4dc1-98e1-069ea2c508b9
 
 ### Answer
 
 ---
-### Question
+### Question 36ec264a-e143-43b2-98e3-a1d216ebea9f
 
 ### Answer
 
 ---
-### Question
+### Question ed65b32a-95a5-44cf-b5c6-cb41a84ffffd
 
 ### Answer
 
 ---
-### Question
+### Question e962a731-8240-4fc8-a27e-b100b8fb4146
 
 ### Answer
 
 ---
-### Question
+### Question 90b55d22-e940-4acf-9bb9-7393353c06f6
 
 ### Answer
 
 ---
-### Question
+### Question 029142e1-74c4-44fe-9233-626b7dd11066
 
 ### Answer
 
 ---
-### Question
+### Question 3ddc5fc8-cea1-437e-b5a2-74259443b4b2
 
 ### Answer
 
 ---
-### Question
+### Question 6ae786c4-f3d1-401a-b564-af17f370f1b8
 
 ### Answer
 
 ---
-### Question
+### Question cf365dbf-2458-4bab-9464-87e5fbad7d4c
 
 ### Answer
 
 ---
-### Question
+### Question 4cac218d-b517-4b22-8b63-35104dfa2a96
 
 ### Answer
 
 ---
-### Question
+### Question fc125c60-94a8-441e-a909-b3ab3768e999
 
 ### Answer
 
 ---
-### Question
+### Question 24a3b318-847b-4021-9dcb-ab5fa811dc53
 
 ### Answer
 
 ---
-### Question
+### Question b589e3ec-3ae2-421d-b7ca-0295feffbd49
 
 ### Answer
 
