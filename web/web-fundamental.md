@@ -660,86 +660,229 @@ observer.observe({ type: "longtask", buffered: true });
 
 ### Question
 
+- discuss localStorage & sessionStorage (Web Storage API)
+
 ### Answer
+
+- Both localStorage and sessionStorage store string-based key-value pairs per origin (protocol://domain:port).
 
+- Key Differences & Mechanics
+  - localStorage: Persists indefinitely until explicitly cleared by the user or code (localStorage.clear()). Shared across all tabs/windows of the same origin.
+  - sessionStorage: Bound to a single browser tab/window context. Opening a URL in a new tab creates a fresh session context (though duplicating a tab copies the existing session storage state). Storage is cleared as soon as the tab is closed.
+- Critical Drawbacks
+  - Synchronous Execution (Main-Thread Blocking): Reads and writes interact synchronously with the disk/memory on the main JS thread. Reading large data blobs during application startup causes main-thread jank, degrading Interaction to Next Paint (INP) and Total Blocking Time (TBT).
+  - String-Only Constraint: All values are coerced into strings. Non-primitive objects require JSON.stringify() / JSON.parse(), adding CPU overhead.
+  - XSS Vulnerability: Fully accessible to any JavaScript code running on the origin. Storing sensitive tokens (like JWT access tokens) exposes them to malicious 3rd-party scripts or injected XSS attacks.
+
+```javascript
+// Example: Safe JSON wrapper for UI state
+function setPreference(key, value) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch (e) {
+    if (e.name === "QuotaExceededError") {
+      console.error("LocalStorage limit reached");
+    }
+  }
+}
+```
+
 ---
 
 ### Question
+
+- discuss IndexedDB
 
 ### Answer
 
+- IndexedDB is a low-level, object-oriented database embedded inside the browser. It stores structured records indexed by primary keys and custom field indexes.
+
+- Advantages & Mechanics
+  - Asynchronous & Transactional: All operations are async (event/promise-driven) and wrapped in atomic transactions (readonly, readwrite). Disk I/O never blocks main-thread rendering.
+  - Structured Clone Algorithm: Can store complex JS data types natively—including Object, Array, Blob, File, ArrayBuffer, Map, Set, and ImageData—without manual JSON serialization.
+  - High Storage Capacity: Operates under dynamic browser quotas, often allowing hundreds of megabytes to gigabytes of data depending on available disk space.
+- Best Practice & Modern Usage
+  - Raw IndexedDB syntax is notoriously verbose and event-driven (request.onerror, request.onsuccess). Modern applications use lightweight promise wrappers like idb or full ORM-like libraries such as Dexie.js.
+
 ---
 
 ### Question
 
+- Cookie Store API
+
 ### Answer
+
+- The Cookie Store API is a modern, asynchronous alternative to the legacy document.cookie interface.
+
+- Why replacing document.cookie matters
+  - Asynchronous & Non-blocking: document.cookie forces synchronous string parsing on the main thread. cookieStore returns native promises.
+  - Service Worker Availability: document.cookie is unavailable inside Service Worker global scopes. cookieStore works inside Service Workers (ServiceWorkerGlobalScope), allowing background handlers to read and write cookies asynchronously.
+  - Event-Driven: Provides a cookiechange event listener to observe cookie modifications reactively.
+- Security Note: HttpOnly cookies remain inaccessible to JavaScript (including cookieStore), preserving defense-in-depth against token theft via XSS.
 
 ---
 
 ### Question
 
+- StorageManager & Persistence API (navigator.storage)
+
 ### Answer
+
+- StorageManager provides utilities to inspect storage availability and request persistent storage protection against browser cache eviction.
+
+1. Disk Quota Inspection (storage.estimate())
+   navigator.storage.estimate() queries how much storage an origin is currently consuming and the maximum quota granted by the browser.
+
+```javascript
+if (navigator.storage && navigator.storage.estimate) {
+  const { quota, usage } = await navigator.storage.estimate();
+  const usageInMB = (usage / (1024 * 1024)).toFixed(2);
+  const quotaInMB = (quota / (1024 * 1024)).toFixed(2);
+  console.log(`Using ${usageInMB} MB out of ${quotaInMB} MB quota.`);
+}
+```
+
+2. Persistence Requests (storage.persist())
 
+- By default, browser storage operates under a Best-Effort policy: under low disk space conditions, the browser can silently clear an origin's IndexedDB, Cache Storage, or Service Worker data.
+
+- Calling navigator.storage.persist() requests permission for Persistent Storage, preventing automatic disk cleanup.
+
+```javascript
+if (navigator.storage && navigator.storage.persist) {
+  const isPersisted = await navigator.storage.persisted();
+  if (!isPersisted) {
+    const granted = await navigator.storage.persist();
+    console.log(`Persistent storage granted: ${granted}`);
+  }
+}
+```
+
 ---
 
 ### Question
 
+- What are the main differences between localStorage, sessionStorage, and IndexedDB?"
+
 ### Answer
+
+- Storage & Data Types: localStorage and sessionStorage hold string key-value pairs capped at ~5–10MB. IndexedDB is a transactional NoSQL database storing structured JS objects (via Structured Clone Algorithm), binary data, and Blobs, with capacity in the gigabytes.
+- Sync vs. Async: Web Storage (localStorage/sessionStorage) operations are synchronous and block the main thread. IndexedDB is asynchronous and event/promise-based.
+- Scope & Lifecycle: localStorage persists indefinitely across tabs on the same origin. sessionStorage is scoped to a single tab context and dies when the tab closes. IndexedDB persists until explicitly deleted or cleared under storage pressure.
 
 ---
 
 ### Question
 
+- "Why is localStorage considered bad for application performance?"
+
 ### Answer
+
+- localStorage executes synchronous file I/O on the main thread. When reading or writing large strings or parsing nested JSON structures (JSON.parse(localStorage.getItem(...))), JS execution blocks layout and rendering. This directly increases Total Blocking Time (TBT) during app startup and can cause jank, degrading Interaction to Next Paint (INP).
 
 ---
 
 ### Question
 
+- "Where should you store a JWT access token: localStorage or HttpOnly Cookies? Why?"
+
 ### Answer
 
+- localStorage: Susceptible to XSS (Cross-Site Scripting). Any malicious 3rd-party script or injected dependency running on the origin can read localStorage.getItem('token') and exfiltrate it.
+- HttpOnly Cookie: Immune to XSS script reads because document.cookie and JavaScript cannot access it. However, cookies automatically attach to requests, exposing the site to CSRF (Cross-Site Request Forgery).
+- Best Practice: Use HttpOnly cookies with SameSite=Strict (or Lax) and Secure flags. For SPAs needing fine-grained control, store refresh tokens in an HttpOnly cookie and keep access tokens in short-lived in-memory JS state (or secure worker memory).
+
 ---
 
 ### Question
+
+- "How does the Cookie Store API differ from standard document.cookie?"
 
 ### Answer
 
+- Asynchronous: cookieStore returns Promises, preventing main-thread blocking when parsing or setting cookies.
+- Service Worker Support: document.cookie isn't accessible in Service Workers. cookieStore is available in ServiceWorkerGlobalScope, allowing background sync tasks to read/update authentication context.
+- Reactive Events: It provides a cookiechange event listener so apps can react to cookie modifications without polling.
+
 ---
 
 ### Question
+
+- "How can you synchronize state across multiple open tabs of the same website in real-time?"
 
 ### Answer
 
+- storage Event: Listening to window.addEventListener('storage', callback) triggers in other tabs whenever localStorage is updated.
+- BroadcastChannel API: Purpose-built for low-overhead pub/sub messaging between tabs, windows, or workers of the same origin.
+- SharedWorker: A single worker shared across tabs that acts as a centralized state authority.
+
 ---
 
 ### Question
 
+- "How does Safari/WebKit’s ITP (Intelligent Tracking Prevention) affect client storage, and how do you handle it?"
+
 ### Answer
+
+- The 7-Day Cap: In Safari (iOS & macOS), client-side storage (including localStorage, IndexedDB, Cache API, and OPFS) created via script is automatically deleted after 7 days of non-use if the user accessed the site through a link with tracking parameters or if the origin has no top-level interaction.
+- Workarounds & Mitigations:
+  - Server-set cookies (via HTTP response headers) are not subject to the 7-day script cap.
+  - Encourage users to add the application to their home screen as a PWA (Standalone mode), which waives the aggressive 7-day eviction rule.
+  - Prompt users to grant Persistent Storage (navigator.storage.persist()).
 
 ---
 
 ### Question
 
+- "What happens when storage APIs are accessed in Private / Incognito Mode?"
+
 ### Answer
+
+- Quota Reduction: In Incognito mode, available storage quota is drastically reduced (often capped at 50MB–100MB or dynamic RAM allocation).
+- Ephemeral Storage: All writes to localStorage, IndexedDB, or cookies exist only for the duration of the incognito session and are purged as soon as all incognito windows are closed.
+- Safari Legacy Quirks: Older versions of Safari threw a QuotaExceededError immediately on calling localStorage.setItem(). Defensive code should always wrap setItem calls in try...catch blocks.
 
 ---
 
 ### Question
 
+- "What is Storage Partitioning (Double-Keying), and how does it impact localStorage inside `<iframe>`s?"
+
 ### Answer
 
+- Mechanism: Traditionally, storage was keyed only by origin (https://example.com). Modern browsers (Chrome, Firefox, Safari) key storage using (Top-Level Site, Embedded Site).
+- Impact on `<iframe>`: An iframe running https://widget.com inside https://site-a.com gets a completely isolated localStorage instance from the same https://widget.com iframe rendered inside https://site-b.com. Cross-site tracking via shared storage across different top-level domains is blocked.
+
 ---
 
 ### Question
+
+- "How do you decide between using the Cache API vs. IndexedDB in a Progressive Web App (PWA)?"
 
 ### Answer
 
+- Cache API (caches): Specialized for HTTP Request/Response pairs. Ideal for static assets (HTML, CSS, JS bundles, images) and REST/GraphQL API response caching consumed directly by a Service Worker to intercept network fetches.
+- IndexedDB: Specialized for application state and structured data. Ideal for user-generated offline data, queueing offline mutation actions before syncing with the backend, or querying local datasets with indexes.
+
 ---
 
 ### Question
 
+- "How do you prevent race conditions when writing to storage across multiple browser tabs?"
+
 ### Answer
+
+- Standard localStorage has no built-in locking mechanism. To prevent race conditions during read-modify-write cycles across tabs, use the Web Locks API (navigator.locks).
 
+```javascript
+// Acquiring an origin-wide lock across tabs
+await navigator.locks.request("storage_update_lock", async (lock) => {
+  // Critical section: Guaranteed to run exclusively in one tab at a time
+  const currentCount = parseInt(localStorage.getItem("counter") || "0", 10);
+  localStorage.setItem("counter", (currentCount + 1).toString());
+});
+```
+
 ---
 
 ### Question
@@ -1095,3 +1238,7 @@ observer.observe({ type: "longtask", buffered: true });
 ### Answer
 
 ---
+
+```
+
+```
