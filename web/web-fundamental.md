@@ -1238,7 +1238,3 @@ await navigator.locks.request("storage_update_lock", async (lock) => {
 ### Answer
 
 ---
-
-```
-
-```
