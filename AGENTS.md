@@ -41,6 +41,7 @@ Every item MUST follow this exact structure:
   - Behavioral details (edge cases, caveats)
 - Include code blocks **only when they add value**.
 - Separate each Q&A pair with `---`.
+- Hightlight key terms in answers using ***
 
 ---
 
