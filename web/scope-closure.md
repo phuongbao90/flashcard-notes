@@ -544,8 +544,6 @@ delayLog();
 
 ---
 
-## Advanced React & Next.js Scope Patterns
-
 ### Question 94d7b70b-87ea-41ef-869f-a8cadb9af6b5
 
 - What security and data corruption risks occur when declaring mutable state at the top-level module scope in Next.js Server Components or API routes?
