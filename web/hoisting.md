@@ -1,6 +1,6 @@
 # Hoisting
 
-### Question
+### Question 6cee2afb-0e9d-4731-8a3a-2b0af3867139
 
 - How does JavaScript hoisting treat `var` declarations differently from `let` and `const` during the creation phase of an execution context?
 
@@ -20,7 +20,7 @@ let b = 2;
 
 ---
 
-### Question
+### Question 175bd532-8305-46ab-8749-fb4e19c1373a
 
 - Why does accessing a `let` or `const` variable before its declaration statement throw a `ReferenceError` even though the variable binding is hoisted?
 
@@ -40,7 +40,7 @@ console.log(typeof y); // "undefined" (undeclared variable)
 
 ---
 
-### Question
+### Question 63a723c8-cc75-4abb-8b59-7737d2ee3250
 
 - How do Function Declarations differ from Function Expressions and Arrow Functions regarding hoisting behavior?
 
@@ -60,7 +60,7 @@ var expressedFn = function() {};
 
 ---
 
-### Question
+### Question a6148e76-1a69-4690-bdc5-524fb95961dc
 
 - What is the evaluation order and outcome when a Function Declaration and a `var` declaration share the exact same identifier in the same scope?
 
@@ -81,7 +81,7 @@ console.log(typeof foo); // "number" (overwritten by runtime assignment)
 
 ---
 
-### Question
+### Question 19378986-c094-4e81-8dd5-f0affff04ac9
 
 - How does block-scoping affect function declaration hoisting in ES6 strict mode versus non-strict mode?
 
@@ -101,7 +101,7 @@ console.log(typeof inner); // "undefined" (strictly block-scoped)
 
 ---
 
-### Question
+### Question 50cdde85-ace4-4859-be6d-92eae6feaefe
 
 - How does class declaration hoisting differ from function declaration hoisting in JavaScript?
 
@@ -123,7 +123,7 @@ class User {
 
 ---
 
-### Question
+### Question fd4e814f-95a1-4863-ba74-0ddd86f9bfe9
 
 - How do ES module `import` statements interact with hoisting and execution timing?
 
@@ -142,7 +142,7 @@ import { helper } from "./utils.js";
 
 ---
 
-### Question
+### Question 8b15579c-df7e-43a6-afbf-95a1f5e88dee
 
 - What will be logged to the console when executing the code snippet below, and why?
 
@@ -165,7 +165,7 @@ test();
 
 ---
 
-### Question
+### Question a8ab7f7f-fdc9-498e-abd0-2e3a06b30921
 
 - What happens when `getOutput()` is invoked in the code snippet below, and what error or output is produced?
 
@@ -185,7 +185,7 @@ getOutput();
 
 ---
 
-### Question
+### Question eff09449-05fb-468b-8dc8-651b61757b7a
 
 - What is the output of the following code snippet? Explain the underlying variable and function hoisting mechanics.
 
@@ -210,7 +210,7 @@ console.log(a);
 
 ---
 
-### Question
+### Question 02cf2033-0c33-4fa9-af75-67fb460e2349
 
 - What will be logged to the console by the following code snippet?
 
@@ -232,7 +232,7 @@ console.log(typeof fn);
 
 ---
 
-### Question
+### Question 75328488-beb0-4ae8-aa3e-8ce31329f34e
 
 - What is the result of executing the code snippet below in ES6 strict mode, and why?
 
@@ -256,7 +256,7 @@ if (true) {
 
 ---
 
-### Question
+### Question 112d9162-faa3-4093-afdd-fd5d4f9c1d22
 
 - What is logged when the following code snippet executes?
 
@@ -279,7 +279,7 @@ increment();
 
 ---
 
-### Question
+### Question 9a22ea6e-c333-4117-8076-fa9f0b4fcd60
 
 - What happens when `run()` is called in the following scenario involving `try...catch` block scoping?
 
@@ -308,7 +308,7 @@ run();
 
 ---
 
-### Question
+### Question bde6798c-1342-47e1-9029-25e3db06d15b
 
 - Why does referencing a `let` variable inside a `case` clause of a `switch` statement throw a `ReferenceError` when a different `case` branch executes?
 
@@ -333,7 +333,7 @@ switch (value) {
 
 ---
 
-### Question
+### Question b6298574-e53d-4787-a84c-0ff258167d3a
 
 - What is the output of `y()` in the following function default parameter scenario, and why does body variable hoisting not affect `y`?
 
@@ -354,7 +354,7 @@ console.log(demo());
 
 ---
 
-### Question
+### Question 5e64537e-c381-44e8-b553-350a7971abdc
 
 - How does non-strict mode Annex B function hoisting behave when accessing a block-declared function before, inside, and after the block?
 
@@ -378,7 +378,7 @@ console.log(typeof fn); // "function"
 
 ---
 
-### Question
+### Question 3b47d36e-e3a6-4da7-b3a2-a2253395d960
 
 - Why does `setTimeout` log `3, 3, 3` with `var` but `0, 1, 2` with `let` in a `for` loop?
 
@@ -400,7 +400,7 @@ for (let j = 0; j < 3; j++) {
 
 ---
 
-### Question
+### Question 09d7af1c-0fee-41c3-afd5-57c315b2c3dd
 
 - What happens when a class static field initializer attempts to access another static field declared below it?
 

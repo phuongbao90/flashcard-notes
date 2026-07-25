@@ -1,6 +1,6 @@
 # Fetch API
 
-### Question
+### Question 3f6000fb-f81c-4c7d-90a6-3d727f00d3d3
 
 - How does fetch() handle HTTP error statuses (like 404 or 500)?
 
@@ -19,7 +19,7 @@ const data = await response.json();
 
 ---
 
-### Question
+### Question 3126e1c5-62c7-4b55-8e1d-f3c1895230be
 
 - What are the main differences between fetch() and XMLHttpRequest (XHR) or axios?
 
@@ -33,7 +33,7 @@ const data = await response.json();
 
 ---
 
-### Question
+### Question e9ab2a8d-0e78-4db8-b2cf-756fa977d59e
 
 - Why do response.json() or response.text() return Promises?
 
@@ -43,7 +43,7 @@ const data = await response.json();
 
 ---
 
-### Question
+### Question f6d95357-ebea-4bdd-ba40-c4e0cf04c2a6
 
 - Why can a fetch response body only be read once?
 
@@ -54,7 +54,7 @@ const data = await response.json();
 
 ---
 
-### Question
+### Question dadf42a4-bf11-4cdf-81e8-c0f9b5425cba
 
 - How do you handle authentication cookies with fetch()?
 
@@ -68,7 +68,7 @@ const data = await response.json();
 
 ---
 
-### Question
+### Question 1f4cd7b7-8278-43fc-a0b0-5e5463cfbc02
 
 - What is the difference between request modes: cors, no-cors, and same-origin?
 
@@ -80,7 +80,7 @@ const data = await response.json();
 
 ---
 
-### Question
+### Question 210f5a77-2b87-41a7-ab33-935bfc001285
 
 - Implement a fetchWithRetry(url, options, retries, delay) function.
 
@@ -107,7 +107,7 @@ async function fetchWithRetry(url, options = {}, retries = 3, delay = 1000) {
 
 ---
 
-### Question
+### Question e59ed236-62b4-4c12-8635-4b482e23de22
 
 - What are keepalive and sendBeacon, and how do you send telemetry data on page unload using fetch?
 
@@ -131,7 +131,7 @@ window.addEventListener("unload", () => {
 
 ---
 
-### Question
+### Question 86edf5ff-19e6-441e-9926-855776d94fc0
 
 - How does Content Security Policy (CSP) affect fetch()?
 
@@ -141,7 +141,7 @@ window.addEventListener("unload", () => {
 
 ---
 
-### Question
+### Question 5ec1171a-a739-46a7-a5f8-ab7459706af2
 
 - How do referrer and referrerPolicy work in fetch()?
 
@@ -152,7 +152,7 @@ window.addEventListener("unload", () => {
 
 ---
 
-### Question
+### Question edeedf95-442c-460b-911f-d6015c333866
 
 - Why does calling response.json() fail on a 204 No Content response, and how do you prevent it?
 
@@ -172,7 +172,7 @@ async function parseResponse(response) {
 
 ---
 
-### Question
+### Question 15e401ff-1c84-4326-9703-cf6d278741bb
 
 - How can you track download progress with fetch() since it lacks an onprogress callback?
 
@@ -195,7 +195,7 @@ while (true) {
 
 ---
 
-### Question
+### Question e0860ab8-a710-4cf4-a0d0-baffcfacae22
 
 - How does fetch interact with Service Workers?
 
@@ -218,7 +218,7 @@ self.addEventListener("fetch", (event) => {
 
 ---
 
-### Question
+### Question 0e3ccc71-4553-4ecd-9f1c-de90bf33bc97
 
 - How can you create a global request/response Interceptor for fetch (like Axios interceptors)?
 
@@ -248,7 +248,7 @@ window.fetch = async (...args) => {
 
 ---
 
-### Question
+### Question 8f5c4ecb-9b12-4e40-ad79-e4709b3dc32b
 
 - Request Deduplication (In-flight Coalescing):
   - Scenario: If multiple components invoke fetchData('/api/user') at the same time, make only one network request and resolve all callers with the same result.
@@ -278,7 +278,7 @@ function fetchDeduplicated(url, options) {
 
 ---
 
-### Question
+### Question d1a40f8d-8d3e-42b3-a213-79a2f3bea998
 
 - How does Next.js extend the native Web fetch API, and why?
 
@@ -292,7 +292,7 @@ function fetchDeduplicated(url, options) {
 
 ---
 
-### Question
+### Question 6ddf6b70-500c-4fbc-bc4c-b7e47881f694
 
 - What are the primary cache options in Next.js fetch?
 
@@ -323,7 +323,7 @@ revalidateTag("products");
 
 ---
 
-### Question
+### Question 42e2ac60-48ab-4536-a91d-d318d15b1b6f
 
 - What is the difference between React Request Memoization and Next.js Data Cache?
 
@@ -334,7 +334,7 @@ revalidateTag("products");
 
 ---
 
-### Question
+### Question d28e6a55-2fdc-481a-ac1d-62026943a873
 
 - What do the different browser cache options in standard fetch() do?
 
@@ -350,7 +350,7 @@ revalidateTag("products");
 
 ---
 
-### Question
+### Question f8dedbef-b3c4-41ef-96c1-2832691e0119
 
 - What is the difference between Cache-Control: no-cache and Cache-Control: no-store?
 
@@ -361,7 +361,7 @@ revalidateTag("products");
 
 ---
 
-### Question
+### Question 0315756a-a39e-4764-98ad-7d7df1ba23e8
 
 - What is the Web Cache API (window.caches), and how is it used with fetch()?
 
@@ -388,229 +388,229 @@ async function getCachedOrFetch(requestUrl) {
 
 ---
 
-### Question
+### Question 379deaab-94c8-4273-a1bf-c08dcfebf2d2
 
 ### Answer
 
 ---
 
-### Question
+### Question 30211d23-46ba-4e04-be4d-56e97140c0fb
 
 ### Answer
 
 ---
 
-### Question
+### Question cad2c3ad-0a44-4e8c-8f14-c139dea10fc4
 
 ### Answer
 
 ---
 
-### Question
+### Question 5aa074f5-58d7-4298-98f5-95098659495b
 
 ### Answer
 
 ---
 
-### Question
+### Question c7c50e93-2e22-49fe-860c-de8dd1a51406
 
 ### Answer
 
 ---
 
-### Question
+### Question d67dfa3e-26a8-4226-8105-ca04f0ec407e
 
 ### Answer
 
 ---
 
-### Question
+### Question 9341849e-39b5-4980-98d4-7e6732d060bf
 
 ### Answer
 
 ---
 
-### Question
+### Question c2f06925-7394-4d77-9136-2bec3f694156
 
 ### Answer
 
 ---
 
-### Question
+### Question af1e64ff-de72-4472-bf4c-044ffa7be344
 
 ### Answer
 
 ---
 
-### Question
+### Question f46b261a-ec48-4383-a24c-d77bd7884b02
 
 ### Answer
 
 ---
 
-### Question
+### Question a8e52d45-ea65-4cd2-897d-b50a853968f9
 
 ### Answer
 
 ---
 
-### Question
+### Question c8829e66-d7e3-4ab0-999b-2dd1480ba605
 
 ### Answer
 
 ---
 
-### Question
+### Question ea58d599-e375-4bfa-8126-be0ed2c220e3
 
 ### Answer
 
 ---
 
-### Question
+### Question c829b98d-dfd5-4fdb-a4b0-37ade44fda2c
 
 ### Answer
 
 ---
 
-### Question
+### Question 71f0bcdd-e245-4848-a13b-82630d6a48e7
 
 ### Answer
 
 ---
 
-### Question
+### Question b1a472cc-9d68-4879-b930-8875e4c36492
 
 ### Answer
 
 ---
 
-### Question
+### Question 4017231d-78b1-4450-89a2-164530ff49f6
 
 ### Answer
 
 ---
 
-### Question
+### Question b186629c-eef5-476a-812a-cc8352a17b76
 
 ### Answer
 
 ---
 
-### Question
+### Question 80d38d58-ad4f-43bf-b8f8-31ae9433574e
 
 ### Answer
 
 ---
 
-### Question
+### Question 049904a1-4dea-48a0-b272-499cf3b31133
 
 ### Answer
 
 ---
 
-### Question
+### Question 99c7e0c9-f0ac-47c7-ab38-74a2a41c0b27
 
 ### Answer
 
 ---
 
-### Question
+### Question 2f91bc18-a8b9-418a-ba11-78fc96d4f070
 
 ### Answer
 
 ---
 
-### Question
+### Question e889f4a0-f036-4df0-b0f7-5ebea1516486
 
 ### Answer
 
 ---
 
-### Question
+### Question b5263687-c27c-4ecd-8cdd-a0ea9848bfcc
 
 ### Answer
 
 ---
 
-### Question
+### Question b781b114-71f7-4982-a8eb-50705c145716
 
 ### Answer
 
 ---
 
-### Question
+### Question 4c6f594e-fd7d-4e93-aff1-367bcf4370b0
 
 ### Answer
 
 ---
 
-### Question
+### Question 16deda86-86cc-4080-bee0-b93624cdccee
 
 ### Answer
 
 ---
 
-### Question
+### Question 2fbf7f59-566e-4eec-9776-fb4b43152a89
 
 ### Answer
 
 ---
 
-### Question
+### Question 35d786e6-c4a1-4cd4-8c41-0b678c90d871
 
 ### Answer
 
 ---
 
-### Question
+### Question afd77d91-0157-469c-89cc-e5378e6553a8
 
 ### Answer
 
 ---
 
-### Question
+### Question 74f59145-ce45-4c65-b10d-197ae99dc7ed
 
 ### Answer
 
 ---
 
-### Question
+### Question 3a72d43e-f548-4480-b8ef-7d6d473d0d84
 
 ### Answer
 
 ---
 
-### Question
+### Question 8afbb340-9208-4ad2-8372-4f0f94d21c0d
 
 ### Answer
 
 ---
 
-### Question
+### Question 14e29d62-dd73-4047-b8ee-6d262fb17aad
 
 ### Answer
 
 ---
 
-### Question
+### Question 4f4d0dc7-944e-458d-831c-ec9b3ff017b0
 
 ### Answer
 
 ---
 
-### Question
+### Question 38c6b237-de1d-4262-9bc6-0e767c335773
 
 ### Answer
 
 ---
 
-### Question
+### Question 8805d220-99b1-405e-a188-a46813b8b6a4
 
 ### Answer
 
 ---
 
-### Question
+### Question a9aa9e55-aa2d-479c-b776-895876317d61
 
 ### Answer
 

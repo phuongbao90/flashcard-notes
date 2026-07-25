@@ -1,6 +1,6 @@
 # Scope & Closures
 
-### Question
+### Question 6e07ea9a-3167-467c-9811-04ce542bcb19
 
 - How does JavaScript determine scope resolution during lexical analysis, and how does scope chain lookup behave for nested identifiers?
 
@@ -24,7 +24,7 @@ function outer() {
 
 ---
 
-### Question
+### Question 3ad00b3c-c56a-49a2-8adf-b999f87bce65
 
 - How do closures interact with JavaScript garbage collection, and what can cause unintended memory leaks in long-lived closures?
 
@@ -47,7 +47,7 @@ function setupListener() {
 
 ---
 
-### Question
+### Question f8794474-238c-42d3-9c24-0c9ca44ce762
 
 - What causes stale closures in React functional components, and how do scope snapshots explain this behavior?
 
@@ -73,7 +73,7 @@ function Counter() {
 
 ---
 
-### Question
+### Question 293676e0-13c1-41c3-89ee-b8c634f8874d
 
 - Why does using `var` inside a `for` loop with asynchronous callbacks print the final index value for every iteration, whereas `let` creates a distinct value per iteration?
 
@@ -95,7 +95,7 @@ for (let j = 0; j < 3; j++) {
 
 ---
 
-### Question
+### Question f3bba3c0-5320-4ab4-a614-d246c713c7d3
 
 - How do closures provide data encapsulation (factory functions/module pattern), and how do they compare with ES2022 private class fields (`#field`)?
 
@@ -122,7 +122,7 @@ class Counter {
 
 ---
 
-### Question
+### Question a4a1f84d-e232-4ab3-b9b5-52736b9edab9
 
 - How does variable scoping operate inside `switch` statements and `try/catch` parameter blocks?
 
@@ -147,7 +147,7 @@ switch (action) {
 
 ---
 
-### Question
+### Question 81369ccb-db4d-4b2e-93af-d6c0c46cd476
 
 - What purpose do Immediately Invoked Function Expressions (IIFE) serve regarding scope isolation, and why are they still relevant in modern JavaScript?
 
@@ -168,7 +168,7 @@ const config = (() => {
 
 ---
 
-### Question
+### Question fd86430c-fe06-408e-98ee-8472eef8f27a
 
 - How does top-level scope in an ES Module (ESM) differ from top-level scope in a traditional non-module script tag (`<script>`)?
 
@@ -189,7 +189,7 @@ export { moduleItem };
 
 ---
 
-### Question
+### Question 5cd336c3-4e95-40c2-b5e5-191799182884
 
 - How do arrow functions resolve `this` and `arguments` identifiers compared to standard functions in terms of lexical scope?
 
@@ -216,7 +216,7 @@ obj.getArrow()();   // "App"
 
 ---
 
-### Question
+### Question 2324071f-cdad-4893-95dd-4666b3de7fc8
 
 - How do direct `eval()` and `with` statements disrupt static scope analysis, and what impact do they have on JavaScript engine JIT optimizations?
 
@@ -237,7 +237,7 @@ dynamicScope("var x = 20;"); // 20
 
 ---
 
-### Question
+### Question 7cd06052-f918-48b9-a19a-c28a74df63b2
 
 - What is the V8 shared lexical scope allocation strategy, and how can an unused variable in an outer function be retained in memory by an unrelated closure?
 
@@ -266,7 +266,7 @@ const getSmall = outer(); // Keeps shared outer context (and largeData) alive
 
 ---
 
-### Question
+### Question 6bed4502-1570-48fb-b905-5602d34aa09f
 
 - Why does reading `ref.current` inside an asynchronous closure always access the latest value, whereas reading a React state variable reads the snapshot value from when the closure was created?
 
@@ -294,7 +294,7 @@ function AsyncCounter() {
 
 ## Code-Based Comprehension & Output Analysis
 
-### Question
+### Question a76aa1c2-6beb-481e-91ff-aaf598e727e5
 
 - What will be printed by calling `fn1()` and `fn2()` in the following snippet, and why do both functions affect the same counter value?
 
@@ -320,7 +320,7 @@ console.log(fn2());
 
 ---
 
-### Question
+### Question 1811cdbd-0ccc-4840-993c-e9beec049cd0
 
 - What is the console output sequence of calling `test(0)` below, and how does scope shadowing affect each output?
 
@@ -348,7 +348,7 @@ console.log(a);
 
 ---
 
-### Question
+### Question 86f730d7-e885-495a-8627-3400768669d1
 
 - What values will `obj.showName()` and `obj.showNameDelayed()` print to the console, and why do they behave differently?
 
@@ -377,7 +377,7 @@ obj.showNameDelayed();
 
 ---
 
-### Question
+### Question 8825f913-dda5-4677-930a-71d7e02952e5
 
 - What error or output occurs when executing `b(3)` in the snippet below, and why does re-assigning `a = null` cause this behavior?
 
@@ -401,7 +401,7 @@ console.log(b(3));
 
 ---
 
-### Question
+### Question aaa5c62b-e656-4296-877e-2171cd202c99
 
 - What will be logged by the IIFE code snippet below, and why does mutating `val` inside the IIFE not affect the outer `val`?
 
@@ -424,7 +424,7 @@ console.log(val);
 
 ---
 
-### Question
+### Question a5a073b1-254f-4ce6-aba8-1e7e14f3b1df
 
 - In a React component with the following click handler, what values will be logged after clicking the button twice quickly and waiting for the timeouts?
 
@@ -454,7 +454,7 @@ function Component() {
 
 ---
 
-### Question
+### Question dd1ec0aa-5615-4569-a65d-c5a29349bc20
 
 - What will calling `fn()` return in the snippet below, and why is `x` accessible even though it is assigned after `getValue` is defined?
 
@@ -479,7 +479,7 @@ console.log(fn());
 
 ---
 
-### Question
+### Question b72aac60-14f5-47c7-acb0-6751dfe3a461
 
 - What is logged when executing `funcs[0]()` and `funcs[1]()` in the snippet below, and how does the IIFE solve the loop closure issue?
 
@@ -506,7 +506,7 @@ console.log(funcs[1]());
 
 ---
 
-### Question
+### Question 2a2b6626-ada9-4f98-abf1-e0867e4f37cf
 
 - What will be logged to the console by `delayLog()`, and why does `setTimeout` read `"Modified"` instead of `"Initial"`?
 
@@ -534,7 +534,7 @@ delayLog();
 
 ## Advanced React & Next.js Scope Patterns
 
-### Question
+### Question 94d7b70b-87ea-41ef-869f-a8cadb9af6b5
 
 - What security and data corruption risks occur when declaring mutable state at the top-level module scope in Next.js Server Components or API routes?
 
@@ -557,7 +557,7 @@ export async function GET(request) {
 
 ---
 
-### Question
+### Question 06ea94ee-34d0-4e5b-b803-b79720dd2e07
 
 - How does the `useLatest` custom hook pattern solve stale closure issues in async callbacks without requiring effect re-subscriptions?
 
@@ -588,7 +588,7 @@ function useInterval(callback, delay) {
 
 ---
 
-### Question
+### Question 872e0c10-6995-49b3-af08-bec7bf238750
 
 - Why does failing to return a cleanup function in `useEffect` when attaching global event listeners cause closure-based memory leaks upon component unmount?
 

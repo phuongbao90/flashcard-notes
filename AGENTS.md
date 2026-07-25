@@ -12,7 +12,7 @@ Target for mid-level React, Next.js developers
 Every item MUST follow this exact structure:
 
 ````
-### Question
+### Question 05573229-eb5b-47f8-a42d-ba05e432576e
 
 - <Question text>
 
@@ -94,7 +94,7 @@ Each answer should contain:
 
 ## Example Output
 
-### Question
+### Question 2eb3fc87-dc20-4dc9-a936-857a74466210
 
 - How does fetch() handle HTTP error statuses (like 404 or 500)?
 

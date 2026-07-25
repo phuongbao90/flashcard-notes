@@ -290,7 +290,7 @@ Core Web Vitals are a set of specific metrics defined by Google to measure real-
 
 ---
 
-### Question
+### Question 841bf2be-0fbb-4dda-96e3-3793695ac40a
 
 - How do useTransition and useDeferredValue lower INP during heavy React state updates? What happens under the hood?
 
@@ -301,7 +301,7 @@ Core Web Vitals are a set of specific metrics defined by Google to measure real-
 
 ---
 
-### Question
+### Question ac7e7afb-848c-4236-bd3a-c14c4bf139c9
 
 - How can you break up long JavaScript tasks in modern browsers when React startTransition isn't enough?
 
@@ -325,7 +325,7 @@ When performing heavy non-React CPU computations (e.g., data processing, heavy a
 
 ---
 
-### Question
+### Question 79133187-0142-44ae-83ad-321b13da86af
 
 - How does TTFB (Time to First Byte) impact LCP, and how can Edge Middleware in Next.js negatively impact TTFB if misused?
 
@@ -339,7 +339,7 @@ When performing heavy non-React CPU computations (e.g., data processing, heavy a
 
 ---
 
-### Question
+### Question 3963fde4-af70-4e4b-86d1-d550720347a2
 
 - How does React 18 HTML Streaming (renderToReadableStream / `<Suspense>`) improve TTFB and FCP compared to traditional SSR?
 
@@ -353,7 +353,7 @@ When performing heavy non-React CPU computations (e.g., data processing, heavy a
 
 ---
 
-### Question
+### Question a575f79b-a46f-41f3-b6b4-2e0b842f5420
 
 - What is Partial Prerendering (PPR) in Next.js App Router, and how does it optimize both TTFB and LCP?
 
@@ -367,7 +367,7 @@ When performing heavy non-React CPU computations (e.g., data processing, heavy a
 
 ---
 
-### Question
+### Question 01f5e2ca-11dd-4ae7-b3ed-af8f12156886
 
 - Why do CSS transform animations avoid CLS, whereas animating top, left, width, or height causes layout shifts?
 
@@ -379,7 +379,7 @@ When performing heavy non-React CPU computations (e.g., data processing, heavy a
 
 ---
 
-### Question
+### Question 360bf58e-8ed3-47de-8de1-a4cecb958ddb
 
 - How would you debug an intermittent, real-user INP spike that only happens in production?
 
@@ -402,7 +402,7 @@ When performing heavy non-React CPU computations (e.g., data processing, heavy a
 
 ---
 
-### Question
+### Question 184581ac-89e1-4239-954a-9fb4a84d437b
 
 - What is Layout Thrashing (Forced Synchronous Layout), how does it break INP and CLS, and how do you fix it in React?
 
@@ -435,7 +435,7 @@ When performing heavy non-React CPU computations (e.g., data processing, heavy a
 
 ---
 
-### Question
+### Question 0c738b08-4ea2-45b8-b7e1-fe3d45456601
 
 - Why does next/image still produce a bad LCP if you forget the sizes prop? How does sizes work under the hood?
 
@@ -458,7 +458,7 @@ When performing heavy non-React CPU computations (e.g., data processing, heavy a
 
 ---
 
-### Question
+### Question 4d53d306-a391-4f28-9f80-9075f38eec6b
 
 - How do Hydration Mismatches in Next.js/React cause high CLS, and how do you fix them cleanly?
 
@@ -492,7 +492,7 @@ When performing heavy non-React CPU computations (e.g., data processing, heavy a
 
 ---
 
-### Question
+### Question 22d685c8-ab05-4259-b086-cd174f8f03db
 
 - Third-party scripts (GTM, Ads, Chat Widgets) are destroying your site's INP and LCP. How do you mitigate them without removing them?
 
@@ -512,7 +512,7 @@ When performing heavy non-React CPU computations (e.g., data processing, heavy a
 
 ---
 
-### Question
+### Question 34948a8d-c2f3-4d9a-b342-e28a3f2397c5
 
 - What are Resource Hints (dns-prefetch, preconnect, preload, prefetch), and how do you use them specifically to optimize LCP and TTFB?
 
@@ -544,7 +544,7 @@ When performing heavy non-React CPU computations (e.g., data processing, heavy a
 
 ---
 
-### Question
+### Question 40e5440a-9268-40bb-b69e-179b454f92dd
 
 - How do you implement Infinite Scroll in Next.js using IntersectionObserver? Why use a "sentinel node" instead of watching the last item in the list?
 
@@ -574,7 +574,7 @@ useEffect(() => {
 
 ---
 
-### Question
+### Question 1ebb55df-3767-4baf-871a-56816d0d8b22
 
 - Why does standard useRef + useEffect often fail with Observers on conditionally rendered elements? How do Callback Refs fix it?
 
@@ -598,7 +598,7 @@ useEffect(() => {
 
 ---
 
-### Question
+### Question d205e744-8147-4f75-bc41-036c8e88a105
 
 - If you need to observe 1,000 items in a list (e.g., tracking visibility of every item in a feed), should you create 1,000 Observers?
 
@@ -622,7 +622,7 @@ const observer = new IntersectionObserver((entries) => {
 
 ---
 
-### Question
+### Question 7d8fe077-45d8-47e6-a102-5ed162e73df9
 
 - Observer callbacks fire rapidly (e.g., during fast scrolling). How do you prevent layout thrashing and excessive state updates in React?
 
@@ -634,7 +634,7 @@ const observer = new IntersectionObserver((entries) => {
 
 ---
 
-### Question
+### Question cc1da63a-08c0-49b4-b752-f98ac0b0ec37
 
 - What is PerformanceObserver, and how does Next.js / Core Web Vitals use it?
 
@@ -658,7 +658,7 @@ observer.observe({ type: "longtask", buffered: true });
 
 ---
 
-### Question
+### Question bba5c334-11fd-44d2-9187-07e508b57a7d
 
 - discuss localStorage & sessionStorage (Web Storage API)
 
@@ -689,7 +689,7 @@ function setPreference(key, value) {
 
 ---
 
-### Question
+### Question 4ac1d068-c189-45d4-8225-a7f3dccbade8
 
 - discuss IndexedDB
 
@@ -706,7 +706,7 @@ function setPreference(key, value) {
 
 ---
 
-### Question
+### Question c1b44d21-c572-4761-b959-75c869d18294
 
 - Cookie Store API
 
@@ -722,7 +722,7 @@ function setPreference(key, value) {
 
 ---
 
-### Question
+### Question 625af0e6-3150-4c6a-972b-72c4aeae68fb
 
 - StorageManager & Persistence API (navigator.storage)
 
@@ -760,7 +760,7 @@ if (navigator.storage && navigator.storage.persist) {
 
 ---
 
-### Question
+### Question 6b71fd8a-2640-4a74-aacf-23e51a93d2a3
 
 - What are the main differences between localStorage, sessionStorage, and IndexedDB?"
 
@@ -772,7 +772,7 @@ if (navigator.storage && navigator.storage.persist) {
 
 ---
 
-### Question
+### Question 08589ae7-e36e-44f0-9729-d4e0efddea93
 
 - "Why is localStorage considered bad for application performance?"
 
@@ -782,7 +782,7 @@ if (navigator.storage && navigator.storage.persist) {
 
 ---
 
-### Question
+### Question 1ca2499b-87b0-4544-8325-3984aeb6e650
 
 - "Where should you store a JWT access token: localStorage or HttpOnly Cookies? Why?"
 
@@ -794,7 +794,7 @@ if (navigator.storage && navigator.storage.persist) {
 
 ---
 
-### Question
+### Question 71e8f39f-7167-455b-84d0-43633855b104
 
 - "How does the Cookie Store API differ from standard document.cookie?"
 
@@ -806,7 +806,7 @@ if (navigator.storage && navigator.storage.persist) {
 
 ---
 
-### Question
+### Question dcf67e78-4e55-4816-8aed-a62da46b70cd
 
 - "How can you synchronize state across multiple open tabs of the same website in real-time?"
 
@@ -818,7 +818,7 @@ if (navigator.storage && navigator.storage.persist) {
 
 ---
 
-### Question
+### Question 3137c628-8ee0-43f6-bda1-fc88aa9dff08
 
 - "How does Safari/WebKit’s ITP (Intelligent Tracking Prevention) affect client storage, and how do you handle it?"
 
@@ -832,7 +832,7 @@ if (navigator.storage && navigator.storage.persist) {
 
 ---
 
-### Question
+### Question bca52c0a-d87f-4559-9e35-e2e2becc8dad
 
 - "What happens when storage APIs are accessed in Private / Incognito Mode?"
 
@@ -844,7 +844,7 @@ if (navigator.storage && navigator.storage.persist) {
 
 ---
 
-### Question
+### Question cef08a24-0183-4855-bcbc-a91e62fa2385
 
 - "What is Storage Partitioning (Double-Keying), and how does it impact localStorage inside `<iframe>`s?"
 
@@ -855,7 +855,7 @@ if (navigator.storage && navigator.storage.persist) {
 
 ---
 
-### Question
+### Question 1ac47ce1-d128-47bc-9700-f36d6de69408
 
 - "How do you decide between using the Cache API vs. IndexedDB in a Progressive Web App (PWA)?"
 
@@ -866,7 +866,7 @@ if (navigator.storage && navigator.storage.persist) {
 
 ---
 
-### Question
+### Question 6a8d665d-9842-4389-bfbe-c3f363be2e21
 
 - "How do you prevent race conditions when writing to storage across multiple browser tabs?"
 
@@ -885,355 +885,355 @@ await navigator.locks.request("storage_update_lock", async (lock) => {
 
 ---
 
-### Question
+### Question 2ec9d9ab-7dc1-435a-bfa3-3d052e44c968
 
 ### Answer
 
 ---
 
-### Question
+### Question 04f133ee-3707-45ae-ae8c-6e4d20c125d8
 
 ### Answer
 
 ---
 
-### Question
+### Question 745503dd-42dd-4628-9202-5e42ab62f878
 
 ### Answer
 
 ---
 
-### Question
+### Question 01c0257f-9abc-4148-b52f-2b332eb2d442
 
 ### Answer
 
 ---
 
-### Question
+### Question 9f90023e-5ad8-4319-a476-f8cd2424df48
 
 ### Answer
 
 ---
 
-### Question
+### Question d6996393-7568-4515-8fac-b90662b04924
 
 ### Answer
 
 ---
 
-### Question
+### Question aff03e6e-5d2e-4272-ab4d-57d4f5c304ca
 
 ### Answer
 
 ---
 
-### Question
+### Question ba704fee-9eea-45ad-bddd-7b3e8f852c52
 
 ### Answer
 
 ---
 
-### Question
+### Question ab8418fb-d247-499a-961f-e669d3cc63ef
 
 ### Answer
 
 ---
 
-### Question
+### Question 5cd068ff-e404-42c9-9014-a005f0b45caa
 
 ### Answer
 
 ---
 
-### Question
+### Question 3d33f9df-5262-4dd6-b9b5-c41c3ec1cc10
 
 ### Answer
 
 ---
 
-### Question
+### Question 2eec6118-d4f8-483e-94e9-5787a28482b1
 
 ### Answer
 
 ---
 
-### Question
+### Question b154be9e-36b7-4007-b306-4620c5f921b3
 
 ### Answer
 
 ---
 
-### Question
+### Question 338f799e-b4e3-481f-8d56-47e87fe24914
 
 ### Answer
 
 ---
 
-### Question
+### Question fc996ae4-c595-472d-a4aa-73ae63d9234d
 
 ### Answer
 
 ---
 
-### Question
+### Question f866019c-ee4f-4ede-b874-a40c2a291eda
 
 ### Answer
 
 ---
 
-### Question
+### Question 8f27e700-fa6a-4395-bca4-d29326f17f7d
 
 ### Answer
 
 ---
 
-### Question
+### Question 6856268b-beba-4026-afb8-9ffc445896f6
 
 ### Answer
 
 ---
 
-### Question
+### Question 14f57f15-6535-4388-ad41-c45411f541c3
 
 ### Answer
 
 ---
 
-### Question
+### Question 768b3446-44bf-442d-af2b-fdd1da6f0455
 
 ### Answer
 
 ---
 
-### Question
+### Question df1b4da1-1729-4601-aedf-72373d0930d6
 
 ### Answer
 
 ---
 
-### Question
+### Question d3c4b674-6ebe-41f8-8a1b-fe7dd2e07ff9
 
 ### Answer
 
 ---
 
-### Question
+### Question 68584e1c-34e1-4ab1-98c6-b1ede2a9a499
 
 ### Answer
 
 ---
 
-### Question
+### Question 68df5723-267a-4567-b839-814317b54858
 
 ### Answer
 
 ---
 
-### Question
+### Question e9b20ee7-a198-4c30-896d-84ea1a4b4c30
 
 ### Answer
 
 ---
 
-### Question
+### Question e2f26faf-21c5-4eff-89ec-b522bd016322
 
 ### Answer
 
 ---
 
-### Question
+### Question 2036e9dd-176d-4861-b1ba-16dd862a7110
 
 ### Answer
 
 ---
 
-### Question
+### Question eae28088-ed00-4a67-be99-00680e0faf13
 
 ### Answer
 
 ---
 
-### Question
+### Question 9d625051-f4fa-47a6-8c04-45128bf70464
 
 ### Answer
 
 ---
 
-### Question
+### Question 937f7f06-8eef-48f0-b720-a429ca16d4dc
 
 ### Answer
 
 ---
 
-### Question
+### Question ce4efbf5-d4a0-4fb4-87f2-8e2e9d4eb9e4
 
 ### Answer
 
 ---
 
-### Question
+### Question 66bd29b8-986b-41cb-b4e7-fe7aefe0acdd
 
 ### Answer
 
 ---
 
-### Question
+### Question ced88bfb-ce2e-4a91-9efa-f5680540394e
 
 ### Answer
 
 ---
 
-### Question
+### Question 842ff4aa-531a-41a8-8f7d-b10d246d423c
 
 ### Answer
 
 ---
 
-### Question
+### Question e332d043-dfc6-4e8d-b542-087b1c6b7bcb
 
 ### Answer
 
 ---
 
-### Question
+### Question 7d197263-9203-481a-90bb-f4ca119e50af
 
 ### Answer
 
 ---
 
-### Question
+### Question c5cd415c-b5d4-45fb-92d7-ffeea11b7a34
 
 ### Answer
 
 ---
 
-### Question
+### Question b68b67a2-d7b4-4f34-a904-c546827e6888
 
 ### Answer
 
 ---
 
-### Question
+### Question 9595ae4d-853b-4879-a594-7e52f9a94673
 
 ### Answer
 
 ---
 
-### Question
+### Question aeeb032d-ef54-4550-803a-1b76c12aafac
 
 ### Answer
 
 ---
 
-### Question
+### Question 0f68872a-b82f-4cd2-a115-8db63cee7ef4
 
 ### Answer
 
 ---
 
-### Question
+### Question 737bd0c3-704a-4686-bb31-81ac53b07b82
 
 ### Answer
 
 ---
 
-### Question
+### Question 97a7499a-7f0f-445a-bb74-efa6e59b22e7
 
 ### Answer
 
 ---
 
-### Question
+### Question a2abaf20-3197-4def-83f4-654e7dc081d2
 
 ### Answer
 
 ---
 
-### Question
+### Question 4205b2a3-5968-499e-a6ef-caa2b49aa1a6
 
 ### Answer
 
 ---
 
-### Question
+### Question b8f614e4-2b5a-4601-a4f2-9e36964ad6e7
 
 ### Answer
 
 ---
 
-### Question
+### Question 8f58ffde-1d0d-4ebd-afd9-5db5b0de17c8
 
 ### Answer
 
 ---
 
-### Question
+### Question 789ef291-1770-4320-99e0-14aa07a911bb
 
 ### Answer
 
 ---
 
-### Question
+### Question 35431a2a-f220-4081-a846-0480499c6d55
 
 ### Answer
 
 ---
 
-### Question
+### Question f3d1438e-e4b8-4d55-8c4a-48a01c56c0f7
 
 ### Answer
 
 ---
 
-### Question
+### Question f0409a4a-b869-4a78-b26a-b27933177976
 
 ### Answer
 
 ---
 
-### Question
+### Question 9173953d-7014-4026-be94-62e2a1b99c63
 
 ### Answer
 
 ---
 
-### Question
+### Question 593252ee-9e7d-4597-9794-01a3f2be1c1c
 
 ### Answer
 
 ---
 
-### Question
+### Question d354d4aa-d4e4-4756-8efb-9b0973aff3fa
 
 ### Answer
 
 ---
 
-### Question
+### Question bf3f6c98-b851-4df0-991d-e4eb6cb90210
 
 ### Answer
 
 ---
 
-### Question
+### Question 7561bab6-a38a-4f5c-9fdc-3dae1c90866a
 
 ### Answer
 
 ---
 
-### Question
+### Question 859a0b12-252d-46f8-a091-871904f173aa
 
 ### Answer
 
 ---
 
-### Question
+### Question 82e225c3-d20d-4fa6-8c73-dc5461b57649
 
 ### Answer
 
 ---
 
-### Question
+### Question ed4d1ac4-2aea-4350-bfec-df37ea2c02df
 
 ### Answer
 

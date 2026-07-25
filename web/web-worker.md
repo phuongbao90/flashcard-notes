@@ -1,6 +1,6 @@
 # Web Worker
 
-### Question
+### Question e71c48b5-617a-4032-84cb-a212e0a1617e
 
 - What are Web Workers, and what core problem do they solve in browser single-thread architecture?
 
@@ -11,7 +11,7 @@
 
 ---
 
-### Question
+### Question 374df91e-2f3a-4d48-b213-2febfe6de6b6
 
 - What limitations and restricted APIs exist inside a Web Worker thread?
 
@@ -26,7 +26,7 @@
 
 ---
 
-### Question
+### Question 13f2628e-3977-4675-a2f7-e0a40d8900a6
 
 - How do you instantiate and manage a Web Worker lifecycle inside a React component or custom hook?
 
@@ -65,7 +65,7 @@ export function useDataProcessorWorker() {
 
 ---
 
-### Question
+### Question 9d9c4ea7-24c1-488e-85a3-c7e58d549b8a
 
 - What is the difference between Structured Clone Algorithm and Transferable Objects when sending data to a Worker?
 
@@ -78,7 +78,7 @@ export function useDataProcessorWorker() {
 
 ---
 
-### Question
+### Question 2df138c6-1f20-41ba-b84a-b7cd3a3cf4b5
 
 - How do you instantiate a Web Worker in Next.js without causing SSR breakage or bundler build errors?
 
@@ -105,7 +105,7 @@ export function useDataProcessorWorker() {
 
 ---
 
-### Question
+### Question 2ccd4f35-2538-45e4-ad50-605129d43958
 
 - How do Web Workers differ from Service Workers and Server Actions / API Routes in Next.js?
 
@@ -137,7 +137,7 @@ export function useDataProcessorWorker() {
 
 ---
 
-### Question
+### Question 2b6fd270-81e7-444b-b85c-68db08a08f5a
 
 - Your Next.js e-commerce app parses and filters a 50MB CSV/JSON dataset uploaded by an admin. The page stutters and drops INP metrics. How would you solve this using Web Workers?
 
@@ -155,7 +155,7 @@ export function useDataProcessorWorker() {
 
 ---
 
-### Question
+### Question b80c249e-d3cc-4f5f-ae30-342a2c2807f8
 
 - How do Web Workers impact Core Web Vitals (specifically INP and TBT)?
 
@@ -168,7 +168,7 @@ export function useDataProcessorWorker() {
 
 ---
 
-### Question
+### Question 2a9f077e-f2c4-4892-8dac-3438d65161e7
 
 - What is a SharedWorker, and how does it differ from a DedicatedWorker in a multi-tab React application?
 
@@ -204,43 +204,43 @@ useEffect(() => {
 
 ---
 
-### Question
+### Question bee4896f-5cc1-46e1-9868-d818aa1111db
 
 ### Answer
 
 ---
 
-### Question
+### Question 35a71f87-0c72-491a-a523-1929d3512d12
 
 ### Answer
 
 ---
 
-### Question
+### Question dd132888-bffe-46f5-8e55-a89ac8ed20ec
 
 ### Answer
 
 ---
 
-### Question
+### Question 93de5315-a540-4104-8c85-696fd39ab441
 
 ### Answer
 
 ---
 
-### Question
+### Question f167a483-45c4-4432-ac30-fb4d257a13d1
 
 ### Answer
 
 ---
 
-### Question
+### Question 3db0a667-5a55-4d02-9fd7-26bc75e93fa6
 
 ### Answer
 
 ---
 
-### Question
+### Question 59502c0b-cfde-48b2-953a-a228717a74f2
 
 ### Answer
 

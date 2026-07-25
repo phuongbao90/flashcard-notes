@@ -1,6 +1,6 @@
 # Web engine
 
-### Question
+### Question 325df3ce-d033-4d7f-84e1-78b345d41707
 
 - What are the step-by-step stages of the ***Critical Rendering Path***, and how does ***HTML/CSS parsing*** construct the layout?
 
@@ -15,7 +15,7 @@
 
 ---
 
-### Question
+### Question 10d9f8d1-d2c4-4dbd-882a-24c1f255d1f7
 
 - What is the difference between ***Reflow***, ***Repaint***, and ***Compositing***, and how do modern browser engines optimize animation performance using ***GPU layers***?
 
@@ -40,7 +40,7 @@
 
 ---
 
-### Question
+### Question fdb47120-65f9-4bf2-b588-f278309dba83
 
 - What causes ***Forced Synchronous Layout*** (***Layout Thrashing***) in browser engines, and how can it be diagnosed and avoided?
 
@@ -67,7 +67,7 @@ elements.forEach((el, index) => {
 
 ---
 
-### Question
+### Question 0c404700-38cb-4948-bd3c-109470d49787
 
 - How do `async`, `defer`, and `type="module"` script attributes alter ***HTML parsing*** and ***execution order*** in browser engines?
 
@@ -89,7 +89,7 @@ elements.forEach((el, index) => {
 
 ---
 
-### Question
+### Question 56e81168-30ff-4d48-8ae9-0e9e4320255c
 
 - How does the browser ***event loop*** prioritize ***Microtasks*** vs ***Macrotasks*** (Task Queue) and ***render updates*** during a single execution frame?
 
@@ -118,7 +118,7 @@ console.log("5");
 
 ---
 
-### Question
+### Question 7622da40-285e-473b-a069-ce1155a85741
 
 - How do modern V8 / JavaScript engines optimize object property access using ***Hidden Classes*** (Shapes) and ***Inline Caches*** (IC)?
 
@@ -146,7 +146,7 @@ const objB = {}; objB.y = 2; objB.x = 1; // Different hidden class structure!
 
 ---
 
-### Question
+### Question c7bbfa22-8ef2-4d50-a9f7-d63002d5ceb7
 
 - How does the V8 ***Garbage Collector*** manage memory across ***Generational Spaces***, and what triggers ***detached DOM tree*** memory leaks?
 
@@ -177,7 +177,7 @@ function createLeak() {
 
 ---
 
-### Question
+### Question 426f91b2-38ec-45b5-abf9-d7b49211d03c
 
 - What are the core processes in modern browser engines (Blink/Chromium), and how does ***Process Isolation*** enforce security and stability?
 
@@ -191,7 +191,7 @@ function createLeak() {
 
 ---
 
-### Question
+### Question 59e17d5f-d9bc-409f-9460-75a09288c1a6
 
 - How do the ***Main Thread***, ***Compositor Thread***, and ***Raster Threads*** collaborate inside the renderer process to render a frame?
 
@@ -205,7 +205,7 @@ function createLeak() {
 
 ---
 
-### Question
+### Question cc722b8b-d97d-45d4-a562-c34f62854035
 
 - How does the ***Browser Preload Scanner*** work, and what are the exact behavioral differences between `preload`, `prefetch`, `preconnect`, and `dns-prefetch`?
 
@@ -230,7 +230,7 @@ function createLeak() {
 
 ---
 
-### Question
+### Question ecccb8ed-71cc-41b6-9b1f-7ed91d20982c
 
 - What is the ***Back/Forward Cache (BFCache)***, what conditions disqualify a web application from BFCache eligibility, and how do lifecycle events fire?
 
@@ -256,7 +256,7 @@ window.addEventListener("pageshow", (event) => {
 
 ---
 
-### Question
+### Question 55a5171c-31d2-4df0-9f7d-47d8056c78ad
 
 - How does the browser network engine enforce ***Same-Origin Policy (SOP)***, and what exact conditions mandate a ***CORS preflight request (`OPTIONS`)***?
 
@@ -273,7 +273,7 @@ window.addEventListener("pageshow", (event) => {
 
 ---
 
-### Question
+### Question e5d73d46-4058-454e-a2a9-e2dafa6a50a9
 
 - How does browser event dispatching work across ***Capture***, ***Target***, and ***Bubble*** phases, and how do `stopPropagation()` vs `stopImmediatePropagation()` operate internally?
 
@@ -302,7 +302,7 @@ btn.addEventListener("click", () => {
 
 ---
 
-### Question
+### Question ef84d851-3d34-4fe0-b2ee-426d259f2231
 
 - What is ***Interaction to Next Paint (INP)***, how is frame latency measured in browser engines, and how can long tasks be broken up using `scheduler.yield()` or `requestIdleCallback()`?
 
@@ -333,7 +333,7 @@ async function processLargeDataset(items) {
 
 ---
 
-### Question
+### Question 316042f3-2520-4439-aa68-9e5db78a75f8
 
 - How do browser engines enforce cookie security attributes (`SameSite`, `HttpOnly`, `Secure`) and ***Storage Partitioning (CHIPS)***?
 
@@ -348,7 +348,7 @@ async function processLargeDataset(items) {
 
 ---
 
-### Question
+### Question 0555bc0c-c9ee-43be-adbb-91489eed16d4
 
 - How does the ***Service Worker lifecycle*** operate, and how do ***Cache-First*** vs. ***Stale-While-Revalidate*** strategies function inside the browser network engine?
 
@@ -379,7 +379,7 @@ self.addEventListener("fetch", (event) => {
 
 ---
 
-### Question
+### Question 9ec0cbb6-666e-4868-8b3b-9d16c51fec3b
 
 - How do ***HTTP/2 multiplexing*** and ***HTTP/3 QUIC*** address ***TCP Head-of-Line (HoL) blocking*** inside browser network engines?
 
@@ -393,7 +393,7 @@ self.addEventListener("fetch", (event) => {
 
 ---
 
-### Question
+### Question 746eb43e-9b51-4202-93ba-3032753bcc71
 
 - How does the browser security engine enforce ***Content Security Policy (CSP)***, and how do ***Strict Nonces*** and ***Trusted Types*** prevent ***DOM XSS***?
 
@@ -419,7 +419,7 @@ self.addEventListener("fetch", (event) => {
 
 ---
 
-### Question
+### Question 71746b9d-edc7-40bb-bd39-faeefb8d09ce
 
 - Why does `localStorage` block main-thread rendering, and how do ***IndexedDB*** and ***Origin Private File System (OPFS)*** handle high-performance browser storage?
 
@@ -432,7 +432,7 @@ self.addEventListener("fetch", (event) => {
 
 ---
 
-### Question
+### Question d773c5d0-c0c2-45f4-9329-0d19a3c681c1
 
 - How does the browser font rendering pipeline trigger ***FOIT/FOUT***, and how do `font-display` strategies impact ***Cumulative Layout Shift (CLS)***?
 
@@ -455,7 +455,7 @@ self.addEventListener("fetch", (event) => {
 
 ---
 
-### Question
+### Question 0b023b5b-b77e-40ab-ad4f-c83dc5548ce1
 
 - What is the difference between native browser ***Shadow DOM*** style/event encapsulation and ***React Virtual DOM*** reconciliation?
 
@@ -468,7 +468,7 @@ self.addEventListener("fetch", (event) => {
 
 ---
 
-### Question
+### Question fa21b6eb-4396-4dbf-802c-75ddfa9df5f0
 
 - How does the ***Web Streams API*** prevent memory exhaustion through ***Backpressure*** management during large data transfers?
 
@@ -494,7 +494,7 @@ while (true) {
 
 ---
 
-### Question
+### Question c9f992ff-fdb4-4a9e-b3da-b8ca0d75b02a
 
 - How does V8 partition memory between ***Stack*** and ***Heap***, and how does 32-bit ***Pointer Compression*** work in 64-bit V8 execution engines?
 
@@ -508,7 +508,7 @@ while (true) {
 
 ---
 
-### Question
+### Question 0520b465-c6c3-45f6-bf9e-c9b16f3611f0
 
 - How does the ***View Transitions API*** allow seamless SPA route transitions without layout flashes, and how does the browser engine capture pseudo-elements?
 
@@ -537,7 +537,7 @@ function navigateToPage(newUrl) {
 
 ---
 
-### Question
+### Question 8039151b-018f-41d9-b119-d1009cc4667e
 
 - How does ***WebAssembly (Wasm)*** execute inside browser engines, and how do `WebAssembly.Memory` buffers handle JS-to-Wasm data passing?
 
