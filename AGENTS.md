@@ -31,6 +31,7 @@ Every item MUST follow this exact structure:
 
 ### Rules
 - Use `### Question` and `### Answer` headings exactly.
+- Do NOT add any extra section, category, or topic headings (e.g. `## Category Title`, `## Code-Based Comprehension & Output Analysis`). Output ONLY `### Question` and `### Answer` blocks separated by `---`.
 - Questions must be concise, specific, and technical.
 - Answers must be:
   - Accurate, Concise
@@ -41,7 +42,7 @@ Every item MUST follow this exact structure:
   - Behavioral details (edge cases, caveats)
 - Include code blocks **only when they add value**.
 - Separate each Q&A pair with `---`.
-- Hightlight key terms in answers using ***
+- Highlight key terms in answers using ***
 
 ---
 
@@ -147,6 +148,7 @@ Agents MAY include:
 Agents MUST NOT:
 
 - Change the format
+- Add extra section, category, or topic headings (e.g. `## Topic Title` or `## Code-Based Comprehension & Output Analysis`)
 - Add unrelated commentary
 - Skip sections
 

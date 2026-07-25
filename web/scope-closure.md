@@ -37,7 +37,7 @@ function outer() {
 ```javascript
 function setupListener() {
   const hugeData = new Array(1000000).fill("leak");
-  
+
   window.addEventListener("resize", () => {
     // Retains 'hugeData' in memory indefinitely until listener is removed
     console.log(hugeData.length);
@@ -115,8 +115,12 @@ function createCounter() {
 // Private class field (shared prototype methods)
 class Counter {
   #count = 0;
-  getCount() { return this.#count; }
-  increment() { return ++this.#count; }
+  getCount() {
+    return this.#count;
+  }
+  increment() {
+    return ++this.#count;
+  }
 }
 ```
 
@@ -202,16 +206,20 @@ export { moduleItem };
 ```javascript
 const obj = {
   name: "App",
-  getRegular: function() {
-    return function() { console.log(this.name); };
+  getRegular: function () {
+    return function () {
+      console.log(this.name);
+    };
   },
-  getArrow: function() {
-    return () => { console.log(this.name); }; // Captures 'this' lexically from getArrow
-  }
+  getArrow: function () {
+    return () => {
+      console.log(this.name);
+    }; // Captures 'this' lexically from getArrow
+  },
 };
 
 obj.getRegular()(); // undefined (or throws in strict mode)
-obj.getArrow()();   // "App"
+obj.getArrow()(); // "App"
 ```
 
 ---
@@ -243,8 +251,8 @@ dynamicScope("var x = 20;"); // 20
 
 ### Answer
 
-- V8 allocates a single shared `Context` object for an outer function execution containing all variables closed over by *any* inner function defined within that outer scope.
-- If inner function A closes over `largeData` and inner function B closes over `smallData`, V8 keeps the shared `Context` object in memory as long as *either* function A or function B remains reachable.
+- V8 allocates a single shared `Context` object for an outer function execution containing all variables closed over by _any_ inner function defined within that outer scope.
+- If inner function A closes over `largeData` and inner function B closes over `smallData`, V8 keeps the shared `Context` object in memory as long as _either_ function A or function B remains reachable.
 - As a result, retaining function B in memory inadvertently retains `largeData` in memory via the shared context object, unless V8 static analysis optimizes out unreferenced bindings.
 
 ```javascript
@@ -292,8 +300,6 @@ function AsyncCounter() {
 
 ---
 
-## Code-Based Comprehension & Output Analysis
-
 ### Question a76aa1c2-6beb-481e-91ff-aaf598e727e5
 
 - What will be printed by calling `fn1()` and `fn2()` in the following snippet, and why do both functions affect the same counter value?
@@ -302,8 +308,12 @@ function AsyncCounter() {
 function createCounters() {
   let count = 0;
   return [
-    function increment() { return ++count; },
-    function decrement() { return --count; }
+    function increment() {
+      return ++count;
+    },
+    function decrement() {
+      return --count;
+    },
   ];
 }
 
@@ -355,14 +365,14 @@ console.log(a);
 ```javascript
 const obj = {
   name: "Module",
-  showName: function() {
+  showName: function () {
     console.log(this.name);
   },
-  showNameDelayed: function() {
-    setTimeout(function() {
+  showNameDelayed: function () {
+    setTimeout(function () {
       console.log(this.name);
     }, 100);
-  }
+  },
 };
 
 obj.showName();
@@ -408,7 +418,7 @@ console.log(b(3));
 ```javascript
 var val = 10;
 
-(function(val) {
+(function (val) {
   val = val + 20;
   console.log(val);
 })(val);
@@ -460,7 +470,7 @@ function Component() {
 
 ```javascript
 function outer() {
-  var getValue = function() {
+  var getValue = function () {
     return x;
   };
   var x = 100;
@@ -488,9 +498,11 @@ const funcs = [];
 
 for (var i = 0; i < 2; i++) {
   funcs.push(
-    (function(capturedI) {
-      return function() { return capturedI; };
-    })(i)
+    (function (capturedI) {
+      return function () {
+        return capturedI;
+      };
+    })(i),
   );
 }
 
@@ -609,5 +621,3 @@ function UserProfile({ userId }) {
 - Attaching `handler` inside `useEffect` creates a long-lived closure bound to the DOM `window` root, retaining `userId` and the component's enclosing environment record in memory.
 - When `UserProfile` unmounts or `userId` updates, the old listener remains attached to `window`, keeping its captured lexical scope reachable by the garbage collector.
 - Returning a cleanup function (`removeEventListener`) severs the DOM reference to `handler`, enabling GC to reclaim the component's unmounted scope context and memory.
-
-
