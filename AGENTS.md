@@ -12,7 +12,7 @@ Target for mid-level React, Next.js developers
 Every item MUST follow this exact structure:
 
 ````
-### Question 05573229-eb5b-47f8-a42d-ba05e432576e
+### Question
 
 - <Question text>
 
