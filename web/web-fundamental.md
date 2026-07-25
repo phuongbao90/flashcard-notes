@@ -546,31 +546,115 @@ When performing heavy non-React CPU computations (e.g., data processing, heavy a
 
 ### Question
 
+- How do you implement Infinite Scroll in Next.js using IntersectionObserver? Why use a "sentinel node" instead of watching the last item in the list?
+
 ### Answer
+
+- The Sentinel Pattern: Place an empty `<div ref={sentinelRef} />` below the list. Observe this invisible target.
+- Why Sentinel > Last Item:
+  - Watching the last item requires re-binding the observer every time the data list updates (causing layout shifts and observer re-initializations).
+  - A fixed sentinel at the bottom remains static; when it intersects, fetch next page, append items above sentinel.
+- Implementation Edge Case: Always check !isLoading && hasNextPage inside the intersection callback to prevent firing multiple duplicate API calls while a fetch is in flight.
+
+```tsx
+useEffect(() => {
+  if (!sentinelRef.current) return;
+  const observer = new IntersectionObserver(
+    ([entry]) => {
+      if (entry.isIntersecting && hasNextPage && !isLoading) {
+        fetchNextPage();
+      }
+    },
+    { rootMargin: "200px" },
+  ); // Load 200px BEFORE reaching bottom!
+  observer.observe(sentinelRef.current);
+  return () => observer.disconnect();
+}, [hasNextPage, isLoading]);
+```
 
 ---
 
 ### Question
 
+- Why does standard useRef + useEffect often fail with Observers on conditionally rendered elements? How do Callback Refs fix it?
+
 ### Answer
+
+- The Problem: If an element is conditionally rendered ({isOpen && `<div ref={myRef} />`}), useEffect runs on mount when myRef.current is null. When isOpen becomes true, useEffect does not re-run, so the observer is never attached.
+- The Solution (Callback Ref): React calls callback refs whenever the node attaches or detaches from the DOM.
+  ```tsx
+  const [node, setNode] = useState<HTMLDivElement | null>(null);
+  // Callback ref passed directly to DOM element
+  const ref = useCallback((node: HTMLDivElement | null) => {
+    setNode(node);
+  }, []);
+  useEffect(() => {
+    if (!node) return;
+    const observer = new IntersectionObserver(...);
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [node]);
+  ```
 
 ---
 
 ### Question
 
+- If you need to observe 1,000 items in a list (e.g., tracking visibility of every item in a feed), should you create 1,000 Observers?
+
 ### Answer
+
+- Answer: No. Instantiating hundreds of IntersectionObserver instances creates unnecessary memory overhead.
+- Best Practice (Observer Pooling): Create one single IntersectionObserver instance and call .observe(element) for each item in the list.
+- Identifying Targets: Use data-* attributes on target elements (data-id={item.id}) to identify which item triggered the callback from entry.target.dataset.id.
+
+```tsx
+// Single shared observer instance
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      const itemId = (entry.target as HTMLElement).dataset.id;
+      trackImpression(itemId);
+    }
+  });
+});
+```
 
 ---
 
 ### Question
 
+- Observer callbacks fire rapidly (e.g., during fast scrolling). How do you prevent layout thrashing and excessive state updates in React?
+
 ### Answer
+
+- Unobserve on First Trigger: For one-time actions (like lazy rendering or entrance animations), immediately call observer.unobserve(entry.target) inside the callback as soon as entry.isIntersecting is true.
+- Debounce/Throttle State Updates: If tracking continuous intersection ratios, debounce the React state update.
+- Use rootMargin: Expand root margin (e.g., rootMargin: '100px 0px') to pre-trigger calculations before visual entry, smoothing UI rendering.
 
 ---
 
 ### Question
 
+- What is PerformanceObserver, and how does Next.js / Core Web Vitals use it?
+
 ### Answer
+
+- Core Concept: Watches browser performance timeline events (LCP, CLS, INP, FID, long tasks).
+- Next.js Integration: Used in Next.js useReportWebVitals hook to measure app metrics in production.
+- Key Use Case: Catching Long Tasks (>50ms main thread blocking execution) to log analytics without instrumenting individual functions.
+
+```tsx
+// Measuring Core Web Vitals / Long Tasks
+const observer = new PerformanceObserver((list) => {
+  for (const entry of list.getEntries()) {
+    if (entry.duration > 50) {
+      console.warn("Long Task detected:", entry.duration, entry);
+    }
+  }
+});
+observer.observe({ type: "longtask", buffered: true });
+```
 
 ---
 
