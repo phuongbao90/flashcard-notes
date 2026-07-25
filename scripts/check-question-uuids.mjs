@@ -41,6 +41,20 @@ const SKIP_DIRS = new Set([
   "coverage",
 ]);
 
+const SKIP_FILES = new Set([
+  "AGENTS.md",
+]);
+
+function isIgnoredFile(relPath) {
+  const normalized = relPath.replace(/\\/g, "/");
+  const filename = path.basename(relPath);
+  return (
+    SKIP_FILES.has(relPath) ||
+    SKIP_FILES.has(normalized) ||
+    SKIP_FILES.has(filename)
+  );
+}
+
 function parseArgs(argv) {
   return {
     fix: argv.includes("--fix"),
@@ -85,7 +99,10 @@ async function walkMarkdownFiles(dir, out = []) {
     if (entry.isDirectory()) {
       await walkMarkdownFiles(full, out);
     } else if (entry.isFile() && entry.name.toLowerCase().endsWith(".md")) {
-      out.push(full);
+      const rel = path.relative(ROOT, full);
+      if (!isIgnoredFile(rel)) {
+        out.push(full);
+      }
     }
   }
   return out;
@@ -123,7 +140,7 @@ function relMarkdownPathsFromGit(output) {
   return output
     .split("\n")
     .map((f) => f.trim())
-    .filter((f) => f.toLowerCase().endsWith(".md"));
+    .filter((f) => f.toLowerCase().endsWith(".md") && !isIgnoredFile(f));
 }
 
 function unique(items) {
