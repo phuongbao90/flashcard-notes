@@ -452,6 +452,207 @@ dashboard
 
 ### Question
 
+- Does prefetching happen immediately when a link enters the viewport?
+
+### Answer
+
+- Not exactly. Prefetching is automatic, but it does not occur synchronously with rendering. Instead, Next.js uses a non-blocking, low-priority scheduling model.
+
+- Accurate flow:
+  - Initial Render
+    - Server renders HTML.
+    - Browser paints the page.
+  - Hydration
+    - React hydrates components, including `<Link>`.
+  - Viewport Detection
+    - An IntersectionObserver detects which `<Link>` elements are visible.
+  - Low-Priority Scheduling
+    - Prefetch tasks are scheduled with low priority.
+    - The browser decides when to execute them (often soon after hydration, but not strictly “idle-only”).
+  - Prefetch Execution
+    - Requests are sent without blocking rendering or user interaction.
+
+- Key clarification:
+  - Prefetching is deferred and non-blocking, but not strictly tied to requestIdleCallback.
+  - It may run shortly after hydration, depending on browser scheduling and available resources.
+
+---
+
+### Question
+
+- prefetch in Link
+
+### Answer
+
+1. Default (prefetch not set)
+   `<Link href="/dashboard" />`
+
+- Behavior:
+  - Automatically prefetches when the link enters the viewport
+  - Requires client hydration first
+  - Uses low-priority scheduling (non-blocking)
+
+- What gets prefetched:
+  - Static / cached routes
+    - Full RSC payload
+    - JS bundle
+  - Dynamic / uncached routes
+    - Partial data (up to nearest loading.js)
+    - Layout shell only (no heavy data)
+
+- Trigger timing:
+  - After hydration
+  - When visible via IntersectionObserver
+  - Executed when browser schedules it (not strictly idle)
+
+2. Disabled (prefetch={false})
+   - data is fetched only when the user clicks the link
+
+3. Intent-based (prefetch="intent")
+   - Prefetches only when user shows intent
+     - Hover (desktop)
+     - Focus (keyboard navigation)
+
+4. Manual Prefetch
+
+- router.prefetch("/dashboard")
+
+---
+
+### Question
+
+- discuss runtime dynamic import in Next.js
+
+  ```ts
+  async function getCookieStore() {
+    const { cookies } = await import("next/headers");
+    return cookies();
+  }
+  ```
+
+### Answer
+
+- the module is loaded only when this function is executed.
+
+1. Lazy loads the module (execution-time import)
+
+- The module is not loaded at build time
+- It is loaded:
+  - When getCookieStore() is called
+  - On the server at runtime
+
+- This is different from normal imports, which are eager and static
+
+---
+
+### Question
+
+- explain cookie from next/headers in Next.js
+  - what is the significance when using cookies() in a server component?
+
+### Answer
+
+- run on the server
+- cookies() parses that incoming header into a type-safe RequestCookies object on the server.
+
+- read & write permissions:
+  - RSC: read-only
+  - Route Handler: read & write
+  - Server Action: read & write
+  - Middleware: not support cookies() (use request.cookies or response.cookies instead)
+
+- using cookies() in a server component makes the **route dynamic** by default, because the cookie values can change per request. This means that Next.js will opts that page out of Static Site Generation (SSG) / Build-Time Caching. -> Server-Side Rendering (SSR) per request.
+
+---
+
+### Question
+
+- When to use dynamic module import in Next.js?
+  `const { cookies } = await import("next/headers");`
+
+### Answer
+
+- Is this file STRICTLY Server-Side? (Page, Server Component, Server Action, Route Handler)
+  - YES ──► Use Top-Level Import: import { cookies } from "next/headers"
+  - NO ──► Is it an Isomorphic / Shared Utility used by both Server & Client?
+    - YES ──► Use Dynamic Import: await import("next/headers")
+    - NO ──► You have a code design smell. Split your server code from client code.
+
+---
+
+### Question
+
+- How Next.js handles server action?
+  - are they private?
+
+### Answer
+
+- Next.js compiles every Server Action into a publicly accessible HTTP POST API endpoint.
+
+- When the user clicks that button, your browser sends an HTTP request over the network:
+
+```
+POST /
+x-action-id: c90a887b41e...
+Content-Type: application/json
+
+["user_123"]
+```
+
+- An attacker can simply copy that request and run it in Terminal via curl or Postman without ever using your UI:
+
+```
+# An attacker calling your Server Action directly from terminal!
+curl -X POST https://your-site.com/ \
+  -H "x-action-id: c90a887b41e..." \
+  -d '["victim_user_999"]'
+```
+
+- => 1. Security Misconception: "Server Actions are Private Internal Functions"
+
+---
+
+### Question
+
+- Argument limitations for server actions in Next.js
+
+### Answer
+
+- must be serializable (JSON-safe): JSON-like data, FormData, Date, BigInt, Map, Set, ArrayBuffer
+  - function, class instance, DOM element, or any non-serializable object will throw an error
+
+---
+
+### Question
+
+- how server action handles unhandled exception error in Next.js
+
+### Answer
+
+- in Production: Next.js obfuscates the error message in production for security (digest: ...), leaving the client with no context.
+  - Wrap server action logic in try...catch and return structured result objects { ok: false, error: "Custom message" }.
+
+---
+
+### Question
+
+- server action vs server side function in Next.js
+
+### Answer
+
+- server side function:
+  - can be called from server component, route handler, or server action
+  - cannot be called from client component
+  - does not require directive "use server"
+- server action:
+  - can be called from client component, server component, or route handler
+  - requires directive "use server"
+  - a server endpoint is generated for each server action, which can be called from the client via fetch() or form submission.
+
+---
+
+### Question
+
 ### Answer
 
 ---

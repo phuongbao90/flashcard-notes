@@ -390,13 +390,36 @@ async function getCachedOrFetch(requestUrl) {
 
 ### Question 379deaab-94c8-4273-a1bf-c08dcfebf2d2
 
+- Core Motivation: Why document.cookie Needed Replacing
+
 ### Answer
+
+- Synchronous & Thread-Blocking: document.cookie reads/writes synchronously on the main thread, forcing disk/IPC I/O that can cause frame drops and UI jank.
+- No Service Worker Support: document.cookie depends on the DOM (document), making cookies inaccessible within Web Workers and Service Workers.
+- Fragile String Parsing: Standard operations require custom regex/string parsing and string formatting ("name=val; path=/; SameSite=Lax").
+- No Change Detection: Reacting to cookie changes previously required polling or cross-tab messaging hacks.
 
 ---
 
 ### Question 30211d23-46ba-4e04-be4d-56e97140c0fb
 
+- Discuss cookie store api
+
 ### Answer
+
+- Asynchronous, non-blocking
+  - executing cookie store access off the main thread.
+- Service Worker Integration
+- Reactive Event Model
+  `cookieStore.addEventListener('cookiechange', (event) => {`
+
+- Security & Scope Boundaries
+  - Secure Context Required: Only accessible over HTTPS (or localhost).
+  - HttpOnly Invisibility: Designed for security boundaries; JavaScript cannot read or mutate HttpOnly cookies via cookieStore (just as with document.cookie).
+  - Same-Origin Policy: Enforces domain and path scoping restrictions strictly based on current origin semantics.
+
+- notice:
+  - Safari and Firefox lack stable default support.
 
 ---
 
