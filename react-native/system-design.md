@@ -589,3 +589,744 @@ export const renderBackground = () => {
   }
 }
 ```
+
+---
+
+### Question e1f8a923-4210-482d-81fa-223456789a01
+
+- You are building a feature that allows users to upload large ZIP files (e.g., 500MB+). How would you design the upload flow to handle unstable mobile networks and app backgrounding?
+
+### Answer
+
+- ***Chunked Upload Protocol (TUS / Multipart)***: Split the 500MB file into small chunks (e.g., 5MB–10MB) directly on native storage, uploading each chunk with unique offset headers so failed chunks can be resumed without re-uploading completed data.
+- ***Native Background Transfer Daemon***: Use native background upload capabilities (iOS `NSURLSession` background configuration via `expo-file-system` upload task or Android `WorkManager` / `ForegroundService`) so the OS handles transfers even when the app is suspended or killed.
+- ***Persistent Upload State Machine***: Store upload session metadata (file URI, chunk index, remote upload ID, checksums) in persistent ***MMKV*** or ***SQLite*** to resume seamlessly after phone reboots or app crashes.
+- ***Network Quality Aware Scheduling***: Monitor network changes using ***`@react-native-community/netinfo`***; automatically pause uploads on weak cellular or offline states and auto-resume when unmetered Wi-Fi is restored.
+- ***Behavioral Details & Caveats***: iOS strictly limits background execution time and may delay background tasks based on system battery and user usage patterns; always trigger local push notifications if user interaction or re-authentication is required.
+
+```typescript
+import * as FileSystem from 'expo-file-system';
+
+// Creating a background upload task that persists across app backgrounding
+const createBackgroundUpload = (fileUri: string, uploadUrl: string) => {
+  const uploadTask = FileSystem.createUploadTask(
+    uploadUrl,
+    fileUri,
+    {
+      headers: { 'Content-Type': 'application/zip' },
+      httpMethod: 'POST',
+      uploadType: FileSystem.FileSystemUploadType.MULTIPART,
+    },
+    (data) => {
+      console.log(`Uploaded ${data.totalBytesSent} / ${data.totalBytesExpectedToSend}`);
+    }
+  );
+  return uploadTask;
+};
+```
+
+---
+
+### Question a8721c43-90b1-41e5-8f6a-123456789b02
+
+- A user uploads a large video file, but the app frequently crashes on low-memory Android devices. What strategies would you use to prevent memory issues during file handling?
+
+### Answer
+
+- ***Native Stream-Based File Access***: Avoid reading full file bytes into the JS runtime (e.g., Base64 strings or ArrayBuffers); pass direct file paths (`file://...`) down to native modules (`expo-file-system` or native C++/Java uploaders) to stream data from disk directly to network sockets.
+- ***Zero-Copy Disk Chunking***: When slicing files for chunked upload, slice streams directly on the native file system layer without holding chunk buffers in JS memory heap.
+- ***Proactive Garbage Collection & Cache Release***: Explicitly delete temporary files, resized video frames, and cached compressed exports from `FileSystem.cacheDirectory` immediately after upload completion or failure.
+- ***Memory-Aware Processing Queue***: Query device memory specs (via ***`react-native-device-info`***) and limit concurrent image/video processing operations to 1 on low-RAM (<3GB) Android devices.
+- ***Behavioral Details & Caveats***: Loading a 500MB file as Base64 in JavaScript expands memory usage by ~33% and instantly triggers an Out-Of-Memory (OOM) fatal crash in the V8 / Hermes engine.
+
+```typescript
+import * as FileSystem from 'expo-file-system';
+
+// SAFE: Passing native file URI directly to native uploader without loading into JS memory
+async function safeUpload(fileUri: string, targetUrl: string) {
+  // Do NOT use FileSystem.readAsStringAsync with Base64 encoding!
+  const result = await FileSystem.uploadAsync(targetUrl, fileUri, {
+    httpMethod: 'PUT',
+    uploadType: FileSystem.FileSystemUploadType.BINARY_CONTENT,
+  });
+  return result;
+}
+```
+
+---
+
+### Question f9102b34-81c2-43f6-9a5d-234567890c03
+
+- How would you implement resumable uploads for large files in a React Native / Expo app?
+
+### Answer
+
+- ***TUS Protocol Integration***: Implement the open-standard ***TUS protocol*** (using `tus-js-client` paired with custom React Native file store adapters) to support standardized chunk offsets and server handshake verification.
+- ***Persistent Chunk Offset Tracking***: Before sending each chunk, record the uploaded byte count and upload token into ***MMKV*** storage.
+- ***Session Re-establishment Handshake***: Upon app launch or network recovery, send a `HEAD` request to the upload endpoint to fetch the exact remote byte offset and start uploading from that point onward.
+- ***Native Background Transfer Integration***: On Expo/React Native, delegate upload tasks to native session engines (`FileSystem.createUploadTask` in Expo) configured with background session identifiers.
+- ***Behavioral Details & Caveats***: Mobile IP address changes during network switching (cellular to Wi-Fi) break active TCP connections; TUS handles re-authorization transparently via session IDs.
+
+```typescript
+import * as tus from 'tus-js-client';
+import { MMKV } from 'react-native-mmkv';
+
+const storage = new MMKV();
+
+const uploadFileWithTus = (fileUri: string, endpoint: string) => {
+  const upload = new tus.Upload(fileUri as any, {
+    endpoint,
+    retryDelays: [0, 1000, 3000, 5000],
+    urlStorage: {
+      getItem: (key) => Promise.resolve(storage.getString(key) ?? null),
+      setItem: (key, val) => Promise.resolve(storage.set(key, val)),
+      removeItem: (key) => Promise.resolve(storage.delete(key)),
+    },
+    onError: (error) => console.error('Upload failed:', error),
+    onProgress: (bytesSent, bytesTotal) => console.log(`${bytesSent} / ${bytesTotal}`),
+    onSuccess: () => console.log('Upload finished!'),
+  });
+
+  upload.findPreviousUploads().then((previousUploads) => {
+    if (previousUploads.length) upload.resumeFromPreviousUpload(previousUploads[0]);
+    else upload.start();
+  });
+};
+```
+
+---
+
+### Question d7831a45-62d4-42f7-b1e8-345678901d04
+
+- When uploading heavy media (images/videos), how would you handle progress tracking and user feedback without blocking the UI?
+
+### Answer
+
+- ***UI Thread Progress Binding***: Pipe byte transfer progress callbacks from native upload modules directly into ***React Native Reanimated SharedValues*** to update progress bars on the native UI thread at 60 FPS without driving JS state re-renders.
+- ***Global Persistent Upload Bar***: Render a lightweight floating progress indicator attached to the top-level app wrapper or bottom bar, keeping it visible while users navigate across different app screens.
+- ***Throttled Progress Emitters***: Throttle progress state updates (e.g., max once per 100ms or 1% increment) before communicating across the Native-to-JS bridge to prevent bridge congestion.
+- ***System Notification Integration***: Trigger native local notifications with progress bars (using ***`expo-notifications`*** or ***`@notifee/react-native`***) when the app is in the background.
+- ***Behavioral Details & Caveats***: Calling React `setState` on every byte chunk upload callback freezes the JS main event loop, causing dropped frames and sluggish touch interactions.
+
+```typescript
+import Animated, { useSharedValue, useAnimatedStyle } from 'react-native-reanimated';
+
+// Progress shared value updated directly from native upload listener
+const progress = useSharedValue(0);
+
+const onUploadProgress = (bytesSent: number, totalBytes: number) => {
+  'worklet';
+  progress.value = bytesSent / totalBytes;
+};
+
+const progressStyle = useAnimatedStyle(() => ({
+  width: `${progress.value * 100}%`,
+}));
+
+// Render <Animated.View style={[styles.bar, progressStyle]} /> on UI thread
+```
+
+---
+
+### Question b6742918-73e5-4bf8-a2d9-456789012e05
+
+- A user selects a 4K video for upload, and the app becomes unresponsive. What steps would you take to optimize preprocessing (compression, resizing) before upload?
+
+### Answer
+
+- ***Native Hardware-Accelerated Transcoding***: Offload video transcoding (e.g., converting 4K H.264/HEVC down to 1080p MP4) to native hardware codecs (Android `MediaCodec`, iOS `AVAssetExportSession` via native modules).
+- ***Background Worker Threading***: Run media compression inside native background threads or React Native C++ JSI worklets to keep the JS main thread 100% responsive.
+- ***Pre-Flight Resolution & Bitrate Checks***: Inspect media metadata immediately after selection; skip compression entirely if video resolution and bitrate are already within target upload limits.
+- ***Progressive Chunk Processing***: Compress or transcode media in segment chunks directly to disk files without accumulating intermediate video frames in RAM.
+- ***Behavioral Details & Caveats***: Software-based video encoding in JS or unoptimized main-thread native calls causes severe CPU thermal throttling, rapid battery drain, and UI thread starvation.
+
+```typescript
+import { VideoCompressor } from 'react-native-compressor';
+
+async function preprocessVideo(sourceUri: string) {
+  // Compress natively off the JS main thread
+  const compressedUri = await VideoCompressor.compress(
+    sourceUri,
+    {
+      compressionMethod: 'auto',
+      maxSize: 1920, // Downscale 4K to 1080p max resolution
+    },
+    (progress) => {
+      console.log('Compression progress:', progress);
+    }
+  );
+  return compressedUri;
+}
+```
+
+---
+
+### Question e5831209-64f6-4d09-b3a1-567890123f06
+
+- How would you decide whether to compress images/videos on the client vs relying on backend processing?
+
+### Answer
+
+- ***Client-Side Compression Strategy***:
+  - ***Bandwidth & Battery Reduction***: Compressing high-resolution media on-device drastically reduces file payload size (e.g., 15MB raw image to 800KB WebP/JPEG), saving cellular data and speeding up uploads over weak networks.
+  - ***User Perceived Latency***: Instant local compression enables immediate thumbnail generation and faster upload progress UI.
+- ***Backend Compression Strategy***:
+  - ***Preserving Master Quality***: Required when full original fidelity is needed (e.g., professional photography, medical imaging, raw video editing apps).
+  - ***Low-End Hardware Offloading***: Low-spec devices with weak CPUs experience battery drain or slow processing; fallback to raw upload on low-tier hardware.
+- ***Hybrid Mobile Architecture***: Perform quick lightweight client-side downscaling/compression to an optimal baseline (e.g., 1080p, 80% JPEG quality) and let cloud backend workers generate multi-resolution streaming variants (HLS/DASH).
+- ***Behavioral Details & Caveats***: Aggressive client-side video compression on low-end Android phones can crash the app or take minutes; assess device hardware capability tier before starting heavy client compression.
+
+```typescript
+import DeviceInfo from 'react-native-device-info';
+
+async function shouldCompressClientSide(): Promise<boolean> {
+  const totalMemory = await DeviceInfo.getTotalMemory();
+  const lowRamThreshold = 3 * 1024 * 1024 * 1024; // 3GB RAM
+  // Skip heavy client compression on low-memory devices to prevent crash
+  return totalMemory > lowRamThreshold;
+}
+```
+
+---
+
+### Question c4920318-55a7-4c10-9b2e-678901234a07
+
+- What are the trade-offs between multipart upload vs single request upload for large files?
+
+### Answer
+
+- ***Single Request Upload (`POST`/`PUT`)***:
+  - ***Pros***: Simple implementation, zero chunking overhead, minimal client/server handshake complexity.
+  - ***Cons***: Highly vulnerable to network drops (100% loss of progress on failure), high RAM spikes if un-streamed, severe request timeout risk on slow 3G/4G connections.
+- ***Multipart / Chunked Upload***:
+  - ***Pros***: Resumable on failure (only retry failed 5MB chunks), support for parallel chunk uploads, lower memory footprint per request, granular progress tracking.
+  - ***Cons***: Increased client logic complexity, extra HTTP header overhead per chunk, requires server-side chunk reassembly and session tracking.
+- ***Mobile Best Practice Rule***: Use single upload requests ONLY for small media assets (<10MB); use multipart/chunked upload for any files larger than 20MB on mobile devices.
+- ***Behavioral Details & Caveats***: Cellular towers frequently reset TCP connections on long-running single HTTP requests lasting over 60 seconds; chunking avoids long request lifespans.
+
+```typescript
+// Threshold decision pattern for mobile uploads
+const UPLOAD_MODE_THRESHOLD_BYTES = 20 * 1024 * 1024; // 20MB
+
+function selectUploadStrategy(fileSizeBytes: number) {
+  if (fileSizeBytes > UPLOAD_MODE_THRESHOLD_BYTES) {
+    return 'MULTIPART_CHUNKED'; // Resumable, chunked
+  }
+  return 'SINGLE_REQUEST'; // Direct PUT/POST
+}
+```
+
+---
+
+### Question d3810429-46b8-4e11-8c3f-789012345b08
+
+- How would you securely upload large files directly to cloud storage (e.g., S3) without routing through your backend?
+
+### Answer
+
+- ***Pre-Signed URL Authorization***: Client requests short-lived pre-signed AWS S3 / Cloud Storage upload URLs (or multipart presigned upload IDs) from backend API by passing file metadata (filename, size, MIME type).
+- ***Direct Client-to-S3 Streaming***: Mobile client executes `PUT` or `POST` requests directly to S3 bucket endpoints using native background transfer primitives (`expo-file-system` upload or native HTTP client), bypassing application servers.
+- ***Header & Content-Type Locking***: Pre-signed URLs validate `Content-Type`, `Content-Length`, and checksum headers; mobile client must match headers exactly to prevent request rejection.
+- ***Post-Upload Webhook / Server Notification***: Upon successful S3 transfer completion, mobile client notifies backend API with the file S3 key to trigger database persistence and backend background processing.
+- ***Behavioral Details & Caveats***: Pre-signed URLs expire within minutes; for long multi-chunk uploads, request presigned URLs per chunk on-demand or use AWS S3 Multipart Pre-signed API.
+
+```typescript
+import * as FileSystem from 'expo-file-system';
+
+async function uploadDirectToS3(fileUri: string, presignedUrl: string, mimeType: string) {
+  const response = await FileSystem.uploadAsync(presignedUrl, fileUri, {
+    httpMethod: 'PUT',
+    headers: { 'Content-Type': mimeType },
+    uploadType: FileSystem.FileSystemUploadType.BINARY_CONTENT,
+  });
+  return response.status === 200;
+}
+```
+
+---
+
+### Question a2719530-37c9-4f22-9d4e-890123456c09
+
+- A file upload fails midway due to network loss. How would you design retry logic and ensure data consistency?
+
+### Answer
+
+- ***Exponential Backoff with Jitter***: Implement retry algorithms with exponential delays (`Math.pow(2, attempt) * 1000 + randomJitter`) to prevent hammering servers during network outages.
+- ***Network Connectivity Listener***: Pause retries immediately when ***`@react-native-community/netinfo`*** detects offline state; resume automatically when connectivity is re-established.
+- ***Idempotent Chunk Upload Verification***: Query upload session state (`HEAD` request or remote index query) before retrying to determine exact byte offset received by server before connection drop.
+- ***Transaction-Safe Local Queue***: Maintain retry attempt counters in persistent storage; mark upload task as `FAILED_NEEDS_RETRY` or `PERMANENTLY_FAILED` after max threshold (e.g., 5 attempts).
+- ***Behavioral Details & Edge Cases***: Mobile connections can report connected status while internet traffic is blocked (captive portals); validate server response code (e.g., HTTP 200/206) before treating retry as successful.
+
+```typescript
+import NetInfo from '@react-native-community/netinfo';
+
+async function executeRetryWithBackoff<T>(fn: () => Promise<T>, maxRetries = 5): Promise<T> {
+  for (let attempt = 0; attempt < maxRetries; attempt++) {
+    try {
+      const netState = await NetInfo.fetch();
+      if (!netState.isConnected) throw new Error('OFFLINE');
+      return await fn();
+    } catch (err) {
+      if (attempt === maxRetries - 1) throw err;
+      const delay = Math.pow(2, attempt) * 1000 + Math.random() * 500;
+      await new Promise((resolve) => setTimeout(resolve, delay));
+    }
+  }
+  throw new Error('Max retries reached');
+}
+```
+
+---
+
+### Question b1820641-28d0-4e33-ae5f-901234567d10
+
+- How would you prevent duplicate uploads when users retry after a failure?
+
+### Answer
+
+- ***Client-Side Content Hashing (SHA-256 / MD5)***: Compute a fast deterministic file hash or sampled checksum (hashing file header + middle + tail bytes) on the native device filesystem before starting upload.
+- ***Idempotency Upload Key (Deduplication Check)***: Send the file hash or unique client upload UUID (`X-Idempotency-Key` header) during session initialization. Server checks if object already exists; if found, server returns immediate completion without re-uploading bytes.
+- ***Durable Local Session Mapping***: Map `fileUri` to `uploadId` and `idempotencyKey` inside persistent ***MMKV*** storage. If user retries upload for the same file, reuse existing session context.
+- ***Atomic Upload Completion Signals***: Send final completion request with payload hash; server confirms match before saving record to database.
+- ***Behavioral Details & Caveats***: Computing full SHA-256 on a 1GB file in JavaScript blocks the JS thread; use native crypto modules (such as ***`react-native-quick-crypto`***) for fast hashing.
+
+```typescript
+import { MMKV } from 'react-native-mmkv';
+
+const storage = new MMKV();
+
+function getOrCreateIdempotencyKey(fileUri: string, fileHash: string): string {
+  const storageKey = `upload_idempotency_${fileHash}`;
+  let idempotencyKey = storage.getString(storageKey);
+  if (!idempotencyKey) {
+    idempotencyKey = crypto.randomUUID();
+    storage.set(storageKey, idempotencyKey);
+  }
+  return idempotencyKey;
+}
+```
+
+---
+
+### Question c0931752-19e1-4f44-bf60-012345678e11
+
+- Your app needs to display a list of short videos (like reels) that play instantly when scrolled into view. How would you design the loading and caching strategy?
+
+### Answer
+
+- ***Three-Tier Video Queue Architecture***: Maintain active video instances for: `Previous` (paused/cached), `Current` (playing), and `Next` (pre-buffering), unmounting any instance outside this immediate window.
+- ***Viewability-Driven Auto Playback***: Utilize ***`FlashList`*** / ***`FlatList`*** `viewabilityConfig` (e.g., `itemVisiblePercentThreshold: 80`) to trigger play/pause commands instantly as cell scrolls into active viewport.
+- ***Native LRU Video Disk Cache***: Configure underlying native video engine (`expo-video` or `react-native-video` with native proxy caches like `ExoPlayer SimpleCache` on Android) to cache HTTP media chunks directly to disk.
+- ***Inline First-Frame Poster Preview***: Display static BlurHash or low-res image poster instantly while native player initializes hardware decoders to prevent black screen flash.
+- ***Behavioral Details & Caveats***: Creating more than 3 active native video player instances simultaneously causes memory saturation and severe frame drop stutter on low-to-mid range mobile devices.
+
+```typescript
+import { ViewabilityConfig } from 'react-native';
+
+export const reelsViewabilityConfig: ViewabilityConfig = {
+  itemVisiblePercentThreshold: 80,
+  minimumViewTime: 100, // Debounce rapid scrolling
+};
+
+// Only mount native video player for indices within [currentIndex - 1, currentIndex + 1]
+export const shouldMountPlayer = (index: number, activeIndex: number) => {
+  return Math.abs(index - activeIndex) <= 1;
+};
+```
+
+---
+
+### Question d9042863-0af2-4055-c071-123456789f12
+
+- In a reels-like feature, how would you preload upcoming videos without wasting bandwidth or memory?
+
+### Answer
+
+- ***Bounded Buffer Preloading***: Limit preloading of upcoming video items to the first 2–3 seconds (or first 1MB chunk) of media data instead of downloading full video files.
+- ***Preload Window Constraint***: Preload maximum 1–2 items ahead of current scroll index; cancel preloading jobs immediately if user scrolls rapidly past un-viewed items.
+- ***Network Quality Adaptive Preload Rules***: Query ***`@react-native-community/netinfo`***; disable background video preloading completely on slow 3G connections or cellular data saver modes.
+- ***Single Shared Preloader Daemon***: Run a singleton background preloading manager that queues native pre-buffer requests sequentially, cancelling pending jobs on fast scroll.
+- ***Behavioral Details & Caveats***: Unconstrained video preloading on mobile cellular plans wastes gigabytes of user data and drains device battery rapidly.
+
+```typescript
+import NetInfo from '@react-native-community/netinfo';
+
+class VideoPreloadManager {
+  async preloadNextVideo(videoUrl: string) {
+    const netState = await NetInfo.fetch();
+    // Skip preloading if user is on cellular or weak network
+    if (netState.type !== 'wifi') return;
+    
+    // Warm up native player network cache without playing
+    NativeVideoCacheModule.preloadPartial(videoUrl, 1024 * 1024 * 2); // 2MB cap
+  }
+}
+```
+
+---
+
+### Question e8153974-1ba3-4166-d182-234567890a13
+
+- How would you handle video buffering and playback smoothly across different network conditions?
+
+### Answer
+
+- ***Adaptive Bitrate Streaming (HLS / DASH)***: Serve video via HLS (`.m3u8`) or DASH manifests containing multiple bitrate streams (240p, 480p, 720p, 1080p); native players automatically adjust quality to match network throughput.
+- ***Custom Native Buffer Configuration***: Fine-tune underlying player buffer bounds (e.g., setting Android `ExoPlayer` `minBufferMs: 2500`, `maxBufferMs: 15000`, `bufferForPlaybackMs: 1000`) for low startup latency.
+- ***Graceful Stall & Skeleton State Handling***: Monitor native player stall events (`onBuffer` / `onPlaybackStalled`); overlay semi-transparent loading spinners over frozen video frames without hiding video controls.
+- ***Network Fallback Degradation***: Dynamically force lower quality video resolution stream tags when client detects cellular network degradation via `NetInfo`.
+- ***Behavioral Details & Caveats***: Progressive MP4 playback over unstable networks causes frequent buffer freezes because MP4 cannot adjust resolution dynamically mid-stream.
+
+```typescript
+// Custom buffer configuration for expo-video / react-native-video
+const videoBufferConfig = {
+  minBufferMs: 2500,
+  maxBufferMs: 15000,
+  bufferForPlaybackMs: 1000,
+  bufferForPlaybackAfterRebufferMs: 2000,
+};
+```
+
+---
+
+### Question f7264a85-2cb4-4277-e293-345678901b14
+
+- What techniques would you use to minimize startup delay when a video becomes visible on screen?
+
+### Answer
+
+- ***Warm Player Instance Reuse***: Reuse pre-warmed native player instances instead of destroying and re-instantiating native view controllers on every item mount.
+- ***Moov Atom FastStart Optimization***: Ensure MP4 files have the `moov atom` metadata stored at the start of the file (via `-movflags +faststart` FFmpeg compression) so playback begins immediately without downloading the whole file.
+- ***Instant Poster-to-Video Crossfade***: Render local poster image cached in memory; smoothly crossfade opacity to live video view only after native `onReadyForDisplay` callback fires.
+- ***Pre-Fetched Audio / Video Context***: Initialize player decoder context during scroll gesture deceleration before item locks into full center focus.
+- ***Behavioral Details & Caveats***: If the `moov atom` is at the end of an MP4 file, mobile players must download the entire video before playing a single frame.
+
+```typescript
+import { useState } from 'react';
+import Animated, { useSharedValue, withTiming } from 'react-native-reanimated';
+
+const VideoItem = ({ posterUri, videoSource }: { posterUri: string; videoSource: string }) => {
+  const posterOpacity = useSharedValue(1);
+
+  const onReadyForDisplay = () => {
+    // Hide poster smoothly once video frame is decoded natively
+    posterOpacity.value = withTiming(0, { duration: 200 });
+  };
+
+  return (
+    <View style={{ flex: 1 }}>
+      <VideoView source={videoSource} onReadyForDisplay={onReadyForDisplay} />
+      <Animated.Image source={{ uri: posterUri }} style={[{ position: 'absolute', inset: 0 }, { opacity: posterOpacity }]} />
+    </View>
+  );
+};
+```
+
+---
+
+### Question a6375b96-3dc5-4388-f3a4-456789012c15
+
+- How would you manage multiple video players in a scrolling list to avoid performance degradation?
+
+### Answer
+
+- ***Strict Player Instance Pooling***: Maintain a pool of maximum 2–3 native video player components, recycling instances as items scroll offscreen (similar to list cell recycling).
+- ***Detached Offscreen Player Controllers***: Pause native playback and detach surface textures immediately when item distance exceeds 1 screen height outside the viewport.
+- ***Pure Lightweight Placeholder Views***: Render simple `Image` or `View` components for offscreen items; swap in the native Video View component only when cell enters visible range.
+- ***Off-JS Thread Gesture Control***: Manage scroll gestures and active player indexing via ***React Native Reanimated*** and ***Gesture Handler*** without triggering React component tree re-renders.
+- ***Behavioral Details & Caveats***: Leaving active native video players mounted offscreen causes heavy CPU background rendering, rapid battery drain, and eventual native memory crash.
+
+```typescript
+import React, { memo } from 'react';
+
+// Memoized Feed Item rendering video ONLY when active
+export const VideoFeedItem = memo(({ item, isActive }: { item: VideoItem; isActive: boolean }) => {
+  if (!isActive) {
+    // Offscreen render simple image poster, 0 video engine overhead
+    return <Image source={{ uri: item.posterUrl }} style={{ flex: 1 }} />;
+  }
+
+  return <ActiveVideoPlayer source={item.videoUrl} />;
+}, (prev, next) => prev.isActive === next.isActive);
+```
+
+---
+
+### Question b5486ca7-4ed6-4499-04b5-567890123d16
+
+- A reels feed works well on iOS but lags on Android devices. What platform-specific optimizations would you consider?
+
+### Answer
+
+- ***Hardware Surface Texture Tuning***: Configure Android `ExoPlayer` to use `SurfaceView` vs `TextureView` correctly (`useTextureView={false}` preferred for hardware overlay performance on low-end Android).
+- ***Hermes Engine & JSI Enabled***: Enable Hermes JS engine, ProGuard / R8 code shrinking, and native C++ JSI bindings to minimize JS execution overhead.
+- ***Hardware-Accelerated Codec Selection***: Prefer H.264 Baseline/Main profile over AV1 or HEVC for universal hardware acceleration compatibility across budget Android SOCs (MediaTek / Snapdragon low-end).
+- ***Android Memory Heap & Image Cache Scaling***: Reduce ***`FlashList`*** `drawDistance` and limit image/video cache sizes specifically on Android platform checks (`Platform.OS === 'android'`).
+- ***Behavioral Details & Caveats***: Android devices have huge hardware fragmentation; low-cost devices lack hardware decoders for newer codecs like AV1, causing software decoding UI lag.
+
+```typescript
+import { Platform } from 'react-native';
+
+export const getAndroidVideoProps = () => {
+  if (Platform.OS !== 'android') return {};
+
+  return {
+    useTextureView: false, // SurfaceView uses hardware composer directly
+    maxBitRate: 2000000,   // Cap bitrate on Android to prevent decoder lag
+  };
+};
+```
+
+---
+
+### Question c4597db8-5fe7-45aa-15c6-678901234e17
+
+- How would you implement adaptive bitrate streaming in a mobile app for smoother video playback?
+
+### Answer
+
+- ***HLS / DASH Protocol Setup***: Provide master playlist URLs (`.m3u8` for HLS or `.mpd` for DASH) containing variant streams (e.g., 360p @ 800kbps, 720p @ 2500kbps, 1080p @ 5000kbps).
+- ***Native Player Engine Integration***: Pass HLS stream URLs directly to native players (`expo-video` or `react-native-video` backed by `AVPlayer` on iOS and `ExoPlayer` on Android) which handle automatic bitrate switching natively.
+- ***Custom Bandwidth Metering & Bitrate Caps***: Set player maximum bitrate limits (`maxBitRate` / `preferredPeakBitRate`) when app is on cellular connection or user toggles "Data Saver" mode.
+- ***Bitrate Change Telemetry Listener***: Listen to native events (`onBandwidthUpdate` / `onTracksChanged`) to track network stream quality metrics for user feedback UI or analytics logging.
+- ***Behavioral Details & Caveats***: iOS App Store guidelines require HLS for video streams over 5 minutes or exceeding 5MB over cellular networks.
+
+```typescript
+import NetInfo from '@react-native-community/netinfo';
+
+const getAdaptiveBitrateConfig = async () => {
+  const netState = await NetInfo.fetch();
+  // Cap cellular video bitrate to 1.5 Mbps to prevent buffering stutter
+  const maxBitRate = netState.type === 'cellular' ? 1500000 : 0; // 0 = unconstrained
+  return { maxBitRate };
+};
+```
+
+---
+
+### Question d3608ec9-60f8-46bb-26d7-789012345f18
+
+- What are the trade-offs between using progressive download vs streaming (HLS/DASH) for video content?
+
+### Answer
+
+- ***Progressive Download (Standard MP4)***:
+  - ***Pros***: Easy local caching to disk, simple HTTP server hosting, fast playback start if FastStart optimized, zero manifest parsing overhead.
+  - ***Cons***: Single fixed resolution (wastes bandwidth on weak networks or displays lower quality on high-res screens), high initial data consumption, cannot adjust bitrate dynamically.
+- ***Adaptive Streaming (HLS / DASH)***:
+  - ***Pros***: Seamless dynamic bitrate adjustment based on real-time network throughput, DRM content protection support, lower bandwidth consumption on short views.
+  - ***Cons***: Harder to cache full files offline on mobile, requires backend encoding pipeline, higher latency for initial playlist manifest fetch.
+- ***Mobile Choice Guidance***: Use Progressive MP4 for short reels (<30 secs) requiring full offline disk caching; use HLS/DASH for long-form video content (>1 min).
+- ***Behavioral Details & Caveats***: Offline caching HLS playlists requires specialized native download managers handling master and segment `.ts` chunks.
+
+```typescript
+// Choosing media source type based on video duration
+const getMediaSource = (video: { urlMp4: string; urlHls: string; durationSec: number }) => {
+  if (video.durationSec < 30) {
+    return { uri: video.urlMp4, type: 'mp4' }; // Progressive download for short reels
+  }
+  return { uri: video.urlHls, type: 'm3u8' }; // HLS streaming for long form
+};
+```
+
+---
+
+### Question e2719fd0-71a9-47cc-37e8-890123456a19
+
+- How would you cache media files locally to improve performance while avoiding excessive storage usage?
+
+### Answer
+
+- ***Two-Tier Cache Hierarchy***: Maintain an in-memory cache for immediate image/poster renders and a persistent disk LRU (Least Recently Used) cache for video/image assets.
+- ***LRU Disk Cache Manager with Max Quota***: Enforce strict storage caps (e.g., maximum 500MB total media cache) using native LRU eviction rules (e.g., native proxy caches or ***`expo-file-system`*** directory management).
+- ***Periodic Cache Pruning Task***: Run background cache cleanup on app startup or background transitions, purging files older than TTL (e.g., 7 days) or when available device storage drops below 1GB.
+- ***Storage Quota Inspection***: Check free device disk space using `expo-file-system` `getFreeDiskStorageAsync()` before downloading large media files.
+- ***Behavioral Details & Caveats***: Storing media files in persistent document directories without size caps causes mobile OS "Storage Full" warnings, leading the OS to clear app cache forcibly.
+
+```typescript
+import * as FileSystem from 'expo-file-system';
+
+async function pruneMediaCache(maxSizeBytes = 500 * 1024 * 1024) {
+  const cacheDir = FileSystem.cacheDirectory + 'media/';
+  const info = await FileSystem.getInfoAsync(cacheDir);
+  if (!info.exists) return;
+
+  const files = await FileSystem.readDirectoryAsync(cacheDir);
+  // Sort files by modification time and delete oldest if total size > maxSizeBytes
+}
+```
+
+---
+
+### Question f1820ae1-82ba-48dd-48f9-901234567b20
+
+- A user scrolls quickly through a video feed, causing frequent mounts/unmounts of video components. How would you optimize rendering and resource cleanup?
+
+### Answer
+
+- ***Debounced Activation Guard***: Delay native player initialization and playback start by 150ms after an item enters view, skipping player allocation if user scrolls past rapidly.
+- ***Synchronous Resource Release in Cleanup***: Ensure `useEffect` unmount cleanup calls native release/unload methods synchronously to release hardware codecs immediately.
+- ***Memoized Cell Components***: Wrap feed items in `React.memo` with custom comparison predicates (`prevProps.isSelected === nextProps.isSelected`) to prevent re-renders of non-focused video cells.
+- ***Recyclable Component Containers***: Use ***FlashList*** which recycles native layout views instead of creating and unmounting DOM node hierarchies continuously.
+- ***Behavioral Details & Caveats***: Rapidly mounting/unmounting native video decoders without waiting for asynchronous release callbacks causes native video driver deadlocks or memory leaks.
+
+```typescript
+import React, { useState, useEffect } from 'react';
+
+const DeferredVideoPlayer = ({ isVisible, source }: { isVisible: boolean; source: string }) => {
+  const [shouldRender, setShouldRender] = useState(false);
+
+  useEffect(() => {
+    if (!isVisible) {
+      setShouldRender(false);
+      return;
+    }
+    // Debounce rendering player by 150ms to ignore fast scrolls
+    const timer = setTimeout(() => setShouldRender(true), 150);
+    return () => clearTimeout(timer);
+  }, [isVisible]);
+
+  return shouldRender ? <NativePlayer source={source} /> : <PlaceholderView />;
+};
+```
+
+---
+
+### Question a0931bf2-93cb-49ee-590a-012345678c21
+
+- How would you handle background uploads or downloads when the app is minimized or killed?
+
+### Answer
+
+- ***OS Native Background Transfer Daemon***: Use native background session tasks (iOS `NSURLSessionConfiguration.backgroundSession` and Android `WorkManager` / `JobScheduler` via `expo-file-system` background upload/download tasks).
+- ***Background Completion Handlers***: Register native app delegate background completion callbacks to handle transfer events when the application is woken up by the OS in the background.
+- ***Persistent Background State Synchronization***: Save job IDs and progress tokens in ***MMKV*** or ***SQLite*** so when the app opens, the UI reconciles background progress state cleanly.
+- ***System User Notifications***: Post local push notifications upon background completion or failure to inform the user when the app process is dead.
+- ***Behavioral Details & Caveats***: iOS strictly manages background battery consumption; background tasks may be deferred for hours if the phone is in low-power mode or background app refresh is disabled.
+
+```typescript
+import * as FileSystem from 'expo-file-system';
+
+const startResumableBackgroundDownload = async (url: string, fileUri: string) => {
+  const downloadResumable = FileSystem.createDownloadResumable(
+    url,
+    fileUri,
+    {},
+    (downloadProgress) => {
+      const progress = downloadProgress.totalBytesWritten / downloadProgress.totalBytesExpectedToWrite;
+      console.log(`Download progress: ${progress * 100}%`);
+    }
+  );
+
+  const result = await downloadResumable.downloadAsync();
+  return result;
+};
+```
+
+---
+
+### Question b9042ca3-04dc-4af5-6a1b-123456789d22
+
+- What are the risks of handling large files entirely in JS memory, and how would you avoid them?
+
+### Answer
+
+- ***Risks of Large Files in JS Memory***:
+  - ***Out-Of-Memory (OOM) Fatal Crashes***: Loading files >50MB into JS strings or ArrayBuffers consumes memory that triggers JS heap allocation failure and crashes the app process.
+  - ***JS Main Thread Freezing***: Parsing, encoding, or slicing large binary blobs in JS blocks garbage collection and freezes UI touch responsiveness.
+  - ***Bridge Serialization Overhead***: Passing large Base64 strings across JS-to-Native bridge causes massive serializing latency and frame dropping.
+- ***Prevention Strategies***:
+  - Operate strictly using file URIs (`file:///...`) passed directly to native modules.
+  - Offload binary chunking, hashing, and encryption to C++ JSI / native modules.
+  - Stream data directly from disk to network sockets without touching JS memory space.
+- ***Behavioral Details & Caveats***: The Hermes JS engine has memory heap limits (~512MB–1GB depending on device); converting a 200MB file to Base64 exceeds available heap instantly.
+
+```typescript
+// DANGEROUS ANTI-PATTERN:
+// const fileData = await FileSystem.readAsStringAsync(largeFileUri, { encoding: 'base64' }); // OOM Crash!
+
+// SAFE PATTERN: Pass fileUri directly to native networking stack
+await FileSystem.uploadAsync(uploadUrl, largeFileUri, {
+  uploadType: FileSystem.FileSystemUploadType.BINARY_CONTENT,
+});
+```
+
+---
+
+### Question c8153db4-15ed-4bf6-7b2c-234567890e23
+
+- How would you design a system to limit upload size dynamically based on device capability and network conditions?
+
+### Answer
+
+- ***Dynamic Quality & Limit Evaluator***: Evaluate maximum allowable file upload dimensions, video resolution, and batch limits by checking current network type (`WiFi`, `4G`, `3G` via ***`@react-native-community/netinfo`***) and device RAM tier (via ***`react-native-device-info`***).
+- ***Adaptive Pre-Upload Transcoding***: On slow 3G or low-spec hardware, automatically force downscaling of 4K video to 720p and set image quality compression to 70%.
+- ***Client Pre-Flight Validation Rule Engine***: Run file size predicate checks before file picker resolution; reject files exceeding dynamic caps with informative error toasts.
+- ***Dynamic Chunk Size Scaling***: Adjust chunk sizes dynamically based on connection latency (e.g., 10MB chunks on high-speed Wi-Fi down to 1MB chunks on unstable 3G).
+- ***Behavioral Details & Caveats***: Static fixed file size limits frustrate users on fast connections or cause guaranteed upload failures for users on poor cellular networks.
+
+```typescript
+import NetInfo from '@react-native-community/netinfo';
+
+export const getDynamicUploadLimits = async () => {
+  const netState = await NetInfo.fetch();
+
+  if (netState.type === 'wifi') {
+    return { maxVideoResolution: '1080p', maxUploadSizeBytes: 500 * 1024 * 1024, chunkSizeBytes: 10 * 1024 * 1024 };
+  }
+  // Cellular / 3G fallback
+  return { maxVideoResolution: '720p', maxUploadSizeBytes: 50 * 1024 * 1024, chunkSizeBytes: 2 * 1024 * 1024 };
+};
+```
+
+---
+
+### Question d7264ec5-26fe-4ce7-8c3d-345678901f24
+
+- A user uploads multiple large files simultaneously, causing network congestion. How would you manage concurrency and queueing?
+
+### Answer
+
+- ***Bounded Priority Queue Architecture***: Implement a client-side async concurrency queue (e.g., using `p-limit` or custom task queue) capped at maximum 2 concurrent file transfers.
+- ***Priority Task Assignment***: Assign priorities to upload queue items (e.g., user avatar upload = High Priority, background media batch = Low Priority).
+- ***Serial Chunk Execution Engine***: Process file chunks sequentially within active tasks rather than firing parallel HTTP requests for multiple files simultaneously.
+- ***Pause & Resume Queue Control***: Allow users to manually pause, resume, or re-order queued uploads from an upload manager sheet UI.
+- ***Behavioral Details & Caveats***: Firing 10 parallel HTTP uploads over cellular connection causes TCP packet collision, high latency, request timeouts, and battery drain.
+
+```typescript
+import pLimit from 'p-limit';
+
+// Limit concurrent uploads to max 2 active uploads at a time
+const limit = pLimit(2);
+
+const uploadQueue = files.map((file) => {
+  return limit(() => uploadSingleFile(file));
+});
+
+await Promise.all(uploadQueue);
+```
+
+---
+
+### Question e6375fd6-370f-4df8-9d4e-456789012a25
+
+- How would you ensure data integrity (e.g., checksum validation) when uploading large files?
+
+### Answer
+
+- ***Native Content Hash Generation***: Compute MD5 or SHA-256 checksums per chunk and for the whole file using native crypto modules (such as ***`react-native-quick-crypto`*** or native file stream hashers).
+- ***Standardized HTTP Digest Headers***: Attach `Content-MD5` or `Digest` headers to each chunk HTTP upload request.
+- ***Server Verification & Retry Handshake***: Cloud storage (e.g., AWS S3) validates chunk checksum against `Content-MD5` header natively and rejects corrupted chunks with HTTP 400 Bad Digest, triggering automatic client chunk retry.
+- ***Post-Upload End-to-End Validation***: Compare client-calculated master file checksum against server S3 ETag or validation hash response after assembly.
+- ***Behavioral Details & Caveats***: Calculating hashes synchronously in JS blocks the main thread; compute stream hashes in native C++/Java/Obj-C threads during background chunking.
+
+```typescript
+import QuickCrypto from 'react-native-quick-crypto';
+
+// Compute SHA-256 hash using native fast crypto engine
+function computeChunkHash(chunkBuffer: ArrayBuffer): string {
+  return QuickCrypto.createHash('sha256')
+    .update(chunkBuffer)
+    .digest('hex');
+}
+```
