@@ -229,7 +229,7 @@
 
 ---
 
-### Question
+### Question b325e6a2-6588-4144-aab1-e9be59770cbc
 
 - above the fold content: considerations
 
@@ -242,7 +242,7 @@
 
 ---
 
-### Question
+### Question 977f992e-1a7b-4b03-ba57-3bfed0e629d6
 
 - Error handling for critical chrome
 
@@ -254,7 +254,7 @@
 
 ---
 
-### Question
+### Question c4d7c7af-2d35-42d2-93e7-e5a47b348455
 
 - api fetching with cache
 
@@ -278,7 +278,7 @@
 
 ---
 
-### Question
+### Question 86147aaf-9959-4ea3-89c0-f8f55bdb1e45
 
 - Accessibility for carousel
 
@@ -306,7 +306,7 @@
 
 ---
 
-### Question
+### Question 2cf63e8f-6dea-45b6-b56c-77789d2ec8ad
 
 - How streaming works in Next.js 13+ with React Server Components (RSC) and Suspense boundaries?
 
@@ -316,7 +316,7 @@
 
 ---
 
-### Question
+### Question c10f0314-50fd-4413-bb49-b34ed69c26c9
 
 - What is RSC Payload Chunk?
 - What does it include?

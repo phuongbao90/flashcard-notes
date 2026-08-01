@@ -1,6 +1,6 @@
 # System design
 
-### Question
+### Question 1a7ed1c2-ecfe-4200-9c4f-f9a489865246
 
 - What do you implement a banner system for a website?
 
@@ -51,7 +51,7 @@
 
 ---
 
-### Question
+### Question 59b2d07f-0333-43da-bb01-70f3862d6f74
 
 - How do you get user geolocation data for a website?
 
@@ -59,7 +59,7 @@
 
 ---
 
-### Question
+### Question fd55b75b-0103-4b84-890a-cbcd403bf937
 
 - What is the difference in development for mobile and web?
 
@@ -88,13 +88,13 @@
 
 ---
 
-### Question
+### Question b48871a3-4b5c-42f0-9807-7f30fc535549
 
 ### Answer
 
 ---
 
-### Question
+### Question 44f92f2c-021c-4593-b8c4-c54bd4da89e2
 
 ### Answer
 

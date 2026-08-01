@@ -1,6 +1,6 @@
 # Web security
 
-### Question
+### Question a66e88c5-1e40-4212-ad25-5bbda088a2d7
 
 - Security Headers - Strict-Transport-Security (HSTS)
 
@@ -15,7 +15,7 @@
 
 ---
 
-### Question
+### Question 8c7de6af-90d0-4fb9-a663-a53be5724784
 
 - Security Headers - X-Frame-Options
 
@@ -30,7 +30,7 @@
 
 ---
 
-### Question
+### Question 57a9a2ae-a861-412d-9125-29d01669b147
 
 - Security Headers - X-Content-Type-Options
 
@@ -42,7 +42,7 @@
 
 ---
 
-### Question
+### Question 26bbd761-d11a-468e-a2e7-7d73b6438545
 
 - Security Headers - Referrer-Policy
 
@@ -64,7 +64,7 @@
 
 ---
 
-### Question
+### Question df6105d0-f23e-4c48-a205-48dd30256158
 
 - Security Headers - Permissions-Policy
 
@@ -77,7 +77,7 @@
 
 ---
 
-### Question
+### Question 5872ede3-1ed1-4dad-85fe-18690a031845
 
 - Security Headers - Content-Security-Policy (CSP)
 
@@ -92,7 +92,7 @@
 
 ---
 
-### Question
+### Question 97185602-4440-4a6a-8211-5f5aa9264eca
 
 - rank the imp;ortance of security headers
 
@@ -107,7 +107,7 @@
 
 ---
 
-### Question
+### Question 35acbfe5-f6c3-4d8a-84fb-985258509a07
 
 - Does Next.js has built-in CSRF protection?
 
@@ -118,7 +118,7 @@
 
 ---
 
-### Question
+### Question cc2c0056-367a-45fa-a5f2-2f6e82ee2a6f
 
 - How CSRF works?
 
@@ -149,7 +149,7 @@
 
 ---
 
-### Question
+### Question a2448947-393e-42b4-a627-a602cb4c0e8f
 
 ### Answer
 

@@ -1,6 +1,6 @@
 # Image Optimisation
 
-### Question
+### Question 8b136f45-0481-4e0e-a817-9ff885837d53
 
 - img vs picture
 
@@ -13,7 +13,7 @@
 
 ---
 
-### Question
+### Question 13294c67-0acf-489e-ae9a-15da78816aba
 
 - How do images impact Web Vitals (specifically LCP and CLS), and how do you optimize for both?
 
@@ -26,7 +26,7 @@
 
 ---
 
-### Question
+### Question fc5280cf-08cc-4344-94a7-dc67d2581dda
 
 - Compare AVIF, WebP, and SVG. When should you use each?
 
@@ -38,7 +38,7 @@
 
 ---
 
-### Question
+### Question 5b5a6ec9-2a25-4b12-9fcd-b2f71d423b3d
 
 - Explain "Art Direction" in web design and how you would implement it cleanly.
 
@@ -58,7 +58,7 @@
 
 ---
 
-### Question
+### Question 17c4db72-db7f-4287-9d75-9971f46fd09c
 
 - Our homepage LCP score degraded from 1.2s to 3.8s after a release. Audit shows the hero image is the bottleneck. What steps do you take to diagnose and fix it?
 
@@ -75,7 +75,7 @@
 
 ---
 
-### Question
+### Question 568bdc53-6731-403b-a8b8-53503b26c157
 
 - Explain how the browser's Preload Scanner handles images vs. normal DOM parsing. Why are CSS background-image properties bad for critical LCP images?
 
@@ -91,7 +91,7 @@
 
 ---
 
-### Question
+### Question 7900d937-e699-4ff2-9648-e79a616cdabb
 
 - What does decoding="async" do on an `<img>` tag, and when should you avoid using it?
 
@@ -103,7 +103,7 @@
 
 ---
 
-### Question
+### Question 72ce330d-70b7-4b6c-b009-e0a02cefa962
 
 - How does the sizes attribute in srcset actually work? What mistake do developers often make with sizes?
 
@@ -116,7 +116,7 @@
 
 ---
 
-### Question
+### Question d1bc0338-5d3e-4877-88f6-dd17052c8481
 
 - Compare On-Demand Image Optimization (e.g., Next.js / Imgix) vs Build-Time Image Generation. What are the trade-offs?
 
@@ -131,7 +131,7 @@
 
 ---
 
-### Question
+### Question 72b3347a-afbe-4c98-a699-4907a7720886
 
 - What is a custom loader in Next.js `<Image />` (loader prop), and why would you use one?
 
@@ -152,7 +152,7 @@ const cloudinaryLoader = ({ src, width, quality }: ImageLoaderProps) => {
 
 ---
 
-### Question
+### Question 8fe816e8-94f5-45af-b373-0f612fe48729
 
 - GIF files are notoriously huge. How should you optimize animated images on a modern web application?
 
@@ -165,7 +165,7 @@ const cloudinaryLoader = ({ src, width, quality }: ImageLoaderProps) => {
 
 ---
 
-### Question
+### Question c58bf1b6-3783-4daf-9064-2571c511bfb4
 
 - Why use Image from Next.js instead of a normal img tag?
 
@@ -178,7 +178,7 @@ const cloudinaryLoader = ({ src, width, quality }: ImageLoaderProps) => {
 
 ---
 
-### Question
+### Question 37f388d0-1f66-47ea-9a05-7ca748c90ddc
 
 - what is wrong with this code snippet?
 
@@ -195,7 +195,7 @@ const cloudinaryLoader = ({ src, width, quality }: ImageLoaderProps) => {
 
 ---
 
-### Question
+### Question 426fb615-961b-40bb-b69f-dffa07b42e22
 
 - what are the problems with hosting nextjs app on VPS - image context?
 
@@ -213,7 +213,7 @@ const cloudinaryLoader = ({ src, width, quality }: ImageLoaderProps) => {
 
 ---
 
-### Question
+### Question a4276ada-1c6a-4bdc-b0a1-aaa358d30be6
 
 - How to solve the problems of hosting nextjs app on VPS - image context?
 
@@ -232,7 +232,7 @@ const cloudinaryLoader = ({ src, width, quality }: ImageLoaderProps) => {
 
 ---
 
-### Question
+### Question a7985bc9-c61a-4810-b6a3-116d095da096
 
 - what happen to static images in nextjs during build time? (e.g. /public/images/hero.png)
 
@@ -246,7 +246,7 @@ const cloudinaryLoader = ({ src, width, quality }: ImageLoaderProps) => {
 
 ---
 
-### Question
+### Question ae759367-3a6c-40d1-a5fc-52e32fff00e0
 
 - in what scenarios will image be downloaded in the build time?
 
@@ -257,7 +257,7 @@ const cloudinaryLoader = ({ src, width, quality }: ImageLoaderProps) => {
 
 ---
 
-### Question
+### Question 0216a032-7c58-4e15-85c7-4b54ca88846f
 
 - How do you serve muted autoplaying videos in a Next.js app without user interaction?
 
@@ -286,7 +286,7 @@ const cloudinaryLoader = ({ src, width, quality }: ImageLoaderProps) => {
 
 ---
 
-### Question
+### Question 592c9b20-5aa6-47cd-b66e-d46520743d0a
 
 - Problem with memory leak when serving video
 

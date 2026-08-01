@@ -1,6 +1,6 @@
 # API pattern
 
-### Question
+### Question c11e6ff9-893e-4c4f-b53c-c1c486112698
 
 - Discuss the API pattern for a Next.js application.
 
@@ -24,7 +24,7 @@
 
 ---
 
-### Question
+### Question 661073d2-cb0c-4f38-93ff-df031a522d3f
 
 - explain cache invalidation in Next.js
 
@@ -32,7 +32,7 @@
 
 ---
 
-### Question
+### Question 64868877-47a0-47e3-a0f6-dac8c757bf5c
 
 - when Page-level fetching is appropriate vs Component-level fetching
 
@@ -48,7 +48,7 @@
 
 ---
 
-### Question
+### Question c0a19ef8-27c1-4947-b750-74408f95fc15
 
 - discuss Automatic fetch deduplication in Next.js
 
@@ -65,7 +65,7 @@
 
 ---
 
-### Question
+### Question 378a86e6-10db-4b19-a12f-f65c73eb4dd0
 
 - How to enable fetch deduplication across requests in Next.js?
 
@@ -73,7 +73,7 @@
 
 ---
 
-### Question
+### Question 68847ef6-8617-43ce-a09c-adbefd8bf673
 
 - How to enable fetch deduplication for axios?
 
@@ -94,7 +94,7 @@ export const getProduct = cache(async (id: string) => {
 
 ---
 
-### Question
+### Question ea57e528-5675-4540-9cd4-f0dbc02958fa
 
 - explain cache option in fetch in Next.js
 
@@ -115,7 +115,7 @@ export const getProduct = cache(async (id: string) => {
 
 ---
 
-### Question
+### Question 2c00c377-e596-4cdd-b07f-2cac19fbd3b9
 
 - explain next.revalidate option in fetch in Next.js
 
@@ -137,7 +137,7 @@ fetch(url, {
 
 ---
 
-### Question
+### Question b82aeffe-6af4-419e-81cb-3a5d113267ab
 
 - explain next.tags option in fetch in Next.js
 
@@ -168,7 +168,7 @@ export async function createPost() {
 
 ---
 
-### Question
+### Question 8be51343-d636-44b5-bd88-1f798c1cf144
 
 - revalidateTag vs updateTag in Next.js
 
@@ -190,7 +190,7 @@ export async function createPost() {
 
 ---
 
-### Question
+### Question 85bf35c9-bfea-4e63-bdd9-4c293c30e9e5
 
 - discuss caching in Next.js 14
 
@@ -216,7 +216,7 @@ export async function createPost() {
 
 ---
 
-### Question
+### Question add1e1e7-916a-4645-ad36-86fa7a67cea3
 
 - discuss what changed with caching in Next.js 15
 
@@ -248,7 +248,7 @@ export async function createPost() {
 
 ---
 
-### Question
+### Question d85d9ffd-7969-4b25-8a8c-ef67c426635a
 
 - discuss what changed with caching in Next.js 16
 
@@ -311,7 +311,7 @@ export async function createPost() {
 
 ---
 
-### Question
+### Question a7e41bc6-95f6-4b29-850f-828d490b3560
 
 - explain Router Cache
 
@@ -377,7 +377,7 @@ Router Cache
 
 ---
 
-### Question
+### Question 1ba1b447-9e2e-43b6-84d2-c4472a79abd9
 
 - Why is it called "Router Cache" instead of "Page Cache"?
 
@@ -420,7 +420,7 @@ dashboard
 
 ---
 
-### Question
+### Question 54ab4889-8fe1-447b-a949-03b440770685
 
 - what is dynamic route in Next.js?
 
@@ -450,7 +450,7 @@ dashboard
 
 ---
 
-### Question
+### Question 1ee21b98-a336-405e-bb96-6cbbfb140bdf
 
 - Does prefetching happen immediately when a link enters the viewport?
 
@@ -478,7 +478,7 @@ dashboard
 
 ---
 
-### Question
+### Question 3a58feb6-f943-45b4-afd6-fb5b6a3e9f44
 
 - prefetch in Link
 
@@ -519,7 +519,7 @@ dashboard
 
 ---
 
-### Question
+### Question 38e5f940-5485-4343-905a-0c1b222cb850
 
 - discuss runtime dynamic import in Next.js
 
@@ -545,7 +545,7 @@ dashboard
 
 ---
 
-### Question
+### Question 7bcf3f0e-14af-4311-baf4-f19ed690de15
 
 - explain cookie from next/headers in Next.js
   - what is the significance when using cookies() in a server component?
@@ -565,7 +565,7 @@ dashboard
 
 ---
 
-### Question
+### Question 01bade62-756b-4e11-a1aa-5ca7b4a03005
 
 - When to use dynamic module import in Next.js?
   `const { cookies } = await import("next/headers");`
@@ -580,7 +580,7 @@ dashboard
 
 ---
 
-### Question
+### Question 4ca6de9e-8076-4048-bba7-c12859f646b8
 
 - How Next.js handles server action?
   - are they private?
@@ -612,7 +612,7 @@ curl -X POST https://your-site.com/ \
 
 ---
 
-### Question
+### Question 683ef200-b1d6-4ec4-8fbd-1dda9d6a91be
 
 - Argument limitations for server actions in Next.js
 
@@ -623,7 +623,7 @@ curl -X POST https://your-site.com/ \
 
 ---
 
-### Question
+### Question f5e6f6d3-25a9-4fd2-bdec-57ced7a80342
 
 - how server action handles unhandled exception error in Next.js
 
@@ -634,7 +634,7 @@ curl -X POST https://your-site.com/ \
 
 ---
 
-### Question
+### Question c3de686c-55bf-4489-82f9-ae02ae882a4f
 
 - server action vs server side function in Next.js
 
@@ -651,25 +651,25 @@ curl -X POST https://your-site.com/ \
 
 ---
 
-### Question
+### Question cfbbae6e-595c-4a5f-9604-84cb183e2e14
 
 ### Answer
 
 ---
 
-### Question
+### Question 887893d1-0c7b-4b86-8e9b-28deeccd6655
 
 ### Answer
 
 ---
 
-### Question
+### Question 293c3225-4244-4fc2-b913-e49e32c190db
 
 ### Answer
 
 ---
 
-### Question
+### Question 2b512b06-4ab2-4719-8660-8692f051454f
 
 ### Answer
 

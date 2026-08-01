@@ -1,6 +1,6 @@
 # nextjs architecure
 
-### Question
+### Question 49bf2df3-87d0-4913-bdbe-c2bde1dd3cb2
 
 - explain `revalidate: 3600` when it comes to ISR (Incremental Static Regeneration) in Next.js.
 
@@ -28,7 +28,7 @@ Day 4 (64 hours later): User #2 visits /products/brand/nike.
 
 ---
 
-### Question
+### Question f6f1db1e-89c8-436c-bca2-f2dcf4f8ffaa
 
 - On-Demand Cache Revalidation via Webhooks
 
@@ -36,85 +36,85 @@ Day 4 (64 hours later): User #2 visits /products/brand/nike.
 
 ---
 
-### Question
+### Question 610e4e5d-3360-4363-aad9-0458aadc1180
 
 ### Answer
 
 ---
 
-### Question
+### Question 9b8b5f70-c5e1-4d94-ab22-4ff7fb0d8ee0
 
 ### Answer
 
 ---
 
-### Question
+### Question 1e915ce2-4017-4063-b124-9f31c00b56ef
 
 ### Answer
 
 ---
 
-### Question
+### Question 321cf2bd-eea8-40dc-a708-ccc1d5d9bfa3
 
 ### Answer
 
 ---
 
-### Question
+### Question cfc30c7d-da26-4fa7-ab51-2d5ef3747217
 
 ### Answer
 
 ---
 
-### Question
+### Question e0448e81-55d6-4592-841b-d2d98817369c
 
 ### Answer
 
 ---
 
-### Question
+### Question 7db3e791-0c5a-4b21-bb11-489a5820017c
 
 ### Answer
 
 ---
 
-### Question
+### Question 59784179-eb73-4445-837e-f45cad2a6245
 
 ### Answer
 
 ---
 
-### Question
+### Question 84215209-2624-49d3-a7a5-4341361dcbdf
 
 ### Answer
 
 ---
 
-### Question
+### Question d43c21be-3263-48dc-9ee8-660bd8934235
 
 ### Answer
 
 ---
 
-### Question
+### Question 689d91f5-666d-4467-8bfe-ed0cf4060b3c
 
 ### Answer
 
 ---
 
-### Question
+### Question e4fb25ca-d137-46e7-9399-72265413f5fe
 
 ### Answer
 
 ---
 
-### Question
+### Question 1560cfce-b438-4892-b7b2-b4652cd6742d
 
 ### Answer
 
 ---
 
-### Question
+### Question 964ab4e0-f4b9-4725-bb4d-8c9dfa4ca68d
 
 ### Answer
 

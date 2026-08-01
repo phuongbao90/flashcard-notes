@@ -1,6 +1,6 @@
 # Proxy
 
-### Question
+### Question 1f4187c0-b3d4-4569-8050-ad77ee829cd5
 
 - What is the request lifecycle in Next.js?
 
@@ -34,7 +34,7 @@
 
 ---
 
-### Question
+### Question 6cd6fdf6-2b18-45ff-a61e-82117d5c9ccd
 
 - the evolution of Next.js proxy.ts
 
@@ -52,7 +52,7 @@
 
 ---
 
-### Question
+### Question 8feb6fcf-44e6-4c78-93ff-23f4ff7f44e5
 
 - what proxy should be used for?
 
@@ -63,7 +63,7 @@
 
 ---
 
-### Question
+### Question 1e0e15e1-6a50-4198-9064-9b88f02c9287
 
 - diff between NextReponse.redirect() and NextResponse.rewrite()
 
@@ -75,7 +75,7 @@
 
 ---
 
-### Question
+### Question f8ea4afe-58da-437e-b83e-6671b0a5e19e
 
 - the significance of matcher in proxy.ts
 
@@ -89,7 +89,7 @@
 
 ---
 
-### Question
+### Question 5841816d-7843-4321-95ee-ab63f41a6378
 
 - How does proxy.ts interact with Next.js 16's explicit caching ('use cache' directive) and Partial Prerendering (PPR)?
 
@@ -109,25 +109,25 @@
 
 ---
 
-### Question
+### Question 5930b0ee-d320-4d0d-8d4e-7dcd814d5669
 
 ### Answer
 
 ---
 
-### Question
+### Question c12a35d2-8bfd-4c08-be53-4e1021818dff
 
 ### Answer
 
 ---
 
-### Question
+### Question c940b1a0-09c3-4213-adde-6eb0340fae91
 
 ### Answer
 
 ---
 
-### Question
+### Question b9c2f36a-f81d-4c93-a787-f70927cd1b8f
 
 ### Answer
 
