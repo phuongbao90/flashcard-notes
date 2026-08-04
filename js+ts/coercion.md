@@ -6,13 +6,13 @@
 
 ### Answer
 
-- JS ***automatically converts*** a value from one type to another when the operator or context expects a different type — no explicit conversion code is written.
-- Driven by the spec's Abstract Operations: ToNumber, ToString, ToPrimitive.
+- ***Implicit coercion*** is JavaScript’s automatic conversion of a value when an operator or language construct needs another type.
+- It is performed by abstract operations such as `ToPrimitive`, `ToNumber`, `ToString`, and `ToBoolean`.
 - Examples:
-  - `"5" - 1` → 4 (String coerced to Number)
-  - `5 + "5"` → `"55"` (Number coerced to String — `+` prefers concatenation)
-  - `if ("")` → falsy (String coerced to Boolean)
-- Gotcha: `+` is the odd one out — it favors String concatenation, while `-`, `*`, `/` always coerce to Number.
+  - `"5" - 1` → `4`: subtraction converts both operands to numbers.
+  - `5 + "5"` → `"55"`: a string operand makes `+` concatenate after primitive conversion.
+  - `if ("")` treats the empty string as falsy through Boolean conversion.
+- Gotcha: `+` is context-dependent; `-`, `*`, `/`, and `%` perform numeric coercion, while `+` can perform string concatenation.
 
 ---
 
@@ -22,12 +22,13 @@
 
 ### Answer
 
-- ***Deliberate, visible conversion*** written by the developer, e.g. `Number("5")`, `String(5)`, `Boolean(0)`, `parseInt("10px", 10)`, unary `+`, `!!value`.
-- Implicit coercion hides the conversion; explicit coercion makes intent readable and avoids surprises.
-- Gotchas:
-  - `Number(null)` → 0, `Number(undefined)` → ***NaN***, `Number("")` → 0.
-  - `Number("10px")` → NaN, but `parseInt("10px")` → 10.
-  - `String(Symbol("x"))` works, but `"" + Symbol("x")` throws TypeError.
+- ***Explicit coercion*** is a conversion requested directly in code, such as `Number("5")`, `String(5)`, `Boolean(0)`, unary `+`, or `!!value`.
+- `parseInt()` and `parseFloat()` are parsing functions: they read a numeric prefix rather than validating the entire string.
+- Important behaviors:
+  - `Number(null)` and `Number("")` → `0`; `Number(undefined)` → `NaN`.
+  - `Number("10px")` → `NaN`, while `parseInt("10px", 10)` → `10`.
+  - `Boolean("false")` → `true` because every non-empty string is truthy.
+  - `String(Symbol("x"))` works, but `"" + Symbol("x")` throws a `TypeError`.
 
 ---
 
@@ -37,27 +38,14 @@
 
 ### Answer
 
-- G ──► Guard Rails (Same type? null/undefined?)
-- B ──► Boolean (Convert Boolean -> Number)
-- O ──► Object (Convert Object -> ToPrimitive)
-- S ──► String (Convert String -> Number/BigInt)
-
-- Step 1: G - Guard Rails (Early Exit)
-  - Same Type? -> Delegate directly to === (Strict Equality).
-  - null or undefined involved?
-    - If BOTH sides are null or undefined -> true
-    - If ONLY ONE side is null or undefined -> false (no coercion allowed!)
-- Step 2: B - Boolean Conversion
-  - Is either side a Boolean? -> Convert that Boolean to a Number (true -> 1, false -> 0).
-  - Now restart at G with the new value.
-- Step 3: O - Object Unwrapping
-  - Is one side an Object and the other a Primitive? -> Convert the Object via ToPrimitive(obj).
-  - Now restart at G with the new value.
-- Step 4: S - String Conversion
-  - Is one side a String and the other a Number / BigInt?
-    - If paired with Number -> Convert String to Number (ToNumber(str)).
-    - If paired with BigInt -> Convert String to BigInt (StringToBigInt(str)).
-  - Now restart at G with the new value.
+- G-B-O-S is a ***learning mnemonic for loose equality (`==`)***; it is not a complete rule for every operator.
+- ***G — Guard rails:***
+  - If both operands have the same type, compare them as strict equality would.
+  - If both operands are `null` or `undefined`, the result is `true`; either value compared with any other type is `false`.
+- ***B — Boolean conversion:*** convert a Boolean to a Number (`true` → `1`, `false` → `0`), then restart at G.
+- ***O — Object unwrapping:*** when an Object is compared with a primitive, apply `ToPrimitive`. Arrays commonly fall through to `toString()`, producing a comma-joined string, then restart at G.
+- ***S — String conversion:*** when a String is paired with a Number, convert it with `ToNumber`; when paired with a BigInt, attempt `StringToBigInt`. An invalid BigInt string makes the comparison `false`.
+- If the process reaches a Number/BigInt pair, JavaScript compares their numeric values; any comparison involving `NaN` is `false`.
 
 ---
 
@@ -67,12 +55,12 @@
 
 ### Answer
 
-- G — different types (Boolean vs String), no null/undefined → continue.
-- B — Boolean involved → `true` → 1. Now `1 == "true"` → restart at G.
-- G — still different types (Number vs String) → continue.
-- S — String + Number → ToNumber(`"true"`) → ***NaN***.
-- `1 == NaN` → false.
-- Result: ***false***.
+- `true == "true"` evaluates to ***false***.
+- ***G:*** the operands have different types, so continue.
+- ***B:*** convert `true` to `1`; the comparison becomes `1 == "true"`.
+- ***S:*** convert `"true"` with `ToNumber`; the result is `NaN`.
+- Equality with `NaN` is always `false`, so `1 == NaN` is `false`.
+- `true === "true"` is also `false`, but strict equality rejects the different types without coercion.
 
 ---
 
@@ -82,12 +70,12 @@
 
 ### Answer
 
-- G — different types (Boolean vs String), no null/undefined → continue.
-- B — Boolean involved → `true` → 1. Now `1 == "true"` → restart at G.
-- G — still different types (Number vs String) → continue.
-- S — String + Number → ToNumber(`"true"`) → ***NaN***.
-- `1 == NaN` → false.
-- Result: ***false***.
+- `true == "true"` evaluates to ***false***.
+- ***G:*** the operands have different types, so continue.
+- ***B:*** convert `true` to `1`; the comparison becomes `1 == "true"`.
+- ***S:*** convert `"true"` with `ToNumber`; the result is `NaN`.
+- Equality with `NaN` is always `false`, so `1 == NaN` is `false`.
+- `true === "true"` is also `false`, but strict equality rejects the different types without coercion.
 
 ---
 
@@ -97,14 +85,14 @@
 
 ### Answer
 
+- G-B-O-S is intended for `==`; these arithmetic expressions mainly use `ToPrimitive` followed by the operator’s numeric or string rules.
 - `[1, 2] + [3, 4]` → `"1,23,4"`:
-  - `+` with two Objects → ToPrimitive (default hint) on both sides.
-  - Arrays: `valueOf()` returns the array itself (not a primitive) → falls back to `toString()` → `"1,2"` and `"3,4"`.
-  - String + String → concatenation → `"1,23,4"`.
-- `[1, 2] - [3, 4]` → ***NaN***:
-  - `-` forces ToNumber on both operands: ToPrimitive → `"1,2"` → ToNumber → NaN (comma breaks numeric parsing).
-  - `NaN - NaN` → NaN.
-- Takeaway: `+` concatenates after stringification; `-` can only subtract numbers, so it produces NaN here.
+  - Each array’s `valueOf()` returns an object, so `toString()` produces `"1,2"` and `"3,4"`.
+  - The resulting primitive operands are strings, so `+` concatenates them.
+- `[1, 2] - [3, 4]` → ***`NaN`***:
+  - Subtraction converts each array to its primitive string, then attempts numeric conversion.
+  - `ToNumber("1,2")` is `NaN` because the comma is not valid in a numeric literal; `NaN - NaN` remains `NaN`.
+- Gotcha: arrays are not converted into numeric collections; their default primitive representation is a string.
 
 ---
 
@@ -114,11 +102,11 @@
 
 ### Answer
 
-- G — different types (String vs Object), no null/undefined → continue.
-- O — Object involved → ToPrimitive([]) → `valueOf()` not primitive → `toString()` → `""`. Now `"0" == ""` → restart at G.
-- G — same type (String vs String) → delegate to `===` → `"0" === ""` → false.
-- Result: ***false***.
-- Gotcha: contrast with `0 == []` → true (empty string coerces to 0 in the S step).
+- `"0" == []` evaluates to ***false***.
+- ***G:*** the operands are a String and an Object, so continue.
+- ***O:*** `ToPrimitive([])` produces the empty string `""`; the comparison becomes `"0" == ""`.
+- ***G:*** both operands are now Strings, so equality compares them without numeric conversion: `"0" === ""` is `false`.
+- Contrast: `0 == []` is `true` because `[]` becomes `""`, and the String/Number step converts `""` to `0`.
 
 ---
 
@@ -128,10 +116,11 @@
 
 ### Answer
 
-- `null == 0` → ***false***: G — null on only one side → false immediately, ***no coercion allowed***. `null` only loosely equals `null`/`undefined`.
-- `null > 0` → false: relational operators (`<`, `>`, `<=`, `>=`) don't follow the == rules — they force ToNumber: `ToNumber(null)` → 0 → `0 > 0` → false.
-- `null >= 0` → ***true***: `ToNumber(null)` → 0 → `0 >= 0` → true.
-- Gotcha: `null >= 0` is true while `null == 0` is false — relational and equality operators use different conversion rules. Classic interview trap.
+- G-B-O-S describes `==`; relational operators use a different comparison algorithm.
+- `null == 0` → ***false*** because `null` only loosely equals `null` or `undefined`; it is not coerced when compared with `0`.
+- `null > 0` → `false`: this comparison uses numeric conversion, so `ToNumber(null)` → `0`, giving `0 > 0`.
+- `null >= 0` → ***true***: the same conversion gives `0 >= 0`.
+- Gotcha: `null == 0` is `false` while `null >= 0` is `true` because equality and relational operators have different coercion rules.
 
 ---
 
@@ -141,11 +130,11 @@
 
 ### Answer
 
-- G — different types (Object vs Boolean), no null/undefined → continue.
-- B — Boolean involved → `false` → 0. Now `[[]] == 0` → restart at G.
-- O — Object involved → ToPrimitive([[]]) → `toString()` → `""` (inner `[]` stringifies to `""`). Now `"" == 0` → restart at G.
-- S — String + Number → `""` → 0. Now `0 == 0` → true.
-- Result: ***true***.
+- `[[]] == false` evaluates to ***true***.
+- ***B:*** convert `false` to `0`; the comparison becomes `[[]] == 0`.
+- ***O:*** `ToPrimitive([[]])` produces `""`. The inner empty array stringifies to `""`, so the outer array also joins to an empty string.
+- ***S:*** convert `""` to the Number `0`; the final comparison is `0 == 0`.
+- Important: `[[]]` is truthy as an Object; this result comes from loose-equality coercion, not Boolean truthiness.
 
 ---
 
@@ -155,10 +144,11 @@
 
 ### Answer
 
-- G — different types (Object vs Number), no null/undefined → continue.
-- O — Object involved → ToPrimitive([[[2]]]) → `toString()` → `"2"` (nested arrays flatten to their elements). Now `"2" == 2` → restart at G.
-- S — String + Number → `"2"` → 2. Now `2 == 2` → true.
-- Result: ***true***.
+- `[[[2]]] == 2` evaluates to ***true***.
+- ***O:*** array primitive conversion calls `toString()` after `valueOf()` returns an Object. Nested arrays stringify recursively, producing the String `"2"` in this case; they are not actually flattened.
+- ***S:*** the String/Number equality step converts `"2"` to `2`.
+- Both operands are then the Number `2`, so the comparison is `true`.
+- Gotcha: nested arrays with multiple elements retain commas, such as `[[1, 2]].toString()` → `"1,2"`, which does not convert to a number.
 
 ---
 
@@ -168,12 +158,11 @@
 
 ### Answer
 
-- `1n == true` → ***true***:
-  - G — different types (BigInt vs Boolean), no null/undefined → continue.
-  - B — Boolean involved → `true` → 1. Now `1n == 1` → restart at G.
-  - G — BigInt vs Number: no Boolean/Object/String step applies — the spec compares BigInt and Number ***numerically*** → `1n == 1` → true.
-- `1n === true` → ***false***: strict equality never coerces — different types (BigInt vs Boolean) → false immediately.
-- Takeaway: `==` normalizes the Boolean first, then BigInt vs Number compare numerically; `===` only checks type identity.
+- `1n == true` evaluates to ***true***.
+- ***B:*** loose equality converts `true` to the Number `1`, producing `1n == 1`.
+- BigInt/Number loose equality then compares their numeric values without converting the BigInt to a Number; `1n` and `1` represent the same integer.
+- `1n === true` evaluates to ***false*** because strict equality does not coerce and the operand types differ.
+- Gotcha: `1n === 1` is also `false`, and BigInt/Number arithmetic such as `1n + 1` throws a `TypeError` even though `1n == 1` is `true`.
 
 ---
 
@@ -183,12 +172,11 @@
 
 ### Answer
 
-- `![]` → false (every Object is truthy). Now the expression is `[] == false`.
-- G — different types (Object vs Boolean), no null/undefined → continue.
-- B — Boolean involved → `false` → 0. Now `[] == 0` → restart at G.
-- O — Object involved → ToPrimitive([]) → `""`. Now `"" == 0` → restart at G.
-- S — String + Number → `""` → 0. Now `0 == 0` → true.
-- Result: ***true*** — `[]` is truthy, yet `==`'s coercion chain makes it equal to its own negation.
+- `[] == ![]` evaluates to ***true***.
+- First, `![]` evaluates to `false` because every Object, including an empty array, is truthy.
+- ***B:*** convert `false` to `0`; ***O:*** convert `[]` to its primitive `""`; ***S:*** convert `""` to `0`.
+- The final comparison is `0 == 0`, so the result is `true`.
+- Gotcha: `[]` is truthy in a Boolean context but can become an empty string during loose equality; `[] === ![]` is `false`.
 
 ---
 
@@ -203,16 +191,17 @@
 
 ### Answer
 
-- `[] + []` → `""` (both sides ToPrimitive → `""` → concatenation).
-- `[] + {}` → `"[object Object]"` (`[]` → `""`, `{}` → `"[object Object]"`).
-- `{} + []` → ***0*** at statement start: parsed as an empty block `{}` followed by `+[]` (unary plus → ToNumber(`""`) → 0). In expression context `({} + [])` → `"[object Object]"`.
-- `[] == ![]` → true (see previous card: `[]` → `""` → 0, `![]` → false → 0).
-- `NaN == NaN` → false: NaN is the only value not equal to itself — use `Number.isNaN()` to test.
+- `[] + []` → `""`: both arrays become empty strings, then `+` concatenates them.
+- `[] + {}` → `"[object Object]"` for an ordinary object: `[]` becomes `""`, while the object uses its default string representation.
+- A bare `{} + []` at the start of a statement can be parsed as an empty block followed by unary `+[]`, producing `0`. In expression context, `({} + [])` produces `"[object Object]"`.
+- `[] == ![]` → `true` because `![]` is `false`, and the loose-equality chain converts both sides to `0`.
+- `NaN == NaN` → `false`; use `Number.isNaN(value)` to test for the numeric `NaN` value.
 
 ```javascript
 [] + []       // ""
 [] + {}       // "[object Object]"
-{} + []       // 0  (block + unary plus at statement start)
+{} + []       // 0  (statement-start parse)
+({} + [])     // "[object Object]"
 [] == ![]     // true
 NaN == NaN    // false
 ```
