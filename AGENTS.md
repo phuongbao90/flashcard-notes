@@ -117,6 +117,18 @@ const data = await response.json();
 
 ---
 
+## Filling Blank Sections
+
+When working with existing files that contain incomplete Q&A pairs:
+
+- If `### Answer` is blank, fill it in following the Answer Guidelines (core explanation + behavioral details, bullet points).
+- If `### Question` is blank, fill it in following the Question Generation Guidelines; infer the topic from the existing Answer (or the file's subject if both are blank).
+- Preserve the question ID in the heading (e.g. `### Question 2eb3fc87-dc20-4dc9-a936-857a74466210`) — do not generate a new one.
+- Leave existing, non-blank content untouched. Only fill what is blank.
+- The result must still be a valid pair: one `### Question` and one `### Answer` block.
+
+---
+
 ## Style Guidelines
 
 - Use simple, precise language
