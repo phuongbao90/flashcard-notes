@@ -71,6 +71,16 @@ Agents should generate questions that:
 
 ---
 
+## Optional Learning Considerations for Card Sets
+
+When generating a set of flashcards, consider these principles when they improve learning. They are advisory only and must not change the required Q&A output format:
+
+- ***Atomic Principle*** (Wozniak): Prefer one discrete fact or idea per card to limit cognitive load.
+- ***Dual Coding*** (Paivio): Where it adds value, suggest pairing verbal content with a relevant diagram or visual.
+- ***Interleaving*** (Rohrer & Taylor): Where appropriate, suggest shuffling related topics during review to strengthen contrast and retrieval.
+
+---
+
 ## Answer Guidelines
 
 Each answer should contain:
