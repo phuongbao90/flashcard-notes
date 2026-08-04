@@ -1,6 +1,6 @@
 # Javascript Coercion
 
-### Question
+### Question 023b6083-e1f3-41d0-82ed-17aabd941951
 
 - what is Implicit coercion?
 
@@ -16,7 +16,7 @@
 
 ---
 
-### Question
+### Question 8bc8c997-6109-4b79-9dba-d7fa23bbf750
 
 - what is Explicit coercion?
 
@@ -31,7 +31,7 @@
 
 ---
 
-### Question
+### Question 71c6eab3-2950-4e8c-9453-a16282bbe110
 
 - 4-Step Mnemonic for coercion? G - B - O - S
 
@@ -61,7 +61,7 @@
 
 ---
 
-### Question
+### Question 34d931ee-0fdb-43ed-8f0f-63e14e4f9ee8
 
 - use G - B - O - S to explain the following expression: true == "true"
 
@@ -76,7 +76,7 @@
 
 ---
 
-### Question
+### Question 7d3fe1e8-914f-4777-81f3-b376edba266c
 
 - use G - B - O - S to explain the following expression: true == "true"
 
@@ -91,7 +91,7 @@
 
 ---
 
-### Question
+### Question 938a0a54-9db7-440e-a37f-34bcdb8303c6
 
 - use G - B - O - S to explain the following expression: [1, 2] + [3, 4] and [1, 2] - [3, 4]
 
@@ -108,7 +108,7 @@
 
 ---
 
-### Question
+### Question 1dc9d031-cb48-4b8a-b1f1-4288f1b89026
 
 - use G - B - O - S to explain the following expression: "0" == []
 
@@ -122,7 +122,7 @@
 
 ---
 
-### Question
+### Question 83e5d00a-a6c7-4c0f-8126-33603c14ef5b
 
 - use G - B - O - S to explain the following expression: null > 0, null == 0, and null >= 0
 
@@ -135,7 +135,7 @@
 
 ---
 
-### Question
+### Question d261cda1-ac6e-4fd8-8165-131faa98e8f5
 
 - use G - B - O - S to explain the following expression: [[]] == false
 
@@ -149,7 +149,7 @@
 
 ---
 
-### Question
+### Question af251839-a7ce-4c35-ae28-295572b7ab8a
 
 - use G - B - O - S to explain the following expression: [[[2]]] == 2
 
@@ -162,7 +162,7 @@
 
 ---
 
-### Question
+### Question 29dc7cd8-8aff-4c7a-bc20-92a8d85f37ec
 
 - use G - B - O - S to explain the following expression: 1n == true vs 1n === true
 
@@ -177,7 +177,7 @@
 
 ---
 
-### Question
+### Question 02fd00f7-0526-4dcf-9157-28f818e8e2e3
 
 - use G - B - O - S to explain the following expression: [] == ![]
 
@@ -192,7 +192,7 @@
 
 ---
 
-### Question
+### Question 7bb19b71-4730-4fee-9a71-911e3b155060
 
 - edge case: what are the results of the following expressions?
   - [] + []
