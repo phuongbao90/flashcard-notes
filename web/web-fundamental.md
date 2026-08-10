@@ -887,354 +887,62 @@ await navigator.locks.request("storage_update_lock", async (lock) => {
 
 ### Question 2ec9d9ab-7dc1-435a-bfa3-3d052e44c968
 
+- explain http Etag, how it works? how to use it?
+
 ### Answer
+
+- An _**ETag (Entity Tag)**_ is an HTTP response header that serves as a unique validator (hash or version identifier) for a specific version of a resource at a given URL.
+- Mechanics & Workflow:
+  - Initial Fetch: Server computes a hash of the response payload and returns `ETag: "v1-hash"` along with the resource.
+  - Subsequent Fetch: Browser sends `If-None-Match: "v1-hash"` request header to validate if the cached version is still fresh.
+  - Cache Hit: If unchanged, the server returns status _**304 Not Modified**_ with an empty body, saving bandwidth.
+  - Cache Miss: If modified, the server returns status _**200 OK**_ with the new payload and updated `ETag: "v2-hash"`.
+- Strong vs. Weak ETags:
+  - _**Strong ETag**_ (`ETag: "xyz"`): Requires byte-for-byte identity; changes if any byte in the resource changes.
+  - _**Weak ETag**_ (`ETag: W/"xyz"`): Indicates semantic equality; resource content is functionally equivalent even if minor bytes differ.
+- Practical Usage & Caveats:
+  - Essential for dynamic APIs where file modification timestamps (`Last-Modified`) are inaccurate.
+  - In load-balanced server clusters, ensure ETags are generated using content hashing rather than server-specific inode numbers to avoid cache misses across nodes.
+
+```javascript
+// Express.js backend using ETag validation
+app.get("/api/user", (req, res) => {
+  const data = JSON.stringify({ id: 1, name: "Alice" });
+  const etag = crypto.createHash("md5").update(data).digest("hex");
+
+  if (req.headers["if-none-match"] === etag) {
+    return res.status(304).end(); // Not Modified
+  }
+
+  res.setHeader("ETag", etag);
+  res.send(data);
+});
+```
 
 ---
 
 ### Question 04f133ee-3707-45ae-ae8c-6e4d20c125d8
 
-### Answer
-
----
-
-### Question 745503dd-42dd-4628-9202-5e42ab62f878
-
-### Answer
-
----
-
-### Question 01c0257f-9abc-4148-b52f-2b332eb2d442
+- explain:
+  - If-Modified-Since
+  - If-None-Match
+  - If-Match
+  - If-Unmodified-Since
+  - If-Range
+- When to use them?
 
 ### Answer
 
----
-
-### Question 9f90023e-5ad8-4319-a476-f8cd2424df48
-
-### Answer
-
----
-
-### Question d6996393-7568-4515-8fac-b90662b04924
-
-### Answer
-
----
-
-### Question aff03e6e-5d2e-4272-ab4d-57d4f5c304ca
-
-### Answer
-
----
-
-### Question ba704fee-9eea-45ad-bddd-7b3e8f852c52
-
-### Answer
-
----
-
-### Question ab8418fb-d247-499a-961f-e669d3cc63ef
-
-### Answer
-
----
-
-### Question 5cd068ff-e404-42c9-9014-a005f0b45caa
-
-### Answer
-
----
-
-### Question 3d33f9df-5262-4dd6-b9b5-c41c3ec1cc10
-
-### Answer
-
----
-
-### Question 2eec6118-d4f8-483e-94e9-5787a28482b1
-
-### Answer
-
----
-
-### Question b154be9e-36b7-4007-b306-4620c5f921b3
-
-### Answer
-
----
-
-### Question 338f799e-b4e3-481f-8d56-47e87fe24914
-
-### Answer
-
----
-
-### Question fc996ae4-c595-472d-a4aa-73ae63d9234d
-
-### Answer
-
----
-
-### Question f866019c-ee4f-4ede-b874-a40c2a291eda
-
-### Answer
-
----
-
-### Question 8f27e700-fa6a-4395-bca4-d29326f17f7d
-
-### Answer
-
----
-
-### Question 6856268b-beba-4026-afb8-9ffc445896f6
-
-### Answer
-
----
-
-### Question 14f57f15-6535-4388-ad41-c45411f541c3
-
-### Answer
-
----
-
-### Question 768b3446-44bf-442d-af2b-fdd1da6f0455
-
-### Answer
-
----
-
-### Question df1b4da1-1729-4601-aedf-72373d0930d6
-
-### Answer
-
----
-
-### Question d3c4b674-6ebe-41f8-8a1b-fe7dd2e07ff9
-
-### Answer
-
----
-
-### Question 68584e1c-34e1-4ab1-98c6-b1ede2a9a499
-
-### Answer
-
----
-
-### Question 68df5723-267a-4567-b839-814317b54858
-
-### Answer
-
----
-
-### Question e9b20ee7-a198-4c30-896d-84ea1a4b4c30
-
-### Answer
-
----
-
-### Question e2f26faf-21c5-4eff-89ec-b522bd016322
-
-### Answer
-
----
-
-### Question 2036e9dd-176d-4861-b1ba-16dd862a7110
-
-### Answer
-
----
-
-### Question eae28088-ed00-4a67-be99-00680e0faf13
-
-### Answer
-
----
-
-### Question 9d625051-f4fa-47a6-8c04-45128bf70464
-
-### Answer
-
----
-
-### Question 937f7f06-8eef-48f0-b720-a429ca16d4dc
-
-### Answer
-
----
-
-### Question ce4efbf5-d4a0-4fb4-87f2-8e2e9d4eb9e4
-
-### Answer
-
----
-
-### Question 66bd29b8-986b-41cb-b4e7-fe7aefe0acdd
-
-### Answer
-
----
-
-### Question ced88bfb-ce2e-4a91-9efa-f5680540394e
-
-### Answer
-
----
-
-### Question 842ff4aa-531a-41a8-8f7d-b10d246d423c
-
-### Answer
-
----
-
-### Question e332d043-dfc6-4e8d-b542-087b1c6b7bcb
-
-### Answer
-
----
-
-### Question 7d197263-9203-481a-90bb-f4ca119e50af
-
-### Answer
-
----
-
-### Question c5cd415c-b5d4-45fb-92d7-ffeea11b7a34
-
-### Answer
-
----
-
-### Question b68b67a2-d7b4-4f34-a904-c546827e6888
-
-### Answer
-
----
-
-### Question 9595ae4d-853b-4879-a594-7e52f9a94673
-
-### Answer
-
----
-
-### Question aeeb032d-ef54-4550-803a-1b76c12aafac
-
-### Answer
-
----
-
-### Question 0f68872a-b82f-4cd2-a115-8db63cee7ef4
-
-### Answer
-
----
-
-### Question 737bd0c3-704a-4686-bb31-81ac53b07b82
-
-### Answer
-
----
-
-### Question 97a7499a-7f0f-445a-bb74-efa6e59b22e7
-
-### Answer
-
----
-
-### Question a2abaf20-3197-4def-83f4-654e7dc081d2
-
-### Answer
-
----
-
-### Question 4205b2a3-5968-499e-a6ef-caa2b49aa1a6
-
-### Answer
-
----
-
-### Question b8f614e4-2b5a-4601-a4f2-9e36964ad6e7
-
-### Answer
-
----
-
-### Question 8f58ffde-1d0d-4ebd-afd9-5db5b0de17c8
-
-### Answer
-
----
-
-### Question 789ef291-1770-4320-99e0-14aa07a911bb
-
-### Answer
-
----
-
-### Question 35431a2a-f220-4081-a846-0480499c6d55
-
-### Answer
-
----
-
-### Question f3d1438e-e4b8-4d55-8c4a-48a01c56c0f7
-
-### Answer
-
----
-
-### Question f0409a4a-b869-4a78-b26a-b27933177976
-
-### Answer
-
----
-
-### Question 9173953d-7014-4026-be94-62e2a1b99c63
-
-### Answer
-
----
-
-### Question 593252ee-9e7d-4597-9794-01a3f2be1c1c
-
-### Answer
-
----
-
-### Question d354d4aa-d4e4-4756-8efb-9b0973aff3fa
-
-### Answer
-
----
-
-### Question bf3f6c98-b851-4df0-991d-e4eb6cb90210
-
-### Answer
-
----
-
-### Question 7561bab6-a38a-4f5c-9fdc-3dae1c90866a
-
-### Answer
-
----
-
-### Question 859a0b12-252d-46f8-a091-871904f173aa
-
-### Answer
-
----
-
-### Question 82e225c3-d20d-4fa6-8c73-dc5461b57649
-
-### Answer
-
----
-
-### Question ed4d1ac4-2aea-4350-bfec-df37ea2c02df
-
-### Answer
+- These are HTTP _**Conditional Headers**_ that allow clients to execute requests conditionally based on resource state (timestamps or ETags).
+- Key Header Breakdown:
+  - _**If-None-Match**_: Checks if the server's current `ETag` matches the client's cached ETag. Used in `GET` for cache revalidation (returns _**304 Not Modified**_ if matched).
+  - _**If-Modified-Since**_: Checks if the resource was modified after a specific HTTP date timestamp. Used as fallback cache revalidation when ETags are absent.
+  - _**If-Match**_: Ensures the server resource matches the client's expected ETag before performing mutations (`PUT`, `DELETE`). Used to prevent _**lost update concurrency issues**_ (optimistic locking).
+  - _**If-Unmodified-Since**_: Ensures resource hasn't changed since a given date before processing mutations or resuming downloads.
+  - _**If-Range**_: Used with `Range` requests (`GET`). If the ETag/date matches, server returns _**206 Partial Content**_; if changed, server returns _**200 OK**_ with the full payload instead of failing.
+- Usage Summary:
+  - Revalidation (`GET`): Prefer _**If-None-Match**_ (accurate hash) over _**If-Modified-Since**_ (1-second precision limit).
+  - Concurrency Control (`PUT`/`PATCH`): Use _**If-Match**_ to prevent overwriting someone else's edits.
+  - Resumable Downloads: Use _**If-Range**_ to avoid fetching invalid range chunks when files mutate mid-download.
 
 ---
