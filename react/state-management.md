@@ -1,6 +1,6 @@
 # State Management
 
-### Question
+### Question 9a3996e5-513d-45af-b8e4-3b8e95cbfe6e
 
 - How do you model state in a complex React application to separate server-backed entities from transient UI state?
 
@@ -25,7 +25,7 @@ function PostFeed() {
 
 ---
 
-### Question
+### Question f43d0c49-cead-43ee-a7f6-2095fea3187f
 
 - What are the unique characteristics of server state compared to client state, and how do data sources and mutation frequency dictate state ownership?
 
@@ -38,7 +38,7 @@ function PostFeed() {
 
 ---
 
-### Question
+### Question 88e6c892-5fdc-443d-b7e6-607139e0a635
 
 - How should transient UI state (such as open panels, filter selections, and draft inputs) be managed to prevent scope leakage into global stores?
 
@@ -51,7 +51,7 @@ function PostFeed() {
 
 ---
 
-### Question
+### Question d25058bc-62f3-465e-9b86-39d0dbf40d3c
 
 - What risks arise when duplicated entity data (e.g., post objects) is stored across multiple UI views, and how does a single source of truth resolve state drift?
 
@@ -81,7 +81,7 @@ const state = {
 
 ---
 
-### Question
+### Question 07c135eb-130f-4ace-ab12-deb719de722c
 
 - How does Unidirectional Data Flow ensure that entity actions (e.g., liking or saving a post) remain synchronized across multiple mounted UI surfaces?
 
@@ -108,7 +108,7 @@ function LikeButton({ postId }) {
 
 ---
 
-### Question
+### Question eca41fa2-48c6-4079-994d-aa7aeeb6886d
 
 - How does React's reconciler determine if a state update occurred, and why does mutating objects or arrays directly break re-rendering?
 
@@ -135,7 +135,7 @@ const updateUser = () => {
 
 ---
 
-### Question
+### Question 1ad24992-4372-4dd7-84d6-b5e15ee7607d
 
 - How does React 18 Automatic Batching work, and in what scenarios would a senior developer use flushSync?
 
@@ -162,7 +162,7 @@ const handleMessage = () => {
 
 ---
 
-### Question
+### Question fb0250db-30e5-4419-a8dc-1c4525ddf73c
 
 - What is the difference between direct state updates and functional state updates, and how do functional updates solve stale closures?
 
@@ -191,7 +191,7 @@ const handleTripleIncrement = () => {
 
 ---
 
-### Question
+### Question 556bc7ca-5967-4c0c-8d5c-fa60714d212f
 
 - Why is storing derived state in useState or synchronizing it via useEffect an anti-pattern, and how should it be handled?
 
@@ -216,7 +216,7 @@ const selectedItem = items.find(item => item.id === selectedId);
 
 ---
 
-### Question
+### Question eee137d9-7b1c-4544-a01b-2e7838e1a955
 
 - How does changing the key prop reset component state, and how does it compare to manually resetting state in useEffect?
 
@@ -236,7 +236,7 @@ function ProfilePage({ userId }) {
 
 ---
 
-### Question
+### Question 8f205b0b-d667-45fc-a39e-b0b40cc6af30
 
 - What technical criteria determine when a component should transition from useState to useReducer?
 
@@ -264,7 +264,7 @@ dispatch({ type: "SUBMIT_START" });
 
 ---
 
-### Question
+### Question e6a36b03-eabe-4d3f-847d-5593f59ad443
 
 - Why is the dispatch function from useReducer reference-stable, and why must reducers remain pure functions?
 
@@ -277,7 +277,7 @@ dispatch({ type: "SUBMIT_START" });
 
 ---
 
-### Question
+### Question 23b80f9d-316b-4e08-b71f-4350506c7107
 
 - How does useRef differ from useState under the hood regarding Fiber storage, re-renders, and synchronous access?
 
@@ -298,7 +298,7 @@ useEffect(() => {
 
 ---
 
-### Question
+### Question fc819bab-6050-4bbd-8884-39e09b6d12fd
 
 - When should you use a Callback Ref over a Ref Object, and what are the best practices for non-DOM refs?
 
@@ -321,7 +321,7 @@ const measuredRef = useCallback(node => {
 
 ---
 
-### Question
+### Question d750a3bc-7973-4719-9aec-6e746f57d0f6
 
 - How does React Context propagate updates down the Fiber tree, and why do all consumers re-render when a context value changes?
 
@@ -334,7 +334,7 @@ const measuredRef = useCallback(node => {
 
 ---
 
-### Question
+### Question 6c9580e8-e1de-45fd-bd8b-e33378acda58
 
 - What is the Context Re-render Trap with inline provider values, and how do you prevent unnecessary consumer re-renders?
 
@@ -362,7 +362,7 @@ function UserProvider({ children }) {
 
 ---
 
-### Question
+### Question 063a3431-130c-4c7d-92db-9c8ed5c76e29
 
 - How does the Context Splitting pattern prevent action-only or state-slice consumers from unnecessary re-renders?
 
@@ -393,7 +393,7 @@ export function TodoProvider({ children }) {
 
 ---
 
-### Question
+### Question cb9fee24-625f-4361-b45d-2e294dc59b8d
 
 - How does Component Composition (children pattern) eliminate parent re-render cascades without using Context or React.memo?
 
@@ -419,7 +419,7 @@ function ScrollLayout({ children }) {
 
 ---
 
-### Question
+### Question d8ae3d41-713d-4dfc-b690-66933295523b
 
 - How can you implement a fine-grained Context Selector pattern to restrict re-renders to specific state properties?
 
@@ -442,7 +442,7 @@ function ThemeButton() {
 
 ---
 
-### Question
+### Question d1876e32-cb37-426a-a107-4e84f1ff031f
 
 - What architectural criteria dictate choosing between React Context, Reducers, or an External Store/Cache library for application state?
 
@@ -455,7 +455,7 @@ function ThemeButton() {
 
 ---
 
-### Question
+### Question 47f155e9-7caf-4a60-860b-c28f2eb54977
 
 - What is tearing in React 18 Concurrent Rendering, and why is useSyncExternalStore required for external store subscriptions?
 
@@ -468,7 +468,7 @@ function ThemeButton() {
 
 ---
 
-### Question
+### Question 0bcdbac4-09cb-4b22-92f6-c56772787955
 
 - How do you implement a lightweight custom store using useSyncExternalStore with subscribe and getSnapshot callbacks?
 
@@ -513,7 +513,7 @@ function Counter() {
 
 ---
 
-### Question
+### Question 05eb40c7-c4b5-4781-a9e3-2277a018d503
 
 - What cache invalidation and refetch strategies should be applied to filtered or paginated feeds after entity mutations?
 
@@ -547,7 +547,7 @@ function handlePostUpdate(updatedPost) {
 
 ---
 
-### Question
+### Question bae3c714-f3fa-4d40-8142-97235cd2f815
 
 - How does useActionState manage pending state, returned form state, and errors for Server/Client Actions in React 19?
 
@@ -584,7 +584,7 @@ function ProfileForm() {
 
 ---
 
-### Question
+### Question a85f8b18-e96c-496a-ac45-b273f1e7cdf4
 
 - How do optimistic and pessimistic mutation strategies differ in reliability, and how should applications handle server rejection or disagreement?
 
@@ -619,7 +619,7 @@ async function handleToggleLike(postId) {
 
 ---
 
-### Question
+### Question baf4e079-c491-4940-a701-d9df5caa1c57
 
 - What practical debugging and observability mechanisms should be integrated to trace state mutations and diagnose production state bugs?
 
@@ -647,7 +647,7 @@ const loggerMiddleware = (config) => (set, get, api) =>
 
 ---
 
-### Question
+### Question a37cf8ba-37ca-4b41-8b90-9a3ae8556a2d
 
 - What is State Colocation, and why is it more effective at preventing re-renders than wrapping components in React.memo?
 
@@ -685,7 +685,7 @@ function ModalWrapper() {
 
 ---
 
-### Question
+### Question 5a923d52-263d-43e8-9dc8-0a11d11a91c3
 
 - Why is syncing props to state inside useEffect an anti-pattern, and what bugs does it cause?
 
@@ -702,7 +702,7 @@ function ModalWrapper() {
 
 ---
 
-### Question
+### Question 633e9623-d809-4eb6-931f-894a2281ae55
 
 - How do stale closures occur in asynchronous callbacks, and how do you resolve them cleanly in React?
 
@@ -733,7 +733,7 @@ function useInterval(callback, delay) {
 
 ---
 
-### Question
+### Question 8b6b874e-54e0-4253-aab4-a061784df184
 
 - How can state management architecture be designed to support isolated testing across pure update logic, custom hooks, and mockable data boundaries?
 
@@ -756,7 +756,7 @@ describe("cartReducer", () => {
 
 ---
 
-### Question
+### Question 148d8601-4d79-40d7-9949-71f7152bf26e
 
 - When reviewing React PRs, what specific code smells indicate over-architected global state or fragile state coupling?
 
@@ -772,7 +772,7 @@ describe("cartReducer", () => {
 
 ---
 
-### Question
+### Question d5c0dbb9-8a1f-4559-95fc-8f6d8db062ea
 
 - What are the foundational principles of Redux, and why was its architecture designed around immutability and pure functions?
 
@@ -785,7 +785,7 @@ describe("cartReducer", () => {
 
 ---
 
-### Question
+### Question 21152ac7-69c4-471d-84df-cacd80325322
 
 - How does Redux enforce Unidirectional Data Flow, and what roles do Actions, Reducers, and the Store play in the state update lifecycle?
 
@@ -798,7 +798,7 @@ describe("cartReducer", () => {
 
 ---
 
-### Question
+### Question 7659e13f-3d2c-4f9f-82ee-12ed75acc146
 
 - What architectural friction in legacy Redux does Redux Toolkit (RTK) resolve, and how does it modernize Redux state management?
 
@@ -811,7 +811,7 @@ describe("cartReducer", () => {
 
 ---
 
-### Question
+### Question db085a79-ebd2-41b3-8de6-6a90c4335d7f
 
 - What is Zustand's architectural philosophy, and how does its hook-based store model differ from React Context and Redux?
 
@@ -824,7 +824,7 @@ describe("cartReducer", () => {
 
 ---
 
-### Question
+### Question 166940bb-de25-4e91-b4be-4ebc418def06
 
 - What are the primary architectural trade-offs between Redux and Zustand in terms of structure, action tracking, and developer experience?
 
@@ -837,7 +837,7 @@ describe("cartReducer", () => {
 
 ---
 
-### Question
+### Question b4deedec-8563-4cc6-9309-eeacba840d10
 
 - How do Redux and Zustand compare regarding selector subscription mechanisms and component re-render performance?
 
@@ -850,7 +850,7 @@ describe("cartReducer", () => {
 
 ---
 
-### Question
+### Question 2a8d315c-92d1-42f0-81df-c77a1e88cfac
 
 - How do the debugging capabilities, DevTools integration, and middleware ecosystems compare between Redux and Zustand?
 
@@ -862,7 +862,7 @@ describe("cartReducer", () => {
 
 ---
 
-### Question
+### Question dd99871a-1d94-4296-a07e-7e1882a2d480
 
 - What technical criteria and team requirements determine whether a project should adopt Redux (RTK) or Zustand?
 

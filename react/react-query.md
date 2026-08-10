@@ -1,6 +1,6 @@
 # React Query
 
-### Question
+### Question d5207f32-7f50-470f-85b0-2412383cee9d
 
 - What happen when you call invalidate a query in React Query?
 
@@ -12,7 +12,7 @@
 
 ---
 
-### Question
+### Question 8ce2d808-5219-4ebe-b4eb-74fd4056956c
 
 - When invalidate a query, if i dont want to refetch active queries, what should i do?
 - or if i want to refetch all including inactive queries, what should i do?
@@ -24,7 +24,7 @@
 
 ---
 
-### Question
+### Question 7e706777-01db-4e14-aa5a-896ffca4da95
 
 - compare invalidateQueries and refetchQueries in React Query
 
@@ -41,7 +41,7 @@
 
 ---
 
-### Question
+### Question f6f287e2-6140-46ff-9463-f85310cff76c
 
 - compare invalidateQueries and removeQueries in React Query
 
@@ -57,7 +57,7 @@
 
 ---
 
-### Question
+### Question 63f63c5b-c895-4437-8ff1-fb0216257081
 
 - will disable queries be refetched when invalidateQueries is called?
 
@@ -68,7 +68,7 @@
 
 ---
 
-### Question
+### Question b1613fc6-4e25-484f-bda8-8e8ea46d4b6e
 
 - Does invalidateQueries throw an error if failed to invalidate a query?
 
@@ -79,7 +79,7 @@
 
 ---
 
-### Question
+### Question ce9883de-7972-4179-8302-c5be19d7fdba
 
 - A query is defined with enabled: false. Which of the following APIs will trigger a network request for that query?
   - invalidateQueries
@@ -98,7 +98,7 @@
 
 ---
 
-### Question
+### Question 7f2021e9-ee87-408d-839c-250e94cd6ad4
 
 - Discuss refetchQueries:
   - Does it throw an error if failed to refetch a query?
@@ -116,7 +116,7 @@
 
 ---
 
-### Question
+### Question fe609f76-7016-430c-b7e8-addea411017d
 
 - Why prefetchQuery should be used instead of fetchQuery in React Query?
 
@@ -129,7 +129,7 @@
 
 ---
 
-### Question
+### Question b29768f5-d27d-4fe3-879c-0a038c78d946
 
 - when queries are stale, what happens when these methods are called in terms of active vs inactive queries:
   - invalidateQueries
@@ -150,7 +150,7 @@
 
 ---
 
-### Question
+### Question 34f53770-0ef3-41fe-9607-81966414e1b2
 
 - fetchQuery vs useQuery in React Query
 
@@ -165,7 +165,7 @@
 
 ---
 
-### Question
+### Question a4e181a1-3abb-411b-82c0-3a6d1dd795f7
 
 - what happen when you call ensureQueryData in React Query?
 
@@ -177,7 +177,7 @@
 
 ---
 
-### Question
+### Question abba1d6f-2054-48c2-ab8a-126e175dcbcf
 
 - setQueryData vs fetchQuery in React Query
 
@@ -192,7 +192,7 @@
 
 ---
 
-### Question
+### Question 565673b1-d5eb-48f4-a4cc-bde46ce2e14f
 
 - Discuss setQueryData
   - use cases
@@ -216,7 +216,7 @@
 
 ---
 
-### Question
+### Question f303c6de-e0c4-43db-a05a-5c4bda9d64c8
 
 - explain cancelRefetch in refetchQueries
 
@@ -228,7 +228,7 @@
 
 ---
 
-### Question
+### Question 12bdacb4-4c18-478b-a15e-0a3e4b800a60
 
 - resetQueries
   - what does it do?
@@ -250,7 +250,7 @@
 
 ---
 
-### Question
+### Question 0230622f-e248-4b10-9498-951b5c13e8b2
 
 - resetQueries vs invalidateQueries
 
@@ -263,7 +263,7 @@
 
 ---
 
-### Question
+### Question de15c949-7295-4211-b49f-94ee279d64d1
 
 - discuss select in useQuery / useInfiniteQuery
   - what does it do?
@@ -292,7 +292,7 @@
 
 ---
 
-### Question
+### Question d5641d6a-4e1e-4d32-87da-93443385abf8
 
 - initialData vs placeholderData in useQuery / useInfiniteQuery
 
@@ -307,7 +307,7 @@
 
 ---
 
-### Question
+### Question 52b42f0b-cca4-40ef-8c8c-8c566641ba77
 
 - select vs useMemo
 
@@ -349,7 +349,7 @@
 
 ---
 
-### Question
+### Question f8899929-399d-4624-ba07-5bda3996c25b
 
 - discuss combine in useQueries
 
@@ -361,7 +361,7 @@
 
 ---
 
-### Question
+### Question d936b043-4a89-4a04-88de-0ea8356d91cc
 
 - what is the purpose and use case of mutationKey in useMutation?
 
@@ -376,7 +376,7 @@
 
 ---
 
-### Question
+### Question af22bea4-4759-4fcc-b553-d8761aa3a4ba
 
 - what suspense hooks differ from non-suspense hooks in React Query?
 
@@ -390,7 +390,7 @@
 
 ---
 
-### Question
+### Question a3b3e3d5-a50c-4006-aae9-3fcfd1f869da
 
 - select vs transform in queryFn
 
@@ -405,7 +405,7 @@
 
 ---
 
-### Question
+### Question bd9c8d91-7e49-437f-ac78-5fc05555edfe
 
 - important notes on queryFn in React Query
 
@@ -436,7 +436,7 @@
 
 ---
 
-### Question
+### Question e0da4b94-43f5-4b07-9957-99e6e65b0f01
 
 - discuss Network Mode in react query
 
@@ -444,7 +444,7 @@
 
 ---
 
-### Question
+### Question 3480e17d-6987-4958-8606-92cbd701a3ab
 
 - show loading indicator in react query
 
@@ -456,7 +456,7 @@
 
 ---
 
-### Question
+### Question d4d83f44-5ff6-447a-b1a5-c4ddec87e34f
 
 - initial data query
   - ways to pre-populate query cache with data
@@ -485,7 +485,7 @@
 
 ---
 
-### Question
+### Question 711dad80-32b4-49f9-a07c-f9a1fbde794e
 
 - placeholderData
   - with cached
@@ -520,7 +520,7 @@
 
 ---
 
-### Question
+### Question 27b3ba7c-b8fb-482e-9d42-e6a64178ff8d
 
 - mutation
   - lifecycle
@@ -547,7 +547,7 @@
 
 ---
 
-### Question
+### Question 4f70e6aa-7d4d-41c9-9d9d-47ee86716661
 
 - mutation
   - Consecutive mutations
@@ -574,7 +574,7 @@ todos.forEach((todo) => {
 
 ---
 
-### Question
+### Question c79e85e3-c1c1-47d7-b630-442dbd624819
 
 - mutation persisted and offline
   - what are the requirements?
@@ -639,7 +639,7 @@ todos.forEach((todo) => {
 
 ---
 
-### Question
+### Question 0f076690-c7b0-44a4-b117-b86b8a6b5a0f
 
 - scope in useMutation
   - what is the scope of useMutation?
@@ -686,7 +686,7 @@ todos.forEach((todo) => {
 
 ---
 
-### Question
+### Question 3bade988-91c1-4516-a3d0-7be18980d0e4
 
 - explain predicate in invalidateQueries, refetchQueries, removeQueries, resetQueries
 
@@ -701,7 +701,7 @@ todos.forEach((todo) => {
 
 ---
 
-### Question
+### Question a0c81eab-7db2-4c1a-87a4-41c9b326d797
 
 - optimistic update in React Query
   - how to implement
@@ -745,7 +745,7 @@ useMutation({
 
 ---
 
-### Question
+### Question 5cd6ad0f-c515-4b59-a10c-1d303fd5a2e0
 
 - What is a Request Waterfall?
 - in React Query
@@ -781,7 +781,7 @@ useMutation({
 
 ---
 
-### Question
+### Question 4a154a77-d2b0-4ac9-93eb-fb32876768d9
 
 - Server rendering and hydration in React Query
   - typical flow vs desired flow
@@ -807,7 +807,7 @@ useMutation({
 
 ---
 
-### Question
+### Question 67a593c8-d6aa-4cb3-a054-3eea89956e06
 
 - Server rendering and hydration in React Query
   - what are the implementation methods?
@@ -883,7 +883,7 @@ useMutation({
 
 ---
 
-### Question
+### Question 5f5ed5ad-1933-444f-8517-a8548eac8075
 
 - what are the important defaults of react query?
   - staleTime
@@ -912,7 +912,7 @@ useMutation({
 
 ---
 
-### Question
+### Question dd982c68-a792-455d-9351-5371fa885de4
 
 - render optimizations in React Query
 
@@ -936,7 +936,7 @@ useMutation({
 
 ---
 
-### Question
+### Question 5841c53b-351b-4b2c-9fa8-137e6efa0eb1
 
 - suspense in React Query
   - what missing?
@@ -965,67 +965,67 @@ useMutation({
 
 ---
 
-### Question
+### Question 27923078-56ed-4c73-ad6b-7c15f84036ff
 
 ### Answer
 
 ---
 
-### Question
+### Question 5c054244-c2a7-4c73-a2e7-07e096e3fe8c
 
 ### Answer
 
 ---
 
-### Question
+### Question 3772f79f-ee6c-454e-8576-ca9f8e11b823
 
 ### Answer
 
 ---
 
-### Question
+### Question 5b8cb516-68b0-422b-b8b6-59958bac4076
 
 ### Answer
 
 ---
 
-### Question
+### Question d31217ca-5718-420b-b3ca-bebde43d17a8
 
 ### Answer
 
 ---
 
-### Question
+### Question dbc505a2-2dfb-4088-a5c9-9ccea894dcb0
 
 ### Answer
 
 ---
 
-### Question
+### Question a4bae6c1-2f7a-496d-bb70-39f32900fa0c
 
 ### Answer
 
 ---
 
-### Question
+### Question ad734b8a-7fec-49b3-9fc8-4976bc0f45eb
 
 ### Answer
 
 ---
 
-### Question
+### Question 49cc322a-1556-4a65-97b1-4f2aef7e2482
 
 ### Answer
 
 ---
 
-### Question
+### Question 279b518b-52c0-4dd5-85d9-da679f664c03
 
 ### Answer
 
 ---
 
-### Question
+### Question 29624995-59d3-455b-93f5-d9642103ed55
 
 ### Answer
 
