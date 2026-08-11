@@ -1,6 +1,6 @@
 # Core Programming
 
-### Question
+### Question a8b6e6c9-a4ca-4458-bb16-b068c2ee0dd1
 
 - How does the _**Single Responsibility Principle (SRP)**_ apply to React Context design, and what performance bottlenecks occur when state and dispatch are combined?
 
@@ -28,7 +28,7 @@ export const UserProvider = ({ children }) => {
 
 ---
 
-### Question
+### Question dbfeca7b-5a21-4b6b-93ba-c46d709f616a
 
 - How can React Context be leveraged to satisfy the _**Open/Closed Principle (OCP)**_ in component design?
 
@@ -70,7 +70,7 @@ Select.Option = ({ value, children }) => {
 
 ---
 
-### Question
+### Question d25853d7-b572-4757-86b3-9a593b15085e
 
 - How does the _**Liskov Substitution Principle (LSP)**_ govern React Context providers and custom hook abstractions?
 
@@ -94,7 +94,7 @@ export const useAuth = () => {
 
 ---
 
-### Question
+### Question 9a04fdd1-7eac-44b4-a950-cdbe14980029
 
 - How does the _**Interface Segregation Principle (ISP)**_ address React Context bloat and unnecessary component re-renders?
 
@@ -116,7 +116,7 @@ const user = useContext(UserContext);
 
 ---
 
-### Question
+### Question 5c6c9951-c254-4d27-8cf8-257fbff7e717
 
 - How can React Context be used as an Inversion of Control mechanism to achieve the _**Dependency Inversion Principle (DIP)**_?
 

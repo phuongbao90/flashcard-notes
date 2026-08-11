@@ -561,7 +561,7 @@ describe("cartReducer", () => {
 
 ---
 
-### Question
+### Question ea40f104-a4ad-4693-bfc5-360acf049c48
 
 - What is the complete synchronous and asynchronous execution lifecycle of a Redux action from dispatch to UI re-render?
 
@@ -626,7 +626,7 @@ const fetchUser = createAsyncThunk("user/fetch", async (id) => {
 
 ---
 
-### Question
+### Question d7f7f49e-e272-4e35-bcd8-fd94071ea6a4
 
 - What architectural friction in legacy Redux does Redux Toolkit (RTK) resolve, and how does it modernize Redux state management?
 
@@ -639,7 +639,7 @@ const fetchUser = createAsyncThunk("user/fetch", async (id) => {
 
 ---
 
-### Question
+### Question 019ca986-77ae-4cca-8f96-4ee81d76e6eb
 
 - What are the architectural differences between Redux and Zustand?
 
@@ -671,7 +671,7 @@ const useCounterStore = create((set) => ({
 
 ---
 
-### Question
+### Question 0a64055b-1c16-4d53-a0ae-9d17d7198f35
 
 - How does a React component subscribe to Redux versus Zustand?
 
@@ -696,7 +696,7 @@ const count = useCounterStore((state) => state.value);
 
 ---
 
-### Question
+### Question 7b3b5770-f0bb-44f7-9949-c3f389510e42
 
 - Walk me through what happens when a component updates state in Redux versus Zustand.
 
@@ -718,7 +718,7 @@ const count = useCounterStore((state) => state.value);
 
 ---
 
-### Question
+### Question 12bb0a33-bb6f-4b9e-84cc-92688747721f
 
 - Why does Redux have actions and reducers, while Zustand commonly doesn't?
 
@@ -741,7 +741,7 @@ const useCartStore = create((set) => ({
 
 ---
 
-### Question
+### Question 44a5c613-5ad1-401e-9838-9f5b56da45ce
 
 - How does state mutation differ between Redux Toolkit and Zustand?
 
@@ -766,7 +766,7 @@ updateName: (name) => set(produce((state) => { state.user.name = name; })),
 
 ---
 
-### Question
+### Question 886a7c2f-ee80-4098-a19c-eff1dbb22631
 
 - How does middleware differ between Redux and Zustand?
 
@@ -801,7 +801,7 @@ const logMiddleware = (config) => (set, get, api) =>
 
 ---
 
-### Question
+### Question bb6e7e9b-866b-41b9-b597-7b1783796a27
 
 - How would you handle asynchronous operations in Redux versus Zustand?
 
@@ -838,7 +838,7 @@ const useUserStore = create((set) => ({
 
 ---
 
-### Question
+### Question 5fa0052e-b2fd-4706-a926-4641a950acbc
 
 - How would you access Redux and Zustand state outside a React component?
 
@@ -870,7 +870,7 @@ useUserStore.getState().logout(); // Call action method directly
 
 ---
 
-### Question
+### Question 25be0ecf-e73d-4383-816c-1f532e72fece
 
 - How do Redux and Zustand determine which components need to re-render?
 
@@ -900,7 +900,7 @@ const { name, email } = useUserStore(
 
 ---
 
-### Question
+### Question be95f7c0-9874-423b-aa0a-d10bd0a10d85
 
 - Which would you choose for a large application: Redux Toolkit or Zustand? Why?
 
@@ -918,7 +918,7 @@ const { name, email } = useUserStore(
 
 ---
 
-### Question
+### Question 5e9cf7ae-f184-4380-b2cb-6936d30a0e36
 
 - How would debugging differ between Redux and Zustand?
 
@@ -947,7 +947,7 @@ const useCounterStore = create(
 
 ---
 
-### Question
+### Question 5190e8c1-ba0a-4503-b52a-68a5f8f3b5ab
 
 - Why does Redux typically use <Provider>, while Zustand can be providerless?
 
@@ -975,7 +975,7 @@ import { useCounterStore } from "./useCounterStore";
 
 ---
 
-### Question
+### Question 5563c464-b3ed-43b6-98b9-e122d035e262
 
 - What are the architectural differences between Redux and React Context?
 
@@ -997,7 +997,7 @@ const store = configureStore({ reducer: rootReducer });
 
 ---
 
-### Question
+### Question 682069af-a5a9-4d4a-81a5-2af9b1ef45ec
 
 - What problem does React Context solve, and what problem does Redux solve?
 
@@ -1009,7 +1009,7 @@ const store = configureStore({ reducer: rootReducer });
 
 ---
 
-### Question
+### Question c8a63595-cf71-420d-ac77-8f02831d793b
 
 - How does state flow differ between Context and Redux?
 
@@ -1029,7 +1029,7 @@ const store = configureStore({ reducer: rootReducer });
 
 ---
 
-### Question
+### Question 69568339-8dc6-4924-9389-2aa0727c1c11
 
 - How does a React component read and update state using Context versus Redux?
 
@@ -1055,7 +1055,7 @@ dispatch(updateUser({ name: "Alice" }));
 
 ---
 
-### Question
+### Question 6451c744-5f07-4f11-a492-875295135fd1
 
 - Does React Context provide state management by itself? Why or why not?
 
@@ -1072,7 +1072,7 @@ dispatch(updateUser({ name: "Alice" }));
 
 ---
 
-### Question
+### Question 39ef5e20-25d0-4a02-9add-1de48e8157cd
 
 - How do Context Providers and the Redux <Provider> differ?
 
@@ -1101,7 +1101,7 @@ dispatch(updateUser({ name: "Alice" }));
 
 ---
 
-### Question
+### Question cf896565-b60a-4161-a2ca-becdccd836cb
 
 - How do Context updates affect component re-renders compared with Redux selectors?
 
@@ -1113,7 +1113,7 @@ dispatch(updateUser({ name: "Alice" }));
 
 ---
 
-### Question
+### Question bb896e45-3387-4192-8c68-a6671bb36f57
 
 - How would you prevent unnecessary re-renders when using React Context?
 
@@ -1143,7 +1143,7 @@ export function AppProvider({ children }) {
 
 ---
 
-### Question
+### Question 5b9191fd-0721-4739-9869-e05e8a1f2450
 
 - How does Redux's subscription model differ from React Context's propagation model?
 
@@ -1155,7 +1155,7 @@ export function AppProvider({ children }) {
 
 ---
 
-### Question
+### Question 1b08ba2d-b019-4f43-a3b0-21f4a61ba67e
 
 - How would you handle asynchronous operations with Context versus Redux?
 
@@ -1188,7 +1188,7 @@ const fetchUser = createAsyncThunk("user/fetch", async (id) => {
 
 ---
 
-### Question
+### Question 1449bfb0-9c7e-432e-912f-fd0fcb365103
 
 - How would you handle complex state transitions with Context versus Redux?
 
@@ -1211,7 +1211,7 @@ return (
 
 ---
 
-### Question
+### Question d001a674-0f0c-428e-9654-c89cf5863d7a
 
 - How does middleware fit into Redux, and what is the equivalent when using Context?
 
@@ -1232,7 +1232,7 @@ const customDispatch = (action) => {
 
 ---
 
-### Question
+### Question 9413cdf7-a100-4b46-a6bc-35ed72d51db2
 
 - How would you structure multiple Contexts in a large application?
 
@@ -1259,7 +1259,7 @@ function ComposeProviders({ providers, children }) {
 
 ---
 
-### Question
+### Question b4a92395-e40e-42d7-b8a9-25d5fbf0bd1b
 
 - When does using Context become difficult to maintain compared with Redux?
 
@@ -1272,7 +1272,7 @@ function ComposeProviders({ providers, children }) {
 
 ---
 
-### Question
+### Question 8e2a1531-6643-4aef-b4ce-cb63ce4afe57
 
 - When would you choose Context over Redux?
 
@@ -1285,7 +1285,7 @@ function ComposeProviders({ providers, children }) {
 
 ---
 
-### Question
+### Question 93b5aa41-959a-44c4-9dfd-436476be06c9
 
 - When would you choose Redux over Context?
 
@@ -1299,7 +1299,7 @@ function ComposeProviders({ providers, children }) {
 
 ---
 
-### Question
+### Question d4e44511-caab-4bda-a9eb-dc0f3c47ddf5
 
 - Can Redux and Context be used together? When would you do that?
 
@@ -1330,7 +1330,7 @@ function App() {
 
 ---
 
-### Question
+### Question 623ac2d0-a973-4cdd-a343-06e0bf6ffab1
 
 - Is Redux always better for global state than Context? Why or why not?
 
@@ -1343,7 +1343,7 @@ function App() {
 
 ---
 
-### Question
+### Question bda6f119-5e73-495f-909f-bc88e9f39176
 
 - How would you decide whether a piece of state belongs in Context, Redux, or local component state?
 
@@ -1374,7 +1374,7 @@ function App() {
 
 ---
 
-### Question
+### Question 6ac5ac9b-3a5a-43e1-b9ef-1c37d892db99
 
 - What are the performance tradeoffs between Context and Redux?
 
@@ -1388,7 +1388,7 @@ function App() {
   - _**Render Performance**_: Excellent for high-frequency updates and large state trees. Selectors evaluate diffs outside React render phase, triggering re-renders only for components whose specific slice changed.
 - _**Summary**_: Context trades render performance for zero bundle overhead and setup simplicity; Redux trades bundle size and architectural structure for fine-grained render performance and scalability.
 
-### Question
+### Question 2bc0ca96-ec2c-4c85-930e-37459fd57174
 
 - What benefits does Redux provide over Context for large applications?
 
