@@ -12,6 +12,50 @@ Reconciliation is the process by which React updates the DOM to match your compo
 
 ---
 
+### Question f2c9a76e-92ae-487f-a2cb-fb2d59779d84
+
+- what are the key factors in determining indentity of a component in React?
+
+### Answer
+
+- The type of the component (HTML elements type)
+- The key prop (if provided)
+- The position of the component in the tree
+
+---
+
+### Question
+
+- what happen when one of the component identity change?
+
+### Answer
+
+- React will unmount and remount the whole component
+- NOT RE-RENDER
+  - re-render implies component identity preserve
+
+---
+
+### Question
+
+- What is Re-render exactly?
+
+### Answer
+
+- Re-render (Identity preserved): React keeps the same component instance, preserves its internal state (useState, useRef), and updates the DOM elements. Memoization (React.memo, useMemo, useCallback) helps optimize or skip this step.
+
+---
+
+### Question
+
+- What happen during unmount and remount?
+
+### Answer
+
+- Unmount and Remount (Identity changed): React throws away the existing component instance, destroys its internal state completely, removes its DOM node, and mounts a brand-new component instance from scratch.
+
+---
+
 ### Question b9f8a959-f9f6-4c22-8cb9-0198393555b5
 
 - Discuss what would happen when isCompany is toggled in the following code snippet.
@@ -42,18 +86,6 @@ const UserInfoForm = () => {
   - same position in the tree
   - the key is the same (no key provided, so React uses the index)
 - so React will reuse the same input element and not create a new one, which means the value will persist.
-
----
-
-### Question f2c9a76e-92ae-487f-a2cb-fb2d59779d84
-
-- what are the key factors in determining indentity of a component in React?
-
-### Answer
-
-- The type of the component (function or class)
-- The key prop (if provided)
-- The position of the component in the tree
 
 ---
 
@@ -181,44 +213,96 @@ const Component = () => {
 ### Question 7215ab54-4c86-4d4e-bf29-1c1001464f74
 
 - React 15 - Stack Reconciler
-  - What is the core function of the Stack Reconciler?
-- Walk me through this tree and explain how the Stack Reconciler will traverse it.
-- Why React cannot stop?
-
-```
-App
- ├── Header
- ├── Content
- │    ├── Post
- │    └── Sidebar
- └── Footer
-```
+  - **Core Function**: What is the primary role of the Stack Reconciler during a UI update?
+  - **Tree Traversal**: Given the component tree below, demonstrate how the Stack Reconciler recursively traverses it during an update cycle.
+    ```
+    App
+    ├── Header
+    ├── Content
+    │    ├── Post
+    │    └── Sidebar
+    └── Footer
+    ```
+  - **Execution Limitation**: Why is the Stack Reconciler unable to pause, prioritize, or yield execution back to the browser main thread mid-update?
 
 ### Answer
 
-```javascript
-function update(component) {
-  const children = component.render();
-  children.forEach(update);
-}
-```
+- **Core function**: The Stack Reconciler relies on the JavaScript call stack to synchronously process component updates. It executes render() on a component, inspects its children, and recursively updates each child before moving to the next sibling.
 
-```
- update(App)
-  → update(Header)
-  ← return
-  → update(Content)
-      → update(Post)
+- **Tree Traversal Mechanics**
+  - The Stack Reconciler traverses the component tree using a depth-first search (DFS) strategy.
+
+    ```javascript
+    function update(component) {
+      const children = component.render(); // returns a Virtual DOM element tree (plain JavaScript objects) describing what the UI should look like for that specific component at that moment.
+      children.forEach(update);
+    }
+    ```
+
+    ```
+    update(App)
+      → update(Header)
       ← return
-      → update(Sidebar)
+      → update(Content)
+          → update(Post)
+          ← return
+          → update(Sidebar)
+          ← return
       ← return
-  ← return
-  → update(Footer)
-  ← return
-← return
-```
+      → update(Footer)
+      ← return
+    ← return
+    ```
+    - Step-by-Step Execution:
+      1. App begins updating and calls render().
+
+      2. It encounters Header, calls update(Header), executes its render, and pops it off the stack once finished.
+
+      3. It moves to Content and calls update(Content).
+
+      4. Before Content can finish, it must process its children:
+
+      5. Calls update(Post), completes, and pops off.
+
+      6. Calls update(Sidebar), completes, and pops off.
+
+      7. Content finishes and pops off the stack.
+
+      8. It moves to Footer, calls update(Footer), completes, and pops off.
+
+      9. App finishes, emptying the stack.
 
 - JS: ❗ Once a function is running, it runs until it returns. The call stack is filled with function calls, making it impossible to pause or interrupt the execution.
+
+### Question
+
+- .render() vs. The Reconciliation Process
+
+### Answer
+
+- .render() is just one step in the full reconciliation cycle. The Stack Reconciler uses .render() to discover what needs to be updated.
+
+- reconciliation process:
+  1. PREPARATION PHASE
+  - Trigger (setState/props)
+    - If false: STOP HERE
+  2. EXECUTION & DIFFING PHASE
+  - Call .render()
+    - Generates a new Element Tree
+  - Diffing
+    - Compares new tree vs. old tree
+  - DOM Mutation
+    - Writes minimal changes to real DOM
+  - Recursion
+    - Traverses child components
+
+---
+
+### Question
+
+- component tree vs element tree
+
+### Answer
 
 ---
 
