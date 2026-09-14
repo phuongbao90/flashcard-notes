@@ -6,8 +6,8 @@
 
 ### Answer
 
-- react 19
-- formerly useFormState
+- **react 19**
+- formerly **`useFormState`**
 
 ```ts
 const [state, formAction, isPending] = useActionState(actionFn, initialState, permalink?);
@@ -15,9 +15,9 @@ const [state, formAction, isPending] = useActionState(actionFn, initialState, pe
 async function actionFn(previousState: State, formData: FormData): Promise<State>{}
 ```
 
-- formAction: Passed to `<form action={formAction}> or <button formAction={formAction}>`.
-- actionFn Signature: Must accept previousState as its first parameter
-  - unless use .bind() to add extra parameters
+- **formAction**: Passed to `<form action={formAction}> or <button formAction={formAction}>`.
+- **actionFn Signature**: Must accept `previousState` as its first parameter
+  - unless use `.bind()` to add extra parameters
   ```ts
   // In Client Component:
   const updateItemWithId = updateItem.bind(null, id);
@@ -26,8 +26,8 @@ async function actionFn(previousState: State, formData: FormData): Promise<State
   async function updateItem(itemId: string, prevState: State, formData: FormData) { ... }
 
   ```
-- this hook does not reset the form when success
-  - use ref to reset the form manually
+- this hook **does not reset the form when success**
+  - **use ref to reset the form manually**
 
 ---
 

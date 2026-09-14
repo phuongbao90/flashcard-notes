@@ -8,7 +8,7 @@ What is React Reconciliation?
 
 ### Answer
 
-Reconciliation is the process by which React updates the DOM to match your component tree.
+**Reconciliation** is the process by which React updates the **DOM** to match your **component tree**.
 
 ---
 
@@ -18,9 +18,9 @@ Reconciliation is the process by which React updates the DOM to match your compo
 
 ### Answer
 
-- The type of the component (HTML elements type)
-- The key prop (if provided)
-- The position of the component in the tree
+- The **type** of the component (HTML elements type)
+- The **key prop** (if provided)
+- The **position** of the component in the tree
 
 ---
 
@@ -30,9 +30,9 @@ Reconciliation is the process by which React updates the DOM to match your compo
 
 ### Answer
 
-- React will unmount and remount the whole component
-- NOT RE-RENDER
-  - re-render implies component identity preserve
+- React will **unmount and remount** the whole component
+- **NOT RE-RENDER**
+  - re-render implies **component identity preserve**
 
 ---
 
@@ -42,7 +42,7 @@ Reconciliation is the process by which React updates the DOM to match your compo
 
 ### Answer
 
-- Re-render (Identity preserved): React keeps the same component instance, preserves its internal state (useState, useRef), and updates the DOM elements. Memoization (React.memo, useMemo, useCallback) helps optimize or skip this step.
+- **Re-render** (**Identity preserved**): React keeps the **same component instance**, preserves its **internal state** (useState, useRef), and updates the **DOM elements**. **Memoization** (React.memo, useMemo, useCallback) helps optimize or skip this step.
 
 ---
 
@@ -52,7 +52,7 @@ Reconciliation is the process by which React updates the DOM to match your compo
 
 ### Answer
 
-- Unmount and Remount (Identity changed): React throws away the existing component instance, destroys its internal state completely, removes its DOM node, and mounts a brand-new component instance from scratch.
+- **Unmount and Remount** (**Identity changed**): React throws away the **existing component instance**, **destroys its internal state completely**, **removes its DOM node**, and mounts a **brand-new component instance** from scratch.
 
 ---
 
@@ -80,12 +80,12 @@ const UserInfoForm = () => {
 
 ### Answer
 
-- When user input "abc" to company tax input, and then toggle off isCompany, the input value "abc" will remain.
-- the virtual DOM between toggles will have the same:
-  - type: "input"
-  - same position in the tree
-  - the key is the same (no key provided, so React uses the index)
-- so React will reuse the same input element and not create a new one, which means the value will persist.
+- When user input "abc" to company tax input, and then toggle off isCompany, the input value "abc" will **remain**.
+- the **virtual DOM** between toggles will have the same:
+  - **type**: "input"
+  - **same position** in the tree
+  - the **key is the same** (no key provided, so React uses the index)
+- so React will **reuse the same input element** and not create a new one, which means the **value will persist**.
 
 ---
 
@@ -105,7 +105,7 @@ const Form = () => {
 
 ### Answer
 
-Every time a component is created inside another component, it will be re-created on every render.
+Every time a component is **created inside another component**, it will be **re-created on every render**.
 
 ---
 
@@ -124,7 +124,7 @@ Every time a component is created inside another component, it will be re-create
 
 ### Answer
 
-- React treats the entire dynamic list as a single unit at the first position, so the StaticElement will always maintain its position and identity, regardless of changes to the list.
+- React treats the entire dynamic list as a **single unit** at the first position, so the StaticElement will always **maintain its position and identity**, regardless of changes to the list.
 
 ```javascript
 [
@@ -178,8 +178,8 @@ const Component = () => {
 
 ### Answer
 
-- Element tree:
-  - An element tree is the tree of React element objects created from JSX:
+- **Element tree**:
+  - An element tree is the tree of **React element objects** created from **JSX**:
     ```js
     // from
     <App>
@@ -199,8 +199,8 @@ const Component = () => {
     }
     ```
 
-- Component tree:
-  - This describes the logical component structure:
+- **Component tree**:
+  - This describes the **logical component structure**:
     ```
     App
     ├── Header
@@ -208,11 +208,11 @@ const Component = () => {
     ```
   - it answers: "Which components are composed together?"
 
-- Fiber:
-  - The Fiber tree is the actual internal structure React uses during reconciliation.
-  - Fiber is a data structure that represents a unit of work in React's rendering process.
+- **Fiber**:
+  - The **Fiber tree** is the actual **internal structure** React uses during reconciliation.
+  - Fiber is a **data structure** that represents a **unit of work** in React's rendering process.
   - It is a JavaScript object that contains information about a component, its state, and its relationship to other components in the tree.
-  - Fiber allows React to pause, resume, and prioritize work, enabling features like concurrent rendering and time slicing.
+  - Fiber allows React to **pause, resume, and prioritize work**, enabling features like **concurrent rendering** and **time slicing**.
     ```js
     FiberRoot
     └── App Fiber
@@ -251,7 +251,7 @@ const Component = () => {
 
 ### Answer
 
-- When the key is the same but the type is different, React will unmount the previous component and mount a new one. The identity of a component is determined by both its key and its type.
+- When the **key is the same** but the **type is different**, React will **unmount the previous component and mount a new one**. The **identity of a component** is determined by both its **key** and its **type**.
 
 ---
 
@@ -264,12 +264,12 @@ const Component = () => {
 
 ### Answer
 
-- Data structure: depth-first tree traversal
-- Core algorithm: recursive function calls, using the JavaScript call stack as its scheduler.
-- Limitations:
-  - Cannot split work into chunks, leading to blocking of the main thread.
-  - Cannot prioritize updates, leading to poor user experience for high-priority updates. Treat all updates equally, which can cause jank in the UI.
-  - Cannot pause and resume work, which can lead to long-running updates that block the main thread.
+- **Data structure**: **depth-first tree traversal**
+- **Core algorithm**: **recursive function calls**, using the **JavaScript call stack** as its scheduler.
+- **Limitations**:
+  - **Cannot split work into chunks**, leading to **blocking of the main thread**.
+  - **Cannot prioritize updates**, leading to poor user experience for high-priority updates. Treat all updates equally, which can cause **jank** in the UI.
+  - **Cannot pause and resume work**, which can lead to long-running updates that **block the main thread**.
 
 ---
 
@@ -290,10 +290,10 @@ const Component = () => {
 
 ### Answer
 
-- **Core function**: The Stack Reconciler relies on the JavaScript call stack to synchronously process component updates. It executes render() on a component, inspects its children, and recursively updates each child before moving to the next sibling.
+- **Core function**: The Stack Reconciler relies on the **JavaScript call stack** to **synchronously process component updates**. It executes render() on a component, inspects its children, and **recursively updates** each child before moving to the next sibling.
 
 - **Tree Traversal Mechanics**
-  - The Stack Reconciler traverses the component tree using a depth-first search (DFS) strategy.
+  - The Stack Reconciler traverses the component tree using a **depth-first search (DFS)** strategy.
 
     ```javascript
     function update(component) {
@@ -335,7 +335,7 @@ const Component = () => {
 
       9. App finishes, emptying the stack.
 
-- JS: ❗ Once a function is running, it runs until it returns. The call stack is filled with function calls, making it impossible to pause or interrupt the execution.
+- JS: ❗ **Once a function is running, it runs until it returns.** The **call stack** is filled with function calls, making it **impossible to pause or interrupt** the execution.
 
 ### Question af721df7-312b-4ffb-895c-58f257e08504
 
@@ -343,20 +343,20 @@ const Component = () => {
 
 ### Answer
 
-- .render() is just one step in the full reconciliation cycle. The Stack Reconciler uses .render() to discover what needs to be updated.
+- .render() is **just one step** in the full reconciliation cycle. The Stack Reconciler uses .render() to discover what needs to be updated.
 
-- reconciliation process:
-  1. PREPARATION PHASE
-  - Trigger (setState/props)
+- **reconciliation process**:
+  1. **PREPARATION PHASE**
+  - **Trigger** (setState/props)
     - If false: STOP HERE
-  2. EXECUTION & DIFFING PHASE
-  - Call .render()
-    - Generates a new Element Tree
-  - Diffing
+  2. **EXECUTION & DIFFING PHASE**
+  - **Call .render()**
+    - Generates a new **Element Tree**
+  - **Diffing**
     - Compares new tree vs. old tree
-  - DOM Mutation
-    - Writes minimal changes to real DOM
-  - Recursion
+  - **DOM Mutation**
+    - Writes minimal changes to **real DOM**
+  - **Recursion**
     - Traverses child components
 
 ---
@@ -375,9 +375,9 @@ const Component = () => {
 
 ### Answer
 
-- A scheduler is a system that manages the execution of tasks, determining when and how they should be executed.
-- It’s not React itself—it’s a cooperative task scheduler that React uses under the hood.
-- In the context of React Fiber, the scheduler is responsible for prioritizing updates and breaking them into smaller units of work that can be processed incrementally, allowing for better responsiveness and user experience.
+- A **scheduler** is a system that **manages the execution of tasks**, determining **when and how** they should be executed.
+- It’s not React itself—it’s a **cooperative task scheduler** that React uses under the hood.
+- In the context of React Fiber, the scheduler is responsible for **prioritizing updates** and **breaking them into smaller units of work** that can be processed **incrementally**, allowing for **better responsiveness and user experience**.
 
 ---
 
@@ -387,9 +387,9 @@ const Component = () => {
 
 ### Answer
 
-- Enables Concurrent React
-- Makes rendering interruptible
-- Keeps apps responsive under heavy updates
+- Enables **Concurrent React**
+- Makes rendering **interruptible**
+- Keeps apps **responsive under heavy updates**
 - Allows features like:
   - startTransition
   - Suspense
@@ -403,44 +403,44 @@ const Component = () => {
 
 ### Answer
 
-1. Priority levels: Different updates can have different priorities,
+1. **Priority levels**: Different updates can have different priorities,
 
-- Immediate (rare, sync)
-- User-blocking (click, typing)
-- Normal (default updates)
-- Low
-- Idle
+- **Immediate** (rare, sync)
+- **User-blocking** (click, typing)
+- **Normal** (default updates)
+- **Low**
+- **Idle**
 
-👉 Higher priority = runs sooner, can interrupt lower ones
+👉 **Higher priority = runs sooner, can interrupt lower ones**
 
-2. Time slicing (cooperative)
+2. **Time slicing** (cooperative)
 
-- Work is split into small chunks
+- Work is **split into small chunks**
 - React checks shouldYield()
-- If time is up → pause → resume later
+- If time is up → **pause → resume later**
 
-👉 Prevents blocking the UI thread
+👉 **Prevents blocking the UI thread**
 
-3. Frame awareness (modern behavior)
+3. **Frame awareness** (modern behavior)
 
-- Scheduler tries to finish work before next frame (~16ms)
-- Not fixed time slicing (no hard 5ms anymore)
-- Uses a deadline to decide when to yield
+- Scheduler tries to **finish work before next frame** (~16ms)
+- **Not fixed time slicing** (no hard 5ms anymore)
+- Uses a **deadline** to decide when to yield
 
-4. Scheduling APIs (simplified)
+4. **Scheduling APIs** (simplified)
 
 - Internally, React uses things like:
   - scheduleCallback(priority, callback)
   - shouldYield()
   - cancelCallback()
 
-👉 Think: a priority queue + event loop integration
+👉 Think: a **priority queue + event loop integration**
 
-5. How it runs tasks
+5. **How it runs tasks**
 
-- Uses MessageChannel (or similar) to queue macrotasks
+- Uses **MessageChannel** (or similar) to queue **macrotasks**
 - Avoids blocking like a long while loop
-- Lets browser handle input/paint in between
+- Lets browser **handle input/paint in between**
 
 ---
 
@@ -450,7 +450,7 @@ const Component = () => {
 
 ### Answer
 
-- A fiber node is a JavaScript object that represents a unit of work in React's rendering process.
+- A **fiber node** is a JavaScript object that represents a **unit of work** in React's rendering process.
 
 ---
 
@@ -460,7 +460,7 @@ const Component = () => {
 
 ### Answer
 
-- in-memory representation of Real DOM. It is lightweight JavaScript object which is copy of Real DOM.
+- **in-memory representation of Real DOM**. It is **lightweight JavaScript object** which is **copy of Real DOM**.
 
 ---
 
@@ -477,10 +477,10 @@ const Component = () => {
 
 ### Answer
 
-- Fiber Reconciler:
-  - React maintains two trees:
-    - current tree → what is currently rendered (committed)
-    - workInProgress tree → the new version being built (double buffering)
+- **Fiber Reconciler**:
+  - React maintains **two trees**:
+    - **current tree** → what is currently rendered (committed)
+    - **workInProgress tree** → the new version being built (**double buffering**)
   - How it works:
     App
     └── ProductDetail
@@ -489,29 +489,29 @@ const Component = () => {
     ...............├── Button
     ...............├── Quantity ← shows {count}
     ...............└── Button
-    1. State / props change
-    - React marks the Fiber with an update (lane/priority)
-    - Then the scheduler decides when to start work (can delay, batch, or prioritize)
-    2. Render phase (build workInProgress tree)
-       ⚠️ This phase is interruptible (key feature of Fiber)
-       👉 React always schedules work at the root Fiber
+    1. **State / props change**
+    - React marks the Fiber with an update (**lane/priority**)
+    - Then the **scheduler** decides when to start work (can delay, batch, or prioritize)
+    2. **Render phase** (build workInProgress tree)
+       ⚠️ **This phase is interruptible** (key feature of Fiber)
+       👉 React always schedules work at the **root Fiber**
     - React starts from the root and traverses down:
       - App → ProductDetail → QuantityCount → div → children
       - At each node, React runs beginWork
-    - At App, no state/props change -> visits App and bails out (skip re-rendering logic but not skipping traversal entirely)
-    - At ProductDetail, no state/props change -> visits ProductDetail and bails out
-    - At QuantityCount, state changed, re-run the component -> new Fiber node created
-    3. Reconciliation happens DURING creation of the new Fiber node
-    - compare new Fiber node with old Fiber node, check component identity (type + key + position)
-    - same identity → reuse the DOM node + Fiber node
+    - At App, no state/props change -> visits App and **bails out** (skip re-rendering logic but not skipping traversal entirely)
+    - At ProductDetail, no state/props change -> visits ProductDetail and **bails out**
+    - At QuantityCount, state changed, re-run the component -> **new Fiber node created**
+    3. **Reconciliation happens DURING creation of the new Fiber node**
+    - compare new Fiber node with old Fiber node, check **component identity** (**type + key + position**)
+    - **same identity → reuse the DOM node + Fiber node**
     - commit phase: apply changes to the real DOM
     - This is a big improvement over React 15:
-      - React does render + diff at the same time
-      - No separate “diff phase”
-    4. Commit phase (apply changes to the real DOM)
-       ⚠️ This phase is NOT interruptible
-    - Apply changes to real DOM
-    - Run effects (useEffect, layout effects)
+      - React does **render + diff at the same time**
+      - **No separate “diff phase”**
+    4. **Commit phase** (apply changes to the real DOM)
+       ⚠️ **This phase is NOT interruptible**
+    - Apply changes to **real DOM**
+    - Run **effects** (useEffect, layout effects)
 
 ---
 
@@ -521,10 +521,10 @@ const Component = () => {
 
 ### Answer
 
-- Stack Reconciler:
-  - Recursive tree traversal
-  - Uses JS call stack as scheduler
-  - Cannot pause, prioritize, or split work
+- **Stack Reconciler**:
+  - **Recursive tree traversal**
+  - Uses **JS call stack as scheduler**
+  - **Cannot pause, prioritize, or split work**
 
 ---
 
@@ -535,10 +535,10 @@ const Component = () => {
 
 ### Answer
 
-- They both happen during the render phase of the Fiber Reconciler, which is interruptible and can be paused and resumed.
-- During the render phase, React uses a two-step traversal: beginWork (top-down reconciliation) and completeWork (bottom-up finalization and effect collection).
+- They both happen during the **render phase** of the Fiber Reconciler, which is **interruptible** and can be **paused and resumed**.
+- During the render phase, React uses a **two-step traversal**: **beginWork** (**top-down reconciliation**) and **completeWork** (**bottom-up finalization and effect collection**).
 
-- 🔽 Downward phase (beginWork)
+- 🔽 **Downward phase (beginWork)**
 
   - React starts from the root and traverses down:
     - App → ProductDetail → QuantityCount → div → children
@@ -547,11 +547,11 @@ const Component = () => {
   - What it does:
     - Compare new props/state vs old + is there a pending update?
     - Decide:
-      - re-render?
-      - bailout?
+      - **re-render?**
+      - **bailout?**
     - Generate child fibers
 
-  🔼 Upward phase (completeWork)
+  🔼 **Upward phase (completeWork)**
 
   - After reaching the deepest node, React goes back up:
 
@@ -559,11 +559,11 @@ const Component = () => {
   - At each node:
     - run completeWork
   - 🔹 What completeWork does:
-    - Finalize the Fiber
-    - Prepare DOM updates (mark what needs to change)
-    - Build the effect list for commit phase
+    - **Finalize the Fiber**
+    - **Prepare DOM updates** (mark what needs to change)
+    - **Build the effect list** for commit phase
 
-  - 👉 NO real DOM changes happen here
+  - 👉 **NO real DOM changes happen here**
 
 ---
 
@@ -573,12 +573,12 @@ const Component = () => {
 
 ### Answer
 
-- React will NOT bailout a subtree if there is pending work inside it
-- React.memo
+- React will **NOT bailout a subtree if there is pending work inside it**
+- **React.memo**
   - if (props are equal)
-  - → bailout
-  - → skip calling component
-  - → reuse previous subtree
+  - → **bailout**
+  - → **skip calling component**
+  - → **reuse previous subtree**
 
 ---
 
@@ -588,20 +588,20 @@ const Component = () => {
 
 ### Answer
 
-- React concurrency is not about running your components in parallel threads.
-- It’s about letting React control when and how rendering work happens so the UI stays responsive.
+- React concurrency is **not about running your components in parallel threads**.
+- It’s about letting React **control when and how rendering work happens** so the **UI stays responsive**.
 
-- Concurrent React:
+- **Concurrent React**:
 
-  - Rendering is interruptible
+  - Rendering is **interruptible**
   - React can:
-  - pause work
-  - resume later
-  - throw away outdated work
+  - **pause work**
+  - **resume later**
+  - **throw away outdated work**
 
   - 👉 Think of it like:
 
-  - React becomes a scheduler, not just a renderer.
+  - React becomes a **scheduler**, not just a renderer.
 
 ---
 
@@ -612,17 +612,17 @@ const Component = () => {
 
 ### Answer
 
-1. Time slicing
+1. **Time slicing**
 
-   - React breaks rendering work into small chunks
-   - It can yield to the main thread to handle user input or other high-priority tasks
-   - This prevents blocking the UI and keeps the app responsive
+   - React **breaks rendering work into small chunks**
+   - It can **yield to the main thread** to handle user input or other high-priority tasks
+   - This **prevents blocking the UI** and keeps the app responsive
    - Work → pause → browser work → resume → repeat
 
-2. Interruptible rendering
+2. **Interruptible rendering**
 
-   - React can stop rendering work in the middle if a higher-priority update comes in
-   - It can discard outdated work and start fresh with the new update
+   - React can **stop rendering work in the middle** if a higher-priority update comes in
+   - It can **discard outdated work** and start fresh with the new update
 
    ```
     setInputValue("a"); // high priority
@@ -634,13 +634,13 @@ const Component = () => {
    - stop rendering the big list
    - handle input first
 
-3. Priority System (lanes)
+3. **Priority System (lanes)**
 
-   - React assigns priorities to updates
-   - High-priority updates (like user input) can interrupt low-priority updates (like rendering a large list)
+   - React assigns **priorities to updates**
+   - **High-priority updates** (like user input) can **interrupt low-priority updates** (like rendering a large list)
    - This ensures that the most important updates are handled first
 
-4. Throw away work
+4. **Throw away work**
 
 ```
   setSearch("r");
@@ -649,13 +649,13 @@ const Component = () => {
 ```
 
 - If state updates again mid-render:
-- React can throw away the previous work and start fresh with the latest state
+- React can **throw away the previous work** and start fresh with the latest state
 
-- Concurrency APIs in React:
-  - `startTransition`: Marks updates as non-urgent, allowing React to prioritize more important updates first.
-  - `useTransition`: A hook that allows you to manage transitions in your components, providing a way to indicate that certain updates can be interrupted or deferred.
-  - `Suspense`: Lets you wait for some code to load or data to be fetched before rendering a component, improving the user experience by avoiding loading states and keeping the UI responsive.
-  - `useDeferredValue`: A hook that allows you to defer the rendering of a value until the next render, helping to keep the UI responsive during high-priority updates.
+- **Concurrency APIs in React**:
+  - `startTransition`: Marks updates as **non-urgent**, allowing React to **prioritize more important updates first**.
+  - `useTransition`: A hook that allows you to manage transitions in your components, providing a way to indicate that certain updates can be **interrupted or deferred**.
+  - `Suspense`: Lets you wait for some code to load or data to be fetched before rendering a component, improving the user experience by **avoiding loading states** and keeping the UI responsive.
+  - `useDeferredValue`: A hook that allows you to **defer the rendering of a value** until the next render, helping to keep the UI responsive during high-priority updates.
 
 ---
 
@@ -665,11 +665,11 @@ const Component = () => {
 
 ### Answer
 
-👉 Fiber = data structure + engine
-👉 Concurrency = capability built on top of Fiber
+👉 **Fiber** = **data structure + engine**
+👉 **Concurrency** = **capability built on top of Fiber**
 
 - Without Fiber:
 
-  - no pausing
-  - no prioritization
-  - no scheduling
+  - **no pausing**
+  - **no prioritization**
+  - **no scheduling**

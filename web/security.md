@@ -6,11 +6,11 @@
 
 ### Answer
 
-- purpose: enforce HTTPS, prevent downgrade attacks, Man-in-the-Middle (MITM)
-- value: max-age=63072000; includeSubDomains; preload
-  - max-age=63072000 → 2 years
-  - includeSubDomains → apply to all subdomains
-  - preload → allow browser to preload HSTS list
+- **purpose**: enforce **HTTPS**, prevent **downgrade attacks**, **Man-in-the-Middle (MITM)**
+- **value**: `max-age=63072000; includeSubDomains; preload`
+  - `max-age=63072000` → **2 years**
+  - `includeSubDomains` → **apply to all subdomains**
+  - `preload` → **allow browser to preload HSTS list**
   - Forces the browser to strictly communicate over HTTPS only for 2 years (including subdomains) and allows domain preloading.
 
 ---
@@ -21,12 +21,12 @@
 
 ### Answer
 
-- purpose: prevent clickjacking attacks
-- value: DENY | SAMEORIGIN | ALLOW-FROM uri
-  - DENY → disallow all framing
-  - SAMEORIGIN → allow framing only from the same origin
-  - ALLOW-FROM uri → allow framing only from the specified URI
-  - Prevents any website from loading your site inside an `<iframe>` (legacy browser fallback for CSP frame-ancestors 'none').
+- **purpose**: prevent **clickjacking attacks**
+- **value**: `DENY | SAMEORIGIN | ALLOW-FROM uri`
+  - `DENY` → **disallow all framing**
+  - `SAMEORIGIN` → **allow framing only from the same origin**
+  - `ALLOW-FROM uri` → **allow framing only from the specified URI**
+  - Prevents any website from loading your site inside an `<iframe>` (legacy browser fallback for CSP `frame-ancestors 'none'`).
 
 ---
 
@@ -36,8 +36,8 @@
 
 ### Answer
 
-- purpose: prevent MIME type sniffing
-- value: nosniff
+- **purpose**: prevent **MIME type sniffing**
+- **value**: `nosniff`
   - Prevents the browser from interpreting files as a different MIME type than what is specified in the Content-Type header, reducing the risk of executing malicious scripts.
 
 ---
@@ -48,19 +48,19 @@
 
 ### Answer
 
-- what is it: "When a user clicks a link on my website, here is how much information you are allowed to tell the website they land on."
-- purpose: control the amount of referrer information sent with requests
-- value: no-referrer | no-referrer-when-downgrade | origin | origin-when-cross-origin | same-origin | strict-origin | strict-origin-when-cross-origin | unsafe-url
-  - strict-origin-when-cross-origin → send the full URL for same-origin requests, the origin for cross-origin requests, and no referrer for cross-origin requests to less secure destinations
-  - same-origin → send the full URL only for same-origin requests
-  - no-referrer → never send the Referer header
-  - no-referrer-when-downgrade → send the Referer header only when navigating to a same-origin or HTTPS page
+- **what is it**: "When a user clicks a link on my website, here is how much information you are allowed to tell the website they land on."
+- **purpose**: control the amount of **referrer information** sent with requests
+- **value**: `no-referrer | no-referrer-when-downgrade | origin | origin-when-cross-origin | same-origin | strict-origin | strict-origin-when-cross-origin | unsafe-url`
+  - `strict-origin-when-cross-origin` → send the full URL for same-origin requests, the origin for cross-origin requests, and no referrer for cross-origin requests to less secure destinations
+  - `same-origin` → send the full URL only for same-origin requests
+  - `no-referrer` → never send the Referer header
+  - `no-referrer-when-downgrade` → send the Referer header only when navigating to a same-origin or HTTPS page
 
-- others:
-  - origin → send only the origin of the document
-  - origin-when-cross-origin → send the full URL for same-origin requests, but only the origin for cross-origin requests
-  - strict-origin → send the origin only for same-origin requests, and no referrer for cross-origin requests
-  - unsafe-url → always send the full URL, even for cross-origin requests
+- **others**:
+  - `origin` → send only the origin of the document
+  - `origin-when-cross-origin` → send the full URL for same-origin requests, but only the origin for cross-origin requests
+  - `strict-origin` → send the origin only for same-origin requests, and no referrer for cross-origin requests
+  - `unsafe-url` → always send the full URL, even for cross-origin requests
 
 ---
 
@@ -70,10 +70,10 @@
 
 ### Answer
 
-- purpose: control access to browser features and APIs, prevent Feature Exploitation
-- value: geolocation=(self), microphone=(), camera=()
-  - geolocation=(self) → allow geolocation only for the same origin
-  - microphone=() → disallow microphone access for all origins
+- **purpose**: control access to **browser features and APIs**, prevent **Feature Exploitation**
+- **value**: `geolocation=(self), microphone=(), camera=()`
+  - `geolocation=(self)` → allow geolocation only for the same origin
+  - `microphone=()` → disallow microphone access for all origins
 
 ---
 
@@ -83,12 +83,12 @@
 
 ### Answer
 
-- purpose: XSS Damage & Data Theft & Code Injection
-- Dictates trusted domains for scripts, styles, images, and API targets (connect-src 'self').
-- most important values:
-  - default-src 'self' as a safe baseline fallback.
-  - script-src 'self' to restrict which JavaScript execution sources are trusted.
-  - connect-src 'self' to enforce our BFF boundary — ensuring browser fetch calls can only talk to our Next.js backend and cannot secretly exfiltrate tokens to an attacker's server.
+- **purpose**: **XSS Damage & Data Theft & Code Injection**
+- Dictates **trusted domains** for scripts, styles, images, and API targets (`connect-src 'self'`).
+- **most important values**:
+  - `default-src 'self'` as a **safe baseline fallback**.
+  - `script-src 'self'` to restrict which **JavaScript execution sources** are trusted.
+  - `connect-src 'self'` to enforce our **BFF boundary** — ensuring browser fetch calls can only talk to our Next.js backend and cannot secretly exfiltrate tokens to an attacker's server.
 
 ---
 
@@ -98,12 +98,12 @@
 
 ### Answer
 
-1. Content-Security-Policy (CSP)
-2. Strict-Transport-Security (HSTS)
-3. X-Content-Type-Options
-4. X-Frame-Options
-5. Referrer-Policy
-6. Permissions-Policy
+1. **Content-Security-Policy (CSP)**
+2. **Strict-Transport-Security (HSTS)**
+3. **X-Content-Type-Options**
+4. **X-Frame-Options**
+5. **Referrer-Policy**
+6. **Permissions-Policy**
 
 ---
 
@@ -113,8 +113,8 @@
 
 ### Answer
 
-- Yes, but only for Server Actions. Next.js automatically generates a CSRF token and validates it for each Server Action request.
-- For other endpoints (API routes, route handlers), you need to implement your own CSRF protection.
+- **Yes, but only for Server Actions**. Next.js automatically generates a **CSRF token** and validates it for each Server Action request.
+- For other endpoints (API routes, route handlers), you need to **implement your own CSRF protection**.
 
 ---
 
@@ -124,7 +124,7 @@
 
 ### Answer
 
-- 🔑 The Golden Rule of Browsers: Whenever a browser sends a request to bank.com, it automatically attaches your bank.com login cookies — even if the request was triggered by another website!
+- 🔑 **The Golden Rule of Browsers**: Whenever a browser sends a request to `bank.com`, it **automatically attaches your `bank.com` login cookies** — even if the request was triggered by another website!
 
 ```
 [ Your Browser ]
@@ -142,10 +142,10 @@
          "Valid cookie attached! Executing transfer..." ➔ 💰 Money lost!
 ```
 
-- How to stop:
-  - check origin header: When evil-website.com sends the request, the browser includes a header saying Origin: https://evil-website.com. The bank server looks at it and says: "Wait, this didn't come from bank.com! REJECT!"
-  - Double-Submit Token (CSRF token in cookie + hidden form field)
-  - SameSite cookies: Set your session cookie with SameSite=Lax or SameSite=Strict to prevent it from being sent on cross-origin requests.
+- **How to stop**:
+  - **check origin header**: When `evil-website.com` sends the request, the browser includes a header saying `Origin: https://evil-website.com`. The bank server looks at it and says: "Wait, this didn't come from bank.com! REJECT!"
+  - **Double-Submit Token** (CSRF token in cookie + hidden form field)
+  - **SameSite cookies**: Set your session cookie with `SameSite=Lax` or `SameSite=Strict` to prevent it from being sent on cross-origin requests.
 
 ---
 

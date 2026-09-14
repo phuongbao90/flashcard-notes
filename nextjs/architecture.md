@@ -15,16 +15,16 @@ Day 4 (64 hours later): User #2 visits /products/brand/nike.
 
 ### Answer
 
-1. User #1 arrives on Day 3:
-   - Next.js checks the cache. The cached page [B, A] is 48 hours old (older than 3600 seconds).
-   - User #1 immediately sees [B, A]. (Next.js serves the cached stale version instantly so User #1 doesn't wait for a database build).
-   - In the background asynchronously: Next.js kicks off a background rebuild of the page. It queries the database, finds product C, builds the new HTML [C, B, A], and updates the CDN cache.
+1. **User #1 arrives on Day 3**:
+   - Next.js checks the cache. The **cached page [B, A] is 48 hours old** (older than 3600 seconds).
+   - User #1 immediately sees **[B, A]**. (Next.js serves the **cached stale version instantly** so User #1 doesn't wait for a database build).
+   - In the background asynchronously: Next.js kicks off a **background rebuild** of the page. It queries the database, finds product C, builds the new HTML **[C, B, A]**, and **updates the CDN cache**.
 
-2. User #2:
+2. **User #2**:
 
-- Next.js checks the cache. The CDN cache was just updated 24 hours ago!
-- User #2 immediately sees [C, B, A].
-- This new version will now be served to all visitors for the next 3,600 seconds (1 hour) before another background check is needed.
+- Next.js checks the cache. The **CDN cache was just updated 24 hours ago**!
+- User #2 immediately sees **[C, B, A]**.
+- This new version will now be served to all visitors for the **next 3,600 seconds (1 hour)** before another background check is needed.
 
 ---
 

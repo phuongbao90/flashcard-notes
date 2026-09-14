@@ -8,7 +8,7 @@
 
 ### Answer
 
-- allows to remember computed values between renders.
+- allows to **remember computed values between renders**.
 
 ### Question c8c55e55-ff66-422e-82d0-4b24c9a014df
 
@@ -16,9 +16,9 @@
 
 ### Answer
 
-- help us optimize re-renders. They do this in two ways:
-  - Reducing the amount of work that needs to be done in a given render.
-  - Reducing the number of times that a component needs to re-render.
+- help us **optimize re-renders**. They do this in two ways:
+  - **Reducing the amount of work** that needs to be done in a given render.
+  - **Reducing the number of times** that a component needs to re-render.
 
 ### Question b141e0a7-9c3a-4114-96f6-76dfaf66ab2e
 
@@ -27,8 +27,8 @@
 
 ### Answer
 
-- yes, with useMemo you can return a anonymous function and it will be memoized
-- useCallback is syntactic sugar. It exists purely to make our lives a bit nicer when trying to memoize callback functions.
+- yes, with `useMemo` you can return a **anonymous function and it will be memoized**
+- `useCallback` is **syntactic sugar**. It exists purely to make our lives a bit nicer when trying to **memoize callback functions**.
 
 ```javascript
 const handleMegaBoost = React.useCallback(() => {
@@ -48,8 +48,8 @@ const handleMegaBoost = React.useMemo(() => {
 
 ### Answer
 
-- not strictly necessary but it can be useful in certain scenarios. You should consider memorization when:
-  - Inside generic custom hooks
+- **not strictly necessary** but it can be useful in certain scenarios. You should consider memorization when:
+  - **Inside generic custom hooks**
     ```javascript
     function useToggle(initialValue = false) {
       const [value, setValue] = React.useState(initialValue);
@@ -59,7 +59,7 @@ const handleMegaBoost = React.useMemo(() => {
       return [value, toggle];
     }
     ```
-  - Inside context providers
+  - **Inside context providers**
     ```javascript
     function AuthProvider({ user, status, forgotPwLink, children }) {
       const memoizedValue = React.useMemo(() => {

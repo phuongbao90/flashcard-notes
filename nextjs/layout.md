@@ -8,8 +8,8 @@
 
 ### Answer
 
-- layout.js preserves its state, maintains DOM structure, and does not re-render or re-mount its children components during navigation between sub-routes.
-- template.js creates a new instance for each child route upon navigation. Every time a user navigates between routes sharing a template, DOM nodes are re-created, state is reset, and useEffect hooks re-fire (useful for page view analytics, enter/exit animations, or resetting form states).
+- `layout.js` **preserves its state**, **maintains DOM structure**, and **does not re-render or re-mount its children components** during navigation between sub-routes.
+- `template.js` **creates a new instance** for each child route upon navigation. Every time a user navigates between routes sharing a template, **DOM nodes are re-created**, **state is reset**, and **useEffect hooks re-fire** (useful for page view analytics, enter/exit animations, or resetting form states).
 
 ---
 
@@ -19,10 +19,10 @@
 
 ### Answer
 
-- The top-level Root Layout replaces the legacy _app.js and _document.js. Next.js requires it to define the root HTML skeleton
-  1. It must be a Server Component (cannot use "use client").
-  2. You cannot pass event handlers or hooks inside it directly.
-  3. Route groups (group) can define multiple root layouts, but every leaf route must be wrapped by exactly one root layout.
+- The top-level Root Layout replaces the legacy `_app.js` and `_document.js`. Next.js requires it to **define the root HTML skeleton**
+  1. It must be a **Server Component** (cannot use "use client").
+  2. You **cannot pass event handlers or hooks inside it directly**.
+  3. **Route groups `(group)`** can define multiple root layouts, but every leaf route must be wrapped by **exactly one root layout**.
 
 ---
 
@@ -32,7 +32,7 @@
 
 ### Answer
 
-- allow independent parallel data fetching at each segment level, Data fetched in a parent layout does not block rendering of child layouts if wrapped in Suspense.
+- allow **independent parallel data fetching** at each segment level, Data fetched in a parent layout **does not block rendering of child layouts if wrapped in Suspense**.
   ```javascript
   /dashboard/analytics Route Segment Execution:
 
@@ -43,7 +43,7 @@
 
   * Promises A, B, and C execute in parallel, not sequentially.
   ```
-- Layouts enable partial rendering: when navigating between sibling routes (e.g., /dashboard/settings to /dashboard/profile), Next.js re-renders only the leaf page while preserving the parent layout, saving bandwidth and compute.
+- Layouts enable **partial rendering**: when navigating between sibling routes (e.g., `/dashboard/settings` to `/dashboard/profile`), Next.js **re-renders only the leaf page while preserving the parent layout**, saving bandwidth and compute.
 
 ---
 
@@ -53,10 +53,10 @@
 
 ### Answer
 
-- A Request Waterfall occurs when a parent layout fetches data before the child page can start fetching, causing sequential delays. To prevent it:
-  1. Wrap Layout Children in Suspense: Allow layout.tsx to render shell UI immediately while streaming in page.tsx as its data resolves.
-  2. Component-level Fetching: Move data fetching down to the specific UI components that require it rather than doing monolithic fetches in the top-level layout.
-  3. Preloading / Request Deduping: Use React.cache() or fetch caching to initiate requests early without duplicating HTTP calls across the render tree.
+- A **Request Waterfall** occurs when a parent layout fetches data before the child page can start fetching, causing sequential delays. To prevent it:
+  1. **Wrap Layout Children in Suspense**: Allow `layout.tsx` to render shell UI immediately while streaming in `page.tsx` as its data resolves.
+  2. **Component-level Fetching**: Move data fetching down to the specific UI components that require it rather than doing monolithic fetches in the top-level layout.
+  3. **Preloading / Request Deduping**: Use `React.cache()` or fetch caching to initiate requests early without duplicating HTTP calls across the render tree.
 
 ---
 
@@ -78,10 +78,10 @@
 
 ### Answer
 
-- Render multiple routes at the same time inside one layout (instead of one route replacing another). Useful for dashboards, sidebars, modals, etc.
+- **Render multiple routes at the same time inside one layout** (instead of one route replacing another). Useful for dashboards, sidebars, modals, etc.
 
-- how it works:
-  1. You define slots using @folder
+- **how it works**:
+  1. You define slots using `@folder`
 
   ```
   app/
@@ -89,7 +89,7 @@
       @team/page.tsx
       @analytics/page.tsx
   ```
-  2. In layout.tsx, those slots become props:
+  2. In `layout.tsx`, those slots become props:
 
   ```
   export default function Layout({ children, team, analytics }) {
@@ -103,18 +103,18 @@
   }
   ```
 
-  👉 Result: all of them render in parallel, not nested.
+  👉 **Result: all of them render in parallel, not nested.**
 
-- key rules:
-  - Slots ≠ routes
-    @analytics does NOT affect URL
-    /@analytics/views → URL is /views
-  - children is just a slot
-    children = implicit slot (@children)
-  - All slots share same route level
+- **key rules**:
+  - **Slots ≠ routes**
+    `@analytics` does NOT affect URL
+    `/@analytics/views` → URL is `/views`
+  - **children is just a slot**
+    `children` = implicit slot (`@children`)
+  - **All slots share same route level**
     You cannot mix static + dynamic slots at same level
     If one is dynamic → all must be dynamic
-  - Independent Execution: Each slot maintains its own independent error handling (error.js), loading UI (loading.js), and route state.
+  - **Independent Execution**: Each slot maintains its own **independent error handling** (`error.js`), **loading UI** (`loading.js`), and **route state**.
 
 ---
 
@@ -124,7 +124,7 @@
 
 ### Answer
 
-- default.js: file to render as a fallback for unmatched slots during the initial load or full-page reload.
+- `default.js`: file to render as a **fallback for unmatched slots** during the **initial load or full-page reload**.
 
 ---
 
@@ -134,9 +134,9 @@
 
 ### Answer
 
-- Possible mistakes
+- **Possible mistakes**
   - Thinking slots change URL (they don’t)
-  - Forgetting default.js → random 404 on refresh
+  - Forgetting `default.js` → random 404 on refresh
   - Expecting SSR-like full rerender (parallel routes preserve state)
   - Overusing → mental model becomes hard (this feature is complex)
   - Misunderstanding soft vs hard navigation (big source of bugs)
@@ -149,16 +149,16 @@
 
 ### Answer
 
-- Use parallel routes when you need multiple independent UI regions that:
-  - Render at the same time
-  - Have their own routing/state
-  - Should not block or replace each other
-- When NOT to use it (this is what separates strong candidates)
-  - ❌ Simple page navigation
+- **Use parallel routes** when you need **multiple independent UI regions** that:
+  - **Render at the same time**
+  - Have their **own routing/state**
+  - Should **not block or replace each other**
+- **When NOT to use it** (this is what separates strong candidates)
+  - ❌ **Simple page navigation**
     - If UI fully changes per route → don’t use it
-  - ❌ Shared layout only
-    - Use normal layout.tsx, not parallel routes
-  - ❌ If slots must always match URL
+  - ❌ **Shared layout only**
+    - Use normal `layout.tsx`, not parallel routes
+  - ❌ **If slots must always match URL**
     - Then parallel routes add unnecessary complexity
 
 ---
@@ -169,7 +169,7 @@
 
 ### Answer
 
-1. Without parallel route: (using normal layout.tsx)
+1. **Without parallel route**: (using normal `layout.tsx`)
 
    ```javascript
    /layout.tsx
@@ -181,11 +181,11 @@
    /dashboard
    /dashboard/settings
    ```
-   - What happens on navigation
+   - **What happens on navigation**
 
-     - Go /dashboard → /dashboard/settings
+     - Go `/dashboard` → `/dashboard/settings`
 
-       👉 Entire children subtree changes
+       👉 **Entire children subtree changes**
 
      - But also:
 
@@ -200,7 +200,7 @@
        - lose local state (depending on structure)
        - trigger loading states
 
-2. Without parallel route:
+2. **Without parallel route**:
 
    ```javascript
    app/
@@ -220,12 +220,12 @@
    }
    ```
    - Sidebar, Analytic stay the same / does not re-run magic / does not refetch data
-   - State preserve:
+   - **State preserve**:
      - filters
      - scroll position
      - fetched data
 
-3. summary: “Parallel routes let different parts of the UI behave like independent mini-apps with their own routing, state, and data lifecycle.”
+3. **summary**: “**Parallel routes let different parts of the UI behave like independent mini-apps with their own routing, state, and data lifecycle.**”
 
 ---
 
@@ -235,10 +235,10 @@
 
 ### Answer
 
-- Above the fold: the part of the page that is visible without scrolling
-- consider to be critical
-- `<suspense>` might not be the best choice for above the fold content
-  - as it can flash the fallback content, which is not ideal for above the fold content
+- **Above the fold**: the part of the page that is visible without scrolling
+- consider to be **critical**
+- `<suspense>` **might not be the best choice for above the fold content**
+  - as it can **flash the fallback content**, which is not ideal for above the fold content
 
 ---
 
@@ -248,9 +248,9 @@
 
 ### Answer
 
-- throw error
-- for non-critical chrome, we never throw; a misconfigured placement should not break the page.
-  - do it silently, and degrade to nothing
+- **throw error**
+- for **non-critical chrome**, we **never throw**; a misconfigured placement should not break the page.
+  - do it silently, and **degrade to nothing**
 
 ---
 
@@ -260,7 +260,7 @@
 
 ### Answer
 
-- in nextjs 16, i know that the default cache behavior is
+- in **nextjs 16**, i know that the default cache behavior is
   - `fetch(url, { cache: 'no-store' })`
   - but if we specify
     ```ts
@@ -284,25 +284,25 @@
 
 ### Answer
 
-- keyboard navigation
-- Autoplay
-  - pause on hover
-  - respect prefers-reduced-motion
-  - pause on tab hide
-  - aria-live="polite" for screen readers
+- **keyboard navigation**
+- **Autoplay**
+  - **pause on hover**
+  - respect `prefers-reduced-motion`
+  - **pause on tab hide**
+  - `aria-live="polite"` for screen readers
     - screen readers wont read the content if it is not visible
-- WAI-ARIA
-  - set aria-roledescription="carousel" on the carousel container
+- **WAI-ARIA**
+  - set `aria-roledescription="carousel"` on the carousel container
   - slide identificaton
-    - set aria-hidden="true" on the slides that are not visible so that screen readers will not read them
-    - set aria-roledescription="slide" and aria-label="Slide 1 of 3" on the slides that are visible so that screen readers will read them
-  - tablist pagination
-    - set role="tablist" on the pagination container
-    - set role="tab" and aria-selected="true" on the active pagination button so that screen readers will read them
-    - set role="tab" and aria-selected="false" on the inactive pagination buttons so that screen readers will not read them
-  - Navigational buttons
-    - set aria-label="Previous slide" on the previous button so that screen readers will read them
-    - set aria-label="Next slide" on the next button so that screen readers will read them
+    - set `aria-hidden="true"` on the slides that are not visible so that screen readers will not read them
+    - set `aria-roledescription="slide"` and `aria-label="Slide 1 of 3"` on the slides that are visible so that screen readers will read them
+  - **tablist pagination**
+    - set `role="tablist"` on the pagination container
+    - set `role="tab"` and `aria-selected="true"` on the active pagination button so that screen readers will read them
+    - set `role="tab"` and `aria-selected="false"` on the inactive pagination buttons so that screen readers will not read them
+  - **Navigational buttons**
+    - set `aria-label="Previous slide"` on the previous button so that screen readers will read them
+    - set `aria-label="Next slide"` on the next button so that screen readers will read them
 
 ---
 
@@ -323,13 +323,13 @@
 
 ### Answer
 
-- a compact, binary JSON string created on the server that represents the rendered React component tree, client component references, and props.
-- During streaming, it's sent to the browser in chunks over a single HTTP response
+- a **compact, binary JSON string created on the server** that represents the **rendered React component tree, client component references, and props**.
+- During **streaming**, it's **sent to the browser in chunks over a single HTTP response**
 
 - It includes:
-  - Component tree structure (hierarchy of server and client components)
-  - Props for each component
-  - References to client components (for hydration)
-  - Suspense boundary information (to handle loading states)
+  - **Component tree structure** (hierarchy of server and client components)
+  - **Props for each component**
+  - **References to client components** (for hydration)
+  - **Suspense boundary information** (to handle loading states)
 
 ---

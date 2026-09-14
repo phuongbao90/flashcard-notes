@@ -772,13 +772,13 @@ function App() {
 
 ### Answer
 
-- Pillar 1: Granular Re-rendering (Performance at Scale)
-  - The Context Problem: useContext is a data distribution tool, not a full state management solution. When a context value changes, every single subscriber re-renders, even if it only uses 1% of that state object. At scale, this causes significant performance bottlenecks.
-  - The Redux Advantage: Redux uses subscription-based selectors (useSelector). A component only re-renders if its specific slice of selected data changes, avoiding unnecessary renders across the component tree without needing heavy manual useMemo or custom wrappers.
+- **Pillar 1: Granular Re-rendering (Performance at Scale)**
+  - **The Context Problem**: `useContext` is a **data distribution tool**, not a full state management solution. When a context value changes, **every single subscriber re-renders**, even if it only uses 1% of that state object. At scale, this causes significant performance bottlenecks.
+  - **The Redux Advantage**: Redux uses **subscription-based selectors** (`useSelector`). A component **only re-renders if its specific slice of selected data changes**, avoiding unnecessary renders across the component tree without needing heavy manual `useMemo` or custom wrappers.
 
-- Pillar 2: Predictability & Decoupled Architecture
-  - Strict Unidirectional Flow: Redux enforces Dispatch Action → Pure Reducer Update → UI Notification. This strictness eliminates side effects during rendering and makes state mutation entirely predictable.
-  - Separation of Concerns: Complex business logic, state transitions, and async operations (RTK Query / middleware) are decoupled from the UI. This makes logic significantly easier to unit test, debug, and maintain across large engineering teams.
-  - Observability: With Redux DevTools, every state change is logged as a discrete action, enabling time-travel debugging and fast root-cause analysis in production scenarios.
+- **Pillar 2: Predictability & Decoupled Architecture**
+  - **Strict Unidirectional Flow**: Redux enforces **Dispatch Action → Pure Reducer Update → UI Notification**. This strictness eliminates side effects during rendering and makes state mutation entirely predictable.
+  - **Separation of Concerns**: Complex business logic, state transitions, and async operations (RTK Query / middleware) are **decoupled from the UI**. This makes logic significantly easier to unit test, debug, and maintain across large engineering teams.
+  - **Observability**: With **Redux DevTools**, every state change is logged as a discrete action, enabling **time-travel debugging** and fast root-cause analysis in production scenarios.
 
 ---

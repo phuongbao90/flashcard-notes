@@ -191,11 +191,11 @@
 
 ### Answer
 
-- `[] + []` → `""`: both arrays become empty strings, then `+` concatenates them.
-- `[] + {}` → `"[object Object]"` for an ordinary object: `[]` becomes `""`, while the object uses its default string representation.
-- A bare `{} + []` at the start of a statement can be parsed as an empty block followed by unary `+[]`, producing `0`. In expression context, `({} + [])` produces `"[object Object]"`.
-- `[] == ![]` → `true` because `![]` is `false`, and the loose-equality chain converts both sides to `0`.
-- `NaN == NaN` → `false`; use `Number.isNaN(value)` to test for the numeric `NaN` value.
+- `[] + []` → `""`: both arrays become **empty strings**, then `+` **concatenates** them.
+- `[] + {}` → `"[object Object]"` for an **ordinary object**: `[]` becomes `""`, while the object uses its **default string representation**.
+- A bare `{} + []` at the start of a statement can be parsed as an **empty block** followed by **unary `+[]`**, producing `0`. In expression context, `({} + [])` produces `"[object Object]"`.
+- `[] == ![]` → `true` because `![]` is `false`, and the **loose-equality chain** converts both sides to `0`.
+- `NaN == NaN` → `false`; use `Number.isNaN(value)` to test for the **numeric `NaN` value**.
 
 ```javascript
 [] + []       // ""

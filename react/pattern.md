@@ -6,12 +6,12 @@
 
 ### Answer
 
-1. Server-Side Initial Seed (Zero CLS)
-   - feed the initial data from the server to the client to avoid layout shifts.
-2. Add invisible elements
+1. **Server-Side Initial Seed (Zero CLS)**
+   - feed the **initial data from the server to the client** to avoid layout shifts.
+2. **Add invisible elements**
    - `<div ref={sentinelRef} aria-hidden="true" className="h-1 w-full" />`
-3. Use Intersection Observer API in useEffect
-   - Use the Intersection Observer API to detect when the sentinel element is in view and trigger a fetch for more data.
+3. **Use Intersection Observer API in useEffect**
+   - Use the **Intersection Observer API** to detect when the sentinel element is in view and trigger a fetch for more data.
    ```ts
    const observer = new IntersectionObserver(
      ([entry]) => {
@@ -21,10 +21,10 @@
    );
    observer.observe(sentinel);
    ```
-4. Async Concurrency Lock & State Accumulation
-   - Concurrency Lock: inFlightRef or status === "loading" prevents duplicate requests if the user scrolls rapidly.
-   - Fetch Next Page: Calls the BFF client fetcher using the current list length as the offset (offset: state.reviews.length).
-   - Append State: Merges new items into existing state:
+4. **Async Concurrency Lock & State Accumulation**
+   - **Concurrency Lock**: `inFlightRef` or `status === "loading"` prevents duplicate requests if the user scrolls rapidly.
+   - **Fetch Next Page**: Calls the BFF client fetcher using the current list length as the offset (`offset: state.reviews.length`).
+   - **Append State**: Merges new items into existing state:
 
 ---
 

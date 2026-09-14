@@ -6,9 +6,9 @@
 
 ### Answer
 
-- JavaScript uses lexical (static) scoping, meaning variable scope is determined at compile/parse time based on where functions and blocks are declared in source code, not where they are called.
-- When an identifier is referenced, the JS engine searches the immediate Execution Context's Environment Record; if not found, it traverses up outer scope references along the scope chain until reaching the Global Scope.
-- If an identifier cannot be found in any Environment Record along the scope chain, strict mode throws a `ReferenceError`, whereas non-strict mode creates an implicit global variable on un-declared assignments.
+- JavaScript uses **lexical (static) scoping**, meaning variable scope is determined at **compile/parse time** based on where functions and blocks are declared in source code, not where they are called.
+- When an identifier is referenced, the JS engine searches the immediate **Execution Context's Environment Record**; if not found, it **traverses up outer scope references along the scope chain** until reaching the **Global Scope**.
+- If an identifier cannot be found in any Environment Record along the scope chain, strict mode throws a **`ReferenceError`**, whereas non-strict mode creates an **implicit global variable** on un-declared assignments.
 
 ```javascript
 const globalVar = "global";
@@ -30,9 +30,9 @@ function outer() {
 
 ### Answer
 
-- A closure retains a reference to its outer lexical environment record for as long as the closure function object itself remains reachable in memory.
-- The garbage collector cannot free variables in an outer scope context if any active, reachable closure references that environment.
-- Unintended memory leaks occur when long-lived objects (e.g., global event listeners, long-running timers, RxJS subscriptions) hold references to closure callbacks that encapsulate large data structures.
+- A closure retains a reference to its **outer lexical environment record** for as long as the closure function object itself **remains reachable in memory**.
+- The **garbage collector cannot free variables** in an outer scope context if any active, reachable closure references that environment.
+- **Unintended memory leaks** occur when long-lived objects (e.g., global event listeners, long-running timers, RxJS subscriptions) hold references to closure callbacks that encapsulate large data structures.
 
 ```javascript
 function setupListener() {
@@ -53,9 +53,9 @@ function setupListener() {
 
 ### Answer
 
-- Every render of a React functional component executes with its own distinct lexical scope containing state and props snapshots created for that specific render.
-- If a callback (e.g., in `useEffect`, `useCallback`, or `setTimeout`) closes over variables from render $N$ and is not updated when state changes in render $N+1$, it accesses the snapshot values captured at render $N$.
-- Resolving stale closures requires maintaining accurate Hook dependency arrays, using functional state updates (`setState(prev => ...)`), or storing dynamic values in a mutable `useRef`.
+- Every render of a React functional component executes with its own **distinct lexical scope** containing **state and props snapshots** created for that specific render.
+- If a callback (e.g., in `useEffect`, `useCallback`, or `setTimeout`) closes over variables from render $N$ and is not updated when state changes in render $N+1$, it accesses the **snapshot values captured at render $N$**.
+- Resolving stale closures requires **maintaining accurate Hook dependency arrays**, using **functional state updates** (`setState(prev => ...)`), or storing dynamic values in a **mutable `useRef`**.
 
 ```javascript
 function Counter() {
@@ -79,9 +79,9 @@ function Counter() {
 
 ### Answer
 
-- `var` is function-scoped or globally-scoped, meaning a single variable binding is created and mutated across all iterations of the loop.
-- `let` in a `for` loop header creates a new block-scoped variable binding for every iteration (per-iteration environment record binding), storing the iteration's specific value.
-- When asynchronous callbacks (like `setTimeout` or event handlers) execute later, `var` callbacks read the single mutated binding (final loop value), while `let` callbacks close over their respective iteration scope.
+- `var` is **function-scoped or globally-scoped**, meaning a **single variable binding** is created and mutated across all iterations of the loop.
+- `let` in a `for` loop header creates a **new block-scoped variable binding for every iteration** (per-iteration environment record binding), storing the iteration's specific value.
+- When asynchronous callbacks (like `setTimeout` or event handlers) execute later, `var` callbacks read the **single mutated binding** (final loop value), while `let` callbacks close over their **respective iteration scope**.
 
 ```javascript
 for (var i = 0; i < 3; i++) {
@@ -101,9 +101,9 @@ for (let j = 0; j < 3; j++) {
 
 ### Answer
 
-- Closures encapsulate state by storing variables inside an outer function scope that are accessible only via returned inner methods (privileged functions).
+- Closures encapsulate state by storing variables inside an **outer function scope** that are accessible only via returned inner methods (**privileged functions**).
 - Private class fields (`#field`) enforce privacy at the language grammar level via hidden class slot checks, shared via prototype methods rather than re-creating function instances per object.
-- Closure-based privacy creates unique function instances per instantiation (higher memory footprint), whereas ES class `#fields` offer better memory performance and true native branding checks (`in` operator validation).
+- **Closure-based privacy** creates unique function instances per instantiation (higher memory footprint), whereas **ES class `#fields`** offer better memory performance and true native branding checks (`in` operator validation).
 
 ```javascript
 // Closure pattern (re-creates methods per instance)
@@ -132,9 +132,9 @@ class Counter {
 
 ### Answer
 
-- A `switch` block shares a single lexical block scope across all of its `case` clauses; declaring a `let` or `const` variable in one case without curly braces causes redeclaration `SyntaxError`s if declared again in another case.
-- The `catch` clause in a `try/catch` statement creates a separate block scope for its error parameter (e.g., `catch (err)`), shadowing outer variables with the same name.
-- Enclosing individual `case` blocks in explicit block braces `{}` creates isolated scope boundaries per case clause.
+- A `switch` block shares a **single lexical block scope** across all of its `case` clauses; declaring a `let` or `const` variable in one case without curly braces causes redeclaration `SyntaxError`s if declared again in another case.
+- The `catch` clause in a `try/catch` statement creates a **separate block scope for its error parameter** (e.g., `catch (err)`), shadowing outer variables with the same name.
+- Enclosing individual `case` blocks in **explicit block braces `{}`** creates isolated scope boundaries per case clause.
 
 ```javascript
 switch (action) {
@@ -157,9 +157,9 @@ switch (action) {
 
 ### Answer
 
-- IIFEs create an immediate local function scope to encapsulate variables and prevent polluting the global scope or colliding with global identifiers.
-- Prior to native ES modules, IIFEs were the standard technique for implementing the Module Pattern and creating private state.
-- In modern JS, IIFEs are still useful for executing top-level `async/await` blocks in legacy environments, scoping complex multi-statement initializations without leaking temporary variables, and isolating bundled code output.
+- IIFEs create an **immediate local function scope** to encapsulate variables and **prevent polluting the global scope** or colliding with global identifiers.
+- Prior to native ES modules, IIFEs were the standard technique for implementing the **Module Pattern** and creating private state.
+- In modern JS, IIFEs are still useful for executing top-level `async/await` blocks in legacy environments, **scoping complex multi-statement initializations without leaking temporary variables**, and isolating bundled code output.
 
 ```javascript
 const config = (() => {
@@ -178,9 +178,9 @@ const config = (() => {
 
 ### Answer
 
-- Top-level variables (`var`, `let`, `const`, `function`) in an ES Module are scoped strictly to that module file and are never attached to the global object (`window` or `globalThis`).
-- Non-module script tags evaluate top-level `var` and `function` declarations into properties on the global object (`window.varName`), making them globally accessible.
-- ES modules automatically enforce strict mode (`"use strict"`), isolate their scope, and require explicit `export` and `import` statements to share bindings across files.
+- Top-level variables (`var`, `let`, `const`, `function`) in an ES Module are **scoped strictly to that module file** and are **never attached to the global object** (`window` or `globalThis`).
+- Non-module script tags evaluate top-level `var` and `function` declarations into **properties on the global object** (`window.varName`), making them globally accessible.
+- ES modules automatically **enforce strict mode** (`"use strict"`), isolate their scope, and require explicit `export` and `import` statements to share bindings across files.
 
 ```javascript
 // Non-module script:
@@ -199,9 +199,9 @@ export { moduleItem };
 
 ### Answer
 
-- Arrow functions do not define their own `this`, `arguments`, `super`, or `new.target` bindings; instead, they resolve these identifiers lexically from their enclosing parent scope.
+- Arrow functions **do not define their own `this`, `arguments`, `super`, or `new.target` bindings**; instead, they **resolve these identifiers lexically** from their enclosing parent scope.
 - Standard functions bind `this` dynamically based on how they are invoked (e.g., method call, standalone invocation, `call`/`apply`/`bind`).
-- Invoking `call()`, `apply()`, or `bind()` on an arrow function passes parameters but cannot change its lexically bound `this` value.
+- Invoking `call()`, `apply()`, or `bind()` on an arrow function passes parameters but **cannot change its lexically bound `this` value**.
 
 ```javascript
 const obj = {
@@ -230,9 +230,9 @@ obj.getArrow()(); // "App"
 
 ### Answer
 
-- Direct `eval()` executes arbitrary code that can introduce new local variable bindings into the calling lexical environment at runtime.
-- The `with` statement dynamically injects an object's properties at the head of the current scope chain, making property access resolve dynamically.
-- Because lexical scope can no longer be determined statically at compile time, JS engines (like V8) disable aggressive JIT compiler optimizations (such as inline caching and fast scope variable lookups) for functions using `eval` or `with`.
+- Direct `eval()` executes arbitrary code that can **introduce new local variable bindings** into the calling lexical environment at runtime.
+- The `with` statement **dynamically injects an object's properties** at the head of the current scope chain, making property access resolve dynamically.
+- Because lexical scope can no longer be determined statically at compile time, JS engines (like V8) **disable aggressive JIT compiler optimizations** (such as inline caching and fast scope variable lookups) for functions using `eval` or `with`.
 
 ```javascript
 function dynamicScope(str) {
@@ -251,9 +251,9 @@ dynamicScope("var x = 20;"); // 20
 
 ### Answer
 
-- V8 allocates a single shared `Context` object for an outer function execution containing all variables closed over by _any_ inner function defined within that outer scope.
-- If inner function A closes over `largeData` and inner function B closes over `smallData`, V8 keeps the shared `Context` object in memory as long as _either_ function A or function B remains reachable.
-- As a result, retaining function B in memory inadvertently retains `largeData` in memory via the shared context object, unless V8 static analysis optimizes out unreferenced bindings.
+- V8 allocates a **single shared `Context` object** for an outer function execution containing all variables closed over by _any_ inner function defined within that outer scope.
+- If inner function A closes over `largeData` and inner function B closes over `smallData`, V8 **keeps the shared `Context` object in memory** as long as _either_ function A or function B remains reachable.
+- As a result, retaining function B in memory **inadvertently retains `largeData` in memory** via the shared context object, unless V8 static analysis optimizes out unreferenced bindings.
 
 ```javascript
 function outer() {
@@ -280,9 +280,9 @@ const getSmall = outer(); // Keeps shared outer context (and largeData) alive
 
 ### Answer
 
-- React state variables are primitive values or reference snapshots scoped to the specific render context in which the closure was defined.
-- `useRef` returns a stable, identity-preserved object `{ current: value }` whose object reference remains identical across all re-renders of the component.
-- When an async closure executes, referencing a state variable reads the immutable primitive/reference captured in its static lexical snapshot, whereas referencing `ref.current` dereferences a property on the shared, mutable object stored in heap memory.
+- React state variables are **primitive values or reference snapshots** scoped to the specific render context in which the closure was defined.
+- `useRef` returns a **stable, identity-preserved object `{ current: value }`** whose object reference remains identical across all re-renders of the component.
+- When an async closure executes, referencing a state variable reads the **immutable primitive/reference captured in its static lexical snapshot**, whereas referencing `ref.current` **dereferences a property on the shared, mutable object stored in heap memory**.
 
 ```javascript
 function AsyncCounter() {
@@ -325,8 +325,8 @@ console.log(fn2());
 ### Answer
 
 - `fn1()` returns `1` and `fn2()` returns `0`.
-- Both `increment` and `decrement` functions are created within the same execution context of `createCounters` and share the exact same `count` environment record binding.
-- Mutating `count` inside `fn1` updates the shared reference in memory, which is immediately reflected when `fn2` subsequently executes.
+- Both `increment` and `decrement` functions are created within the same execution context of `createCounters` and share the exact same `count` **environment record binding**.
+- Mutating `count` inside `fn1` **updates the shared reference in memory**, which is immediately reflected when `fn2` subsequently executes.
 
 ---
 
@@ -353,8 +353,8 @@ console.log(a);
 ### Answer
 
 - The output sequence is `3`, `2`, and `1`.
-- The parameter `a` shadows the global `a = 1` inside `test()`, so `a = 2` mutates the parameter binding, not the global variable `a`.
-- The block declaration `let a = 3` creates a separate block-scoped variable `a` that shadows the parameter `a` inside the `if` block, leaving the parameter `a` as `2` outside the block and global `a` unchanged as `1`.
+- The parameter `a` **shadows the global `a = 1`** inside `test()`, so `a = 2` mutates the parameter binding, not the global variable `a`.
+- The block declaration `let a = 3` creates a **separate block-scoped variable `a` that shadows the parameter `a`** inside the `if` block, leaving the parameter `a` as `2` outside the block and global `a` unchanged as `1`.
 
 ---
 
@@ -382,8 +382,8 @@ obj.showNameDelayed();
 ### Answer
 
 - `obj.showName()` prints `"Module"`, whereas `obj.showNameDelayed()` prints `undefined` (or empty string in browsers).
-- `showName` is invoked directly as a method on `obj`, binding `this` dynamically to `obj`.
-- The standard callback function passed to `setTimeout` is executed later by the timer subsystem as a standalone function call, resetting its `this` binding to `window` (or `undefined` in strict mode).
+- `showName` is invoked directly as a **method on `obj`**, binding `this` dynamically to `obj`.
+- The standard callback function passed to `setTimeout` is executed later by the timer subsystem as a **standalone function call**, resetting its `this` binding to `window` (or `undefined` in strict mode).
 
 ---
 
@@ -405,9 +405,9 @@ console.log(b(3));
 
 ### Answer
 
-- Executing `b(3)` throws a `TypeError: a is not a function`.
-- Inside the function body, recursive execution references variable identifier `a` instead of its named function expression identifier `recursive`.
-- When `a` is re-assigned to `null`, `b` still references the function object, but internal evaluation of `a(n - 1)` dynamically resolves `a` to `null` via scope lookup, failing at invocation.
+- Executing `b(3)` throws a **`TypeError: a is not a function`**.
+- Inside the function body, recursive execution references **variable identifier `a`** instead of its named function expression identifier `recursive`.
+- When `a` is re-assigned to `null`, `b` still references the function object, but internal evaluation of `a(n - 1)` dynamically **resolves `a` to `null` via scope lookup**, failing at invocation.
 
 ---
 
@@ -430,7 +430,7 @@ console.log(val);
 
 - Logs `30` followed by `10`.
 - The IIFE receives `10` as an argument assigned to its parameter `val`.
-- Parameter `val` is a local function-scoped variable that shadows the global `val`; modifying `val` inside the IIFE mutates only the local parameter, leaving global `val` as `10`.
+- Parameter `val` is a **local function-scoped variable that shadows the global `val`**; modifying `val` inside the IIFE mutates only the local parameter, leaving global `val` as `10`.
 
 ---
 
@@ -459,8 +459,8 @@ function Component() {
 - Assuming initial state `count = 0` and `countRef.current = 0`:
   - First click timeout output: `State: 0, Ref: 2`
   - Second click timeout output: `State: 1, Ref: 2`
-- The `setTimeout` callback closes over the primitive `count` snapshot from the render context in which `handleClick` was invoked (0 for render 0, 1 for render 1).
-- `countRef.current` points to the same mutable heap object reference across renders, so both delayed timeouts read the updated final property value (`2`).
+- The `setTimeout` callback **closes over the primitive `count` snapshot** from the render context in which `handleClick` was invoked (0 for render 0, 1 for render 1).
+- `countRef.current` points to the **same mutable heap object reference across renders**, so both delayed timeouts read the updated final property value (`2`).
 
 ---
 
@@ -484,8 +484,8 @@ console.log(fn());
 ### Answer
 
 - Calling `fn()` returns `100`.
-- When `outer()` executes, `getValue` is defined and closes over `outer`'s environment record containing binding `x`.
-- By the time `outer()` completes and returns `getValue`, runtime execution has reached `var x = 100`, populating the environment record entry with `100` before `fn()` is invoked.
+- When `outer()` executes, `getValue` is defined and **closes over `outer`'s environment record containing binding `x`**.
+- By the time `outer()` completes and returns `getValue`, runtime execution has reached `var x = 100`, **populating the environment record entry with `100`** before `fn()` is invoked.
 
 ---
 
@@ -513,8 +513,8 @@ console.log(funcs[1]());
 ### Answer
 
 - Logs `0` followed by `1`.
-- The IIFE executes immediately on each loop iteration, creating a distinct execution context and capturing the current `i` value in its parameter `capturedI`.
-- The returned inner function closes over `capturedI` (unique per IIFE context), preserving `0` and `1` despite `i` being a single mutated `var` binding in the outer scope.
+- The IIFE executes immediately on each loop iteration, **creating a distinct execution context and capturing the current `i` value in its parameter `capturedI`**.
+- The returned inner function **closes over `capturedI` (unique per IIFE context)**, preserving `0` and `1` despite `i` being a single mutated `var` binding in the outer scope.
 
 ---
 
@@ -539,7 +539,7 @@ delayLog();
 ### Answer
 
 - Logs `"Modified"`.
-- The `setTimeout` callback captures the environment record binding reference for `message`, not a snapshot copy of its string primitive value at the time `setTimeout` was called.
+- The `setTimeout` callback **captures the environment record binding reference for `message`**, not a snapshot copy of its string primitive value at the time `setTimeout` was called.
 - Before the event loop runs the timer callback, synchronous execution continues and updates `message` to `"Modified"`, which is what the callback reads upon execution.
 
 ---
@@ -561,9 +561,9 @@ export async function GET(request) {
 
 ### Answer
 
-- In Node.js server environments (like Next.js API routes or Server Components), top-level module scope variables are instantiated once per worker process and shared across all incoming HTTP requests.
-- Modifying `userCache` inside a request handler causes cross-request state bleed, exposing private data of User A to User B and creating race conditions.
-- Server-side state must be scoped strictly per request (inside request handler execution context) or managed via request-isolated storage like React `cache()` or Node.js `AsyncLocalStorage`.
+- In Node.js server environments (like Next.js API routes or Server Components), **top-level module scope variables are instantiated once per worker process and shared across all incoming HTTP requests**.
+- Modifying `userCache` inside a request handler causes **cross-request state bleed**, exposing private data of User A to User B and creating race conditions.
+- Server-side state must be **scoped strictly per request** (inside request handler execution context) or managed via request-isolated storage like React `cache()` or Node.js `AsyncLocalStorage`.
 
 ---
 
@@ -592,9 +592,9 @@ function useInterval(callback, delay) {
 
 ### Answer
 
-- `useLatest` maintains a mutable `useRef` object that is updated with the newest callback or prop value after every render.
-- By reading `savedCallback.current()` inside `setInterval`, the timer closure accesses the latest function reference without needing `callback` in `useEffect`'s dependency array.
-- This decouples callback identity updates from timer setup/teardown cycles, eliminating stale closures while avoiding timer resets.
+- `useLatest` maintains a **mutable `useRef` object** that is updated with the newest callback or prop value after every render.
+- By reading `savedCallback.current()` inside `setInterval`, the timer closure **accesses the latest function reference** without needing `callback` in `useEffect`'s dependency array.
+- This **decouples callback identity updates from timer setup/teardown cycles**, eliminating stale closures while avoiding timer resets.
 
 ---
 
@@ -616,6 +616,6 @@ function UserProfile({ userId }) {
 
 ### Answer
 
-- Attaching `handler` inside `useEffect` creates a long-lived closure bound to the DOM `window` root, retaining `userId` and the component's enclosing environment record in memory.
-- When `UserProfile` unmounts or `userId` updates, the old listener remains attached to `window`, keeping its captured lexical scope reachable by the garbage collector.
-- Returning a cleanup function (`removeEventListener`) severs the DOM reference to `handler`, enabling GC to reclaim the component's unmounted scope context and memory.
+- Attaching `handler` inside `useEffect` creates a **long-lived closure bound to the DOM `window` root**, retaining `userId` and the component's enclosing environment record in memory.
+- When `UserProfile` unmounts or `userId` updates, the old listener remains attached to `window`, **keeping its captured lexical scope reachable by the garbage collector**.
+- Returning a cleanup function (`removeEventListener`) **severs the DOM reference to `handler`**, enabling GC to reclaim the component's unmounted scope context and memory.
