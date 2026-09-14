@@ -172,6 +172,69 @@ const Component = () => {
 
 ---
 
+### Question
+
+- Component tree vs Element tree vs Fiber vs Virtual DOM vs Real DOM
+
+### Answer
+
+- Element tree:
+  - An element tree is the tree of React element objects created from JSX:
+    ```js
+    // from
+    <App>
+      <Header />
+      <Content />
+    </App>
+
+    // to
+    {
+      type: App,
+      props: {
+        children: [
+          { type: Header, props: {} },
+          { type: Content, props: {} },
+        ],
+      },
+    }
+    ```
+
+- Component tree:
+  - This describes the logical component structure:
+    ```
+    App
+    ├── Header
+    └── Content
+    ```
+  - it answers: "Which components are composed together?"
+
+- Fiber:
+  - The Fiber tree is the actual internal structure React uses during reconciliation.
+  - Fiber is a data structure that represents a unit of work in React's rendering process.
+  - It is a JavaScript object that contains information about a component, its state, and its relationship to other components in the tree.
+  - Fiber allows React to pause, resume, and prioritize work, enabling features like concurrent rendering and time slicing.
+    ```js
+    FiberRoot
+    └── App Fiber
+        └── div Fiber
+            ├── h1 Fiber
+            │   └── Text Fiber: "Hello"
+            └── button Fiber
+                └── Text Fiber: "Click"
+    // each node:
+    {
+      type: "div",
+      return: parentFiber,
+      child: firstChildFiber,
+      sibling: nextSiblingFiber,
+      memoizedProps: { children: ... },
+      memoizedState: null,
+      flags: 0
+    }
+    ```
+
+---
+
 ### Question 5fe1c485-8198-4915-9f42-19c944df8638
 
 - component and dom element identity in React.
