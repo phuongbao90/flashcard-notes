@@ -1,64 +1,77 @@
-# React
-
-## React Reconciliation
+# React Reconciliation
 
 ### Question 17f119f9-1be9-4c53-b937-2c270f5855b4
 
-What is React Reconciliation?
+- What is React Reconciliation, and what heuristics does React's diffing algorithm use to achieve O(n) complexity?
 
 ### Answer
 
-**Reconciliation** is the process by which React updates the **DOM** to match your **component tree**.
+- **Reconciliation** is React's recursive algorithm for comparing two Virtual DOM trees and computing the minimal set of real DOM mutations needed.
+- A generic tree diff algorithm operates in **O(n³)** time; React reduces this to **O(n)** using two core heuristics:
+  - **Different Element Types**: Two elements of different types (e.g., changing from `<div>` to `<span>`, or `<ComponentA>` to `<ComponentB>`) produce entirely different trees. React destroys (unmounts) the old tree and builds the new one from scratch.
+  - **Keys for Lists**: Child elements with a stable **`key` prop** maintain identity across renders, allowing React to match children across renders regardless of array reordering, insertions, or deletions.
+- **Diffing Scope**: React diffs elements level-by-level (breadth-first per sibling group) rather than exploring deeper subtrees if a parent type has changed.
+
+---
+
+### Question af721df7-312b-4ffb-895c-58f257e08504
+
+- What is the difference between component rendering (the render phase) and the reconciliation and commit process?
+
+### Answer
+
+- **Render Phase (Virtual DOM generation & diffing)**:
+  - React calls the component function (or `render()`) to obtain a new tree of **React elements** (plain JavaScript objects).
+  - React compares (diffs) the newly generated element tree against the existing **Fiber tree** to compute required changes.
+  - In modern React (Fiber), this phase is **pure, has no side effects, and is interruptible** in concurrent mode.
+- **Reconciliation**:
+  - The internal algorithmic process that determines *which parts* of the tree changed between renders by evaluating element types, keys, and props.
+- **Commit Phase (DOM mutations & effects)**:
+  - React applies the computed mutations to the **Real DOM** in a single, **synchronous, uninterruptible** pass to avoid visual tearing.
+  - Executes lifecycle methods and hooks: `useLayoutEffect` synchronously after DOM mutations, then `useEffect` asynchronously after paint.
 
 ---
 
 ### Question f2c9a76e-92ae-487f-a2cb-fb2d59779d84
 
-- what are the key factors in determining indentity of a component in React?
+- What factors determine component identity in React, and what happens if two elements share the same key but have different types?
 
 ### Answer
 
-- The **type** of the component (HTML elements type)
-- The **key prop** (if provided)
-- The **position** of the component in the tree
+- Component identity is determined by three factors:
+  - **Component / Element Type**: The function/class reference or HTML tag name (e.g., `div`, `MyComponent`).
+  - **Key Prop**: An explicit identifier (`key="..."`) supplied to distinguish siblings.
+  - **Tree Position**: The structural hierarchy and sibling order in the element tree when no key is provided.
+- **Type Check Precedence**: Type takes strict precedence over `key`. If the `key` is identical but the `type` changes, React **unmounts the previous component** and mounts a fresh one. It will never reuse an instance across different types.
 
----
-
-### Question 3fad64f4-6827-4903-acdb-0c3596f109f5
-
-- what happen when one of the component identity change?
-
-### Answer
-
-- React will **unmount and remount** the whole component
-- **NOT RE-RENDER**
-  - re-render implies **component identity preserve**
+```javascript
+// Although keys match, type change (<A> vs <B>) triggers a full unmount and remount
+{toggle ? <A key="shared-id" /> : <B key="shared-id" />}
+```
 
 ---
 
 ### Question b79ce095-44c7-4220-a3c5-e8bbd6ba5c9c
 
-- What is Re-render exactly?
+- What is the difference between a re-render and an unmount/remount in React?
 
 ### Answer
 
-- **Re-render** (**Identity preserved**): React keeps the **same component instance**, preserves its **internal state** (useState, useRef), and updates the **DOM elements**. **Memoization** (React.memo, useMemo, useCallback) helps optimize or skip this step.
-
----
-
-### Question d89b1aa8-6c01-450e-b9ef-1f68fa5d7072
-
-- What happen during unmount and remount?
-
-### Answer
-
-- **Unmount and Remount** (**Identity changed**): React throws away the **existing component instance**, **destroys its internal state completely**, **removes its DOM node**, and mounts a **brand-new component instance** from scratch.
+- **Re-render (Identity Preserved)**:
+  - Occurs when state or props change, but the component's **type, key, and position remain identical**.
+  - React retains the **same Fiber node and DOM instance**.
+  - Internal state (`useState`, `useRef`) is **preserved**.
+  - Only altered DOM attributes and children are updated.
+- **Unmount and Remount (Identity Changed)**:
+  - Occurs when the component's **type changes, key changes, or its position shifts** without a persistent key.
+  - React completely **destroys the existing component instance**, wipes out its **internal state and refs**, runs effect cleanups, and removes the DOM node.
+  - Mounts a **brand-new instance** from scratch, initializing default state and re-running all mount effects.
 
 ---
 
 ### Question b9f8a959-f9f6-4c22-8cb9-0198393555b5
 
-- Discuss what would happen when isCompany is toggled in the following code snippet.
+- Why does the input value persist when toggling between two conditional inputs in this component, and how do you prevent it?
 
 ```javascript
 const UserInfoForm = () => {
@@ -66,7 +79,9 @@ const UserInfoForm = () => {
 
   return (
     <div className="form-container">
-      <button onClick={() => setIsCompany(!isCompany)}>{isCompany ? "Cancel" : "Edit"}</button>
+      <button onClick={() => setIsCompany(!isCompany)}>
+        {isCompany ? "Cancel" : "Edit"}
+      </button>
 
       {isCompany ? (
         <input type="text" placeholder="Company tax ID" id="company-tax-id" />
@@ -80,596 +95,243 @@ const UserInfoForm = () => {
 
 ### Answer
 
-- When user input "abc" to company tax input, and then toggle off isCompany, the input value "abc" will **remain**.
-- the **virtual DOM** between toggles will have the same:
-  - **type**: "input"
-  - **same position** in the tree
-  - the **key is the same** (no key provided, so React uses the index)
-- so React will **reuse the same input element** and not create a new one, which means the **value will persist**.
+- **Why it persists**:
+  - Both branches return an element with the exact same **type** (`'input'`) and the exact same **tree position** (the second child of `div`).
+  - Because neither has an explicit **`key`**, React's diffing algorithm considers them the **same identity**.
+  - React updates only changed props (`placeholder`, `id`) on the existing real DOM node, leaving the unmanaged DOM state (`value`) intact.
+- **How to prevent it**:
+  - Assign distinct **`key` props** (e.g., `<input key="company" ... />` and `<input key="personal" ... />`).
+  - This forces React to recognize an **identity change**, unmounting the previous input and mounting a clean, empty input element.
 
 ---
 
 ### Question 6a7e2c98-57f4-434e-91f2-e862b0fa63a9
 
-What are the problems with this approach?
+- Why is defining a component inside another component's render body considered a severe anti-pattern?
 
 ```javascript
 const Form = () => {
-  const Input = () => <input ... />;
+  const Input = () => <input type="text" />;
 
-  return (
-    <Input ... />
-  )
-}
+  return <Input />;
+};
 ```
 
 ### Answer
 
-Every time a component is **created inside another component**, it will be **re-created on every render**.
+- **Creates a New Component Type on Every Render**:
+  - Each time `Form` re-renders, a brand-new `Input` function reference is instantiated in memory.
+  - React compares component identity by reference (`prevChild.type === nextChild.type`). Because the reference changed, React treats `Input` as an entirely **different component type**.
+- **Forces Continuous Remounting**:
+  - On every single render of `Form`, React **unmounts the previous `Input` DOM subtree and remounts a new one**.
+- **Severe Consequences**:
+  - **Loss of Input Focus**: Typing a single keystroke triggers a re-render, unmounting the active input and losing cursor focus immediately.
+  - **Loss of Internal State**: Any `useState`, `useRef`, or child component state inside `Input` is destroyed on every render.
+  - **Performance Degradation**: Continuous DOM teardown and recreation bypasses reconciliation reuse.
+- **Solution**: Declare subcomponents outside the parent component, or pass them as children/props.
 
 ---
 
 ### Question 5e9b0e56-b89b-4a54-8351-f4f56a6ff48c
 
-- Will StaticElement re-mount if list items change
+- Will `<StaticElement />` unmount and remount when items in the dynamic list are added, removed, or reordered?
 
 ```javascript
 <>
   {items.map((item) => (
     <ListItem key={item.id} />
   ))}
-  <StaticElement /> {/* Will this re-mount if items change? */}
+  <StaticElement />
 </>
 ```
 
 ### Answer
 
-- React treats the entire dynamic list as a **single unit** at the first position, so the StaticElement will always **maintain its position and identity**, regardless of changes to the list.
-
-```javascript
-[
-  // The entire dynamic array becomes a single child
-  [
-    { type: ListItem, key: "1" },
-    { type: ListItem, key: "2" },
-  ],
-  { type: StaticElement }, // Always maintains its second position
-];
-```
-
----
-
-### Question 5f0231c7-8581-49d7-b614-009c51c60181
-
-- What are the virtual DOM of this?
-
-```javascript
-const Component = () => {
-  return (
-    <div>
-      <h1>Hello</h1>
-      <p>World</p>
-      <Input placeholder="Enter your name" id="name" />
-    </div>
-  );
-};
-```
-
-### Answer
-
-```javascript
-{
-  type: "div",
-  props: {
-    children: [
-      { type: "h1", props: { children: "Hello" } },
-      { type: "p", props: { children: "World" } },
-      { type: Input, props: { placeholder: "Enter your name", id: "name" } },
-    ],
-  },
-}
-```
+- **No, `<StaticElement />` will not remount**. It will only re-render if its own props or context change.
+- **Slot Positioning**:
+  - In JSX, the dynamic expression `{items.map(...)}` evaluates to a single array child.
+  - The parent Fragment's `props.children` structure is: `[ [ ListItem, ListItem, ... ], StaticElement ]`.
+  - The entire dynamic list occupies **slot index 0**, and `<StaticElement />` occupies **slot index 1**.
+- **Stability**:
+  - Even if `items` changes length from 10 to 0, `<StaticElement />` remains at slot index 1 with an unchanged component type and implicit key. Its **identity is preserved**.
 
 ---
 
 ### Question c8486715-9739-4469-b9d8-df5347b7fdcf
 
-- Component tree vs Element tree vs Fiber vs Virtual DOM vs Real DOM
+- How do the Component Tree, Element Tree (Virtual DOM), Fiber Tree, and Real DOM differ in React?
 
 ### Answer
 
-- **Element tree**:
-  - An element tree is the tree of **React element objects** created from **JSX**:
-    ```js
-    // from
-    <App>
-      <Header />
-      <Content />
-    </App>
-
-    // to
-    {
-      type: App,
-      props: {
-        children: [
-          { type: Header, props: {} },
-          { type: Content, props: {} },
-        ],
-      },
-    }
-    ```
-
-- **Component tree**:
-  - This describes the **logical component structure**:
-    ```
-    App
-    ├── Header
-    └── Content
-    ```
-  - it answers: "Which components are composed together?"
-
-- **Fiber**:
-  - The **Fiber tree** is the actual **internal structure** React uses during reconciliation.
-  - Fiber is a **data structure** that represents a **unit of work** in React's rendering process.
-  - It is a JavaScript object that contains information about a component, its state, and its relationship to other components in the tree.
-  - Fiber allows React to **pause, resume, and prioritize work**, enabling features like **concurrent rendering** and **time slicing**.
-    ```js
-    FiberRoot
-    └── App Fiber
-        └── div Fiber
-            ├── h1 Fiber
-            │   └── Text Fiber: "Hello"
-            └── button Fiber
-                └── Text Fiber: "Click"
-    // each node:
-    {
-      type: "div",
-      return: parentFiber,
-      child: firstChildFiber,
-      sibling: nextSiblingFiber,
-      memoizedProps: { children: ... },
-      memoizedState: null,
-      flags: 0
-    }
-    ```
-
----
-
-### Question 5fe1c485-8198-4915-9f42-19c944df8638
-
-- component and dom element identity in React.
-- components with same key but different type, will React reuse the same component or create a new one?
-
-```javascript
-<div>
-  <button onClick={() => setToggle((t) => !t)}>Toggle</button>
-
-  {/* SAME key, DIFFERENT type */}
-  {toggle ? <A key="same" /> : <B key="same" />}
-</div>
-```
-
-### Answer
-
-- When the **key is the same** but the **type is different**, React will **unmount the previous component and mount a new one**. The **identity of a component** is determined by both its **key** and its **type**.
-
----
-
-### Question 6b7267b5-b635-48b1-b352-922532f97af7
-
-- React 15 - Stack Reconciler
-  - what is its data structure?
-  - what is its core algorithm?
-  - what are its limitations?
-
-### Answer
-
-- **Data structure**: **depth-first tree traversal**
-- **Core algorithm**: **recursive function calls**, using the **JavaScript call stack** as its scheduler.
-- **Limitations**:
-  - **Cannot split work into chunks**, leading to **blocking of the main thread**.
-  - **Cannot prioritize updates**, leading to poor user experience for high-priority updates. Treat all updates equally, which can cause **jank** in the UI.
-  - **Cannot pause and resume work**, which can lead to long-running updates that **block the main thread**.
-
----
-
-### Question 7215ab54-4c86-4d4e-bf29-1c1001464f74
-
-- React 15 - Stack Reconciler
-  - **Core Function**: What is the primary role of the Stack Reconciler during a UI update?
-  - **Tree Traversal**: Given the component tree below, demonstrate how the Stack Reconciler recursively traverses it during an update cycle.
-    ```
-    App
-    ├── Header
-    ├── Content
-    │    ├── Post
-    │    └── Sidebar
-    └── Footer
-    ```
-  - **Execution Limitation**: Why is the Stack Reconciler unable to pause, prioritize, or yield execution back to the browser main thread mid-update?
-
-### Answer
-
-- **Core function**: The Stack Reconciler relies on the **JavaScript call stack** to **synchronously process component updates**. It executes render() on a component, inspects its children, and **recursively updates** each child before moving to the next sibling.
-
-- **Tree Traversal Mechanics**
-  - The Stack Reconciler traverses the component tree using a **depth-first search (DFS)** strategy.
-
-    ```javascript
-    function update(component) {
-      const children = component.render(); // returns a Virtual DOM element tree (plain JavaScript objects) describing what the UI should look like for that specific component at that moment.
-      children.forEach(update);
-    }
-    ```
-
-    ```
-    update(App)
-      → update(Header)
-      ← return
-      → update(Content)
-          → update(Post)
-          ← return
-          → update(Sidebar)
-          ← return
-      ← return
-      → update(Footer)
-      ← return
-    ← return
-    ```
-    - Step-by-Step Execution:
-      1. App begins updating and calls render().
-
-      2. It encounters Header, calls update(Header), executes its render, and pops it off the stack once finished.
-
-      3. It moves to Content and calls update(Content).
-
-      4. Before Content can finish, it must process its children:
-
-      5. Calls update(Post), completes, and pops off.
-
-      6. Calls update(Sidebar), completes, and pops off.
-
-      7. Content finishes and pops off the stack.
-
-      8. It moves to Footer, calls update(Footer), completes, and pops off.
-
-      9. App finishes, emptying the stack.
-
-- JS: ❗ **Once a function is running, it runs until it returns.** The **call stack** is filled with function calls, making it **impossible to pause or interrupt** the execution.
-
-### Question af721df7-312b-4ffb-895c-58f257e08504
-
-- .render() vs. The Reconciliation Process
-
-### Answer
-
-- .render() is **just one step** in the full reconciliation cycle. The Stack Reconciler uses .render() to discover what needs to be updated.
-
-- **reconciliation process**:
-  1. **PREPARATION PHASE**
-  - **Trigger** (setState/props)
-    - If false: STOP HERE
-  2. **EXECUTION & DIFFING PHASE**
-  - **Call .render()**
-    - Generates a new **Element Tree**
-  - **Diffing**
-    - Compares new tree vs. old tree
-  - **DOM Mutation**
-    - Writes minimal changes to **real DOM**
-  - **Recursion**
-    - Traverses child components
-
----
-
-### Question 185b6ee2-4bfa-4ddb-b706-809242739908
-
-- component tree vs element tree
-
-### Answer
-
----
-
-### Question d805c828-f436-4618-8444-88313b135486
-
-- Fiber - what is a scheduler?
-
-### Answer
-
-- A **scheduler** is a system that **manages the execution of tasks**, determining **when and how** they should be executed.
-- It’s not React itself—it’s a **cooperative task scheduler** that React uses under the hood.
-- In the context of React Fiber, the scheduler is responsible for **prioritizing updates** and **breaking them into smaller units of work** that can be processed **incrementally**, allowing for **better responsiveness and user experience**.
-
----
-
-### Question 0aaf66fe-4244-4bb9-92ad-3cc1275ade97
-
-- Fiber - what scheduler enables React to do?
-
-### Answer
-
-- Enables **Concurrent React**
-- Makes rendering **interruptible**
-- Keeps apps **responsive under heavy updates**
-- Allows features like:
-  - startTransition
-  - Suspense
-  - selective rendering
-
----
-
-### Question e09d1558-d260-496a-99a9-ac8c636046c1
-
-- Fiber - key concepts of scheduler
-
-### Answer
-
-1. **Priority levels**: Different updates can have different priorities,
-
-- **Immediate** (rare, sync)
-- **User-blocking** (click, typing)
-- **Normal** (default updates)
-- **Low**
-- **Idle**
-
-👉 **Higher priority = runs sooner, can interrupt lower ones**
-
-2. **Time slicing** (cooperative)
-
-- Work is **split into small chunks**
-- React checks shouldYield()
-- If time is up → **pause → resume later**
-
-👉 **Prevents blocking the UI thread**
-
-3. **Frame awareness** (modern behavior)
-
-- Scheduler tries to **finish work before next frame** (~16ms)
-- **Not fixed time slicing** (no hard 5ms anymore)
-- Uses a **deadline** to decide when to yield
-
-4. **Scheduling APIs** (simplified)
-
-- Internally, React uses things like:
-  - scheduleCallback(priority, callback)
-  - shouldYield()
-  - cancelCallback()
-
-👉 Think: a **priority queue + event loop integration**
-
-5. **How it runs tasks**
-
-- Uses **MessageChannel** (or similar) to queue **macrotasks**
-- Avoids blocking like a long while loop
-- Lets browser **handle input/paint in between**
+- **Component Tree**:
+  - The conceptual, developer-facing hierarchy of components composed together (e.g., `App` -> `Header`, `Content`).
+- **Element Tree (Virtual DOM)**:
+  - An immutable, lightweight in-memory tree of plain JavaScript objects produced by JSX compilation (`React.createElement` or `jsx()`).
+  - Describes *what the UI should look like* (`{ type, props, key }`) for a single render pass.
+  - Thrown away and recreated on every render cycle.
+- **Fiber Tree**:
+  - React's internal, persistent, mutable data structure representing **units of work**.
+  - Retains component state, hooks, pending work, lanes (priorities), DOM node references, and tree relationships (`child`, `sibling`, `return`).
+  - Persists across renders to facilitate reconciliation and scheduling.
+- **Real DOM**:
+  - The browser's actual native document tree rendered by the layout engine. Only mutated in the synchronous commit phase.
 
 ---
 
 ### Question ca6dd89d-e9fe-4795-b216-870744d55ddb
 
-- Fiber - data structure of a fiber node
+- What is a Fiber node, and what are its key structural pointers and fields?
 
 ### Answer
 
-- A **fiber node** is a JavaScript object that represents a **unit of work** in React's rendering process.
+- A **Fiber node** is an internal JavaScript object representing a unit of work and the mutable runtime instance of a component or DOM node.
+- **Structural Pointers (Singly-Linked List Tree)**:
+  - **`child`**: Points to its first immediate child fiber.
+  - **`sibling`**: Points to its next immediate sibling fiber.
+  - **`return`**: Points to its parent fiber (the node it returns to after completion).
+  - *Note*: This linked-list representation allows React to traverse trees with an iterative `while` loop rather than a recursive call stack, making rendering pausable.
+- **Work & State Fields**:
+  - **`memoizedState`**: Holds the hook state linked-list for function components, or class state.
+  - **`memoizedProps` / `pendingProps`**: Props used during previous render vs. new incoming props.
+  - **`flags` (formerly `effectTag`)**: Bitmask describing required DOM operations (e.g., `Placement`, `Update`, `Deletion`).
+  - **`alternate`**: Pointer linking the `current` fiber node to its corresponding `workInProgress` counterpart.
 
 ---
 
-### Question 0c235953-5628-4203-ba53-60634f05f4ed
+### Question 7215ab54-4c86-4d4e-bf29-1c1001464f74
 
-- Virtual DOM - What is the virtual DOM?
+- How did the legacy Stack Reconciler (React 15) operate, and what were its primary architectural limitations?
 
 ### Answer
 
-- **in-memory representation of Real DOM**. It is **lightweight JavaScript object** which is **copy of Real DOM**.
+- **Core Mechanism**:
+  - Relied on synchronous **depth-first recursive traversal** of the element tree using the native JavaScript **call stack**.
+  - Calling `render()` on a parent immediately triggered recursive `render()` calls down through all descendants until reaching leaf DOM nodes.
+- **Key Limitations**:
+  - **Synchronous & Uninterruptible**: In JavaScript, a running function runs to completion. A large tree update could tie up the main thread for 50-100ms+.
+  - **Main Thread Starvation (Jank)**: Blocked browser tasks like user clicks, keystrokes, and 60fps frame painting (~16.6ms window), causing noticeable frame drops and latency.
+  - **No Update Prioritization**: A background data fetch update was processed with the same urgency as an active text input or hover animation.
 
 ---
 
 ### Question 0b108176-a332-49cf-8e27-d20d0f6fb4df
 
-- How Virtual DOM works in Fiber Reconciler?
-  App
-  └── ProductDetail
-  ....└── QuantityCount
-  ........└── div
-  ...........├── Button
-  ...........├── Quantity ← shows {count}
-  ...........└── Button
+- How does the Fiber Reconciler utilize double buffering during an update cycle?
 
 ### Answer
 
-- **Fiber Reconciler**:
-  - React maintains **two trees**:
-    - **current tree** → what is currently rendered (committed)
-    - **workInProgress tree** → the new version being built (**double buffering**)
-  - How it works:
-    App
-    └── ProductDetail
-    ......└── QuantityCount
-    ............└── div
-    ...............├── Button
-    ...............├── Quantity ← shows {count}
-    ...............└── Button
-    1. **State / props change**
-    - React marks the Fiber with an update (**lane/priority**)
-    - Then the **scheduler** decides when to start work (can delay, batch, or prioritize)
-    2. **Render phase** (build workInProgress tree)
-       ⚠️ **This phase is interruptible** (key feature of Fiber)
-       👉 React always schedules work at the **root Fiber**
-    - React starts from the root and traverses down:
-      - App → ProductDetail → QuantityCount → div → children
-      - At each node, React runs beginWork
-    - At App, no state/props change -> visits App and **bails out** (skip re-rendering logic but not skipping traversal entirely)
-    - At ProductDetail, no state/props change -> visits ProductDetail and **bails out**
-    - At QuantityCount, state changed, re-run the component -> **new Fiber node created**
-    3. **Reconciliation happens DURING creation of the new Fiber node**
-    - compare new Fiber node with old Fiber node, check **component identity** (**type + key + position**)
-    - **same identity → reuse the DOM node + Fiber node**
-    - commit phase: apply changes to the real DOM
-    - This is a big improvement over React 15:
-      - React does **render + diff at the same time**
-      - **No separate “diff phase”**
-    4. **Commit phase** (apply changes to the real DOM)
-       ⚠️ **This phase is NOT interruptible**
-    - Apply changes to **real DOM**
-    - Run **effects** (useEffect, layout effects)
-
----
-
-### Question fad3635d-bcb9-490c-ac93-39891dd90c2b
-
-- How Virtual DOM works in Stack Reconciler?
-
-### Answer
-
-- **Stack Reconciler**:
-  - **Recursive tree traversal**
-  - Uses **JS call stack as scheduler**
-  - **Cannot pause, prioritize, or split work**
+- **Double Buffering Pattern**:
+  - React maintains two fiber trees in memory simultaneously:
+    - **`current` Tree**: Represents the UI already committed and visible on screen.
+    - **`workInProgress` (WIP) Tree**: Represents the new UI currently being computed in memory.
+  - Each fiber node references its twin via the **`alternate`** pointer.
+- **Update Workflow**:
+  1. **Schedule**: A state change allocates update lanes (priorities) and schedules work from the root fiber.
+  2. **Render Phase (WIP Tree Construction)**:
+     - React traverses the tree building the `workInProgress` fibers.
+     - Existing fiber nodes and their DOM instances are reused whenever component identity (`type`, `key`, `position`) matches.
+     - This phase is **pure and interruptible**.
+  3. **Commit Phase (Pointer Swap)**:
+     - React executes all DOM mutations and effect hooks synchronously.
+     - React switches the root's `current` pointer to point to the `workInProgress` tree (`FiberRoot.current = workInProgress`). The old `current` becomes the next WIP pool.
 
 ---
 
 ### Question cf0d08ae-89a5-4649-9fc5-57315ad61c81
 
-- Fiber - Explain beginWork and completeWork phases in the Fiber Reconciler.
-  - When does reconciliation happen in the Fiber Reconciler?
+- How do beginWork and completeWork operate during the Fiber Reconciler's render phase?
 
 ### Answer
 
-- They both happen during the **render phase** of the Fiber Reconciler, which is **interruptible** and can be **paused and resumed**.
-- During the render phase, React uses a **two-step traversal**: **beginWork** (**top-down reconciliation**) and **completeWork** (**bottom-up finalization and effect collection**).
-
-- 🔽 **Downward phase (beginWork)**
-
-  - React starts from the root and traverses down:
-    - App → ProductDetail → QuantityCount → div → children
-  - At each node:
-    - run beginWork
-  - What it does:
-    - Compare new props/state vs old + is there a pending update?
-    - Decide:
-      - **re-render?**
-      - **bailout?**
-    - Generate child fibers
-
-  🔼 **Upward phase (completeWork)**
-
-  - After reaching the deepest node, React goes back up:
-
-  - Button → Quantity → Button → div → QuantityCount → ProductDetail → App
-  - At each node:
-    - run completeWork
-  - 🔹 What completeWork does:
-    - **Finalize the Fiber**
-    - **Prepare DOM updates** (mark what needs to change)
-    - **Build the effect list** for commit phase
-
-  - 👉 **NO real DOM changes happen here**
+- Traversal during the render phase is split into two steps: a downward pass (**`beginWork`**) and an upward pass (**`completeWork`**).
+- **`beginWork` (Downward Pass - Reconciliation & Diffing)**:
+  - Invoked on each fiber node moving from parent to child.
+  - Compares existing props/state against incoming props/state.
+  - Checks for **bailout**: if props/state haven't changed and no pending updates exist, skips re-evaluating the component.
+  - If re-evaluating, executes the component, diffs the returned React elements against old child fibers (**reconciliation happens here**), and creates or tags new child fibers.
+- **`completeWork` (Upward Pass - Node Finalization & Effect Bubbling)**:
+  - Invoked once a fiber's leaf children have finished `beginWork`, traveling back up via `return` pointers.
+  - For host DOM components, creates or updates the underlying DOM instance in memory.
+  - Collects child **mutation flags / effects** into an aggregated effect list so the commit phase can apply them without re-traversing the full tree.
+  - No real DOM mutations occur during either phase; real DOM is touched only in the commit phase.
 
 ---
 
 ### Question f811a7ba-3b4b-46d0-b043-b58ab248b060
 
-- Fiber - How does memorization effect reconciliation in the Fiber Reconciler?
+- How does memoization (`React.memo`) trigger a bailout during Fiber reconciliation?
 
 ### Answer
 
-- React will **NOT bailout a subtree if there is pending work inside it**
-- **React.memo**
-  - if (props are equal)
-  - → **bailout**
-  - → **skip calling component**
-  - → **reuse previous subtree**
+- **Bailout Mechanism**:
+  - During `beginWork`, React checks two conditions to bail out:
+    - `oldProps === newProps` (referential equality or shallow equality in `React.memo`).
+    - The fiber has no scheduled updates or context changes in its priority lane.
+- **When Bailout Succeeds**:
+  - React **skips executing the component function** entirely.
+  - It clones the existing child fibers from `current` into `workInProgress` without diffing their internal subtrees.
+- **Caveats & Overrides**:
+  - A bailout is aborted if a child inside the subtree schedules a state update, or if the component consumes a `useContext` whose value changed.
+  - Passing inline object literals, arrays, or anonymous functions breaks shallow prop equality unless stabilized via `useMemo` / `useCallback`.
+
+---
+
+### Question d805c828-f436-4618-8444-88313b135486
+
+- What is the React Scheduler, and what core mechanisms does it use to prevent UI jank?
+
+### Answer
+
+- The **Scheduler** is an independent cooperative task scheduler that coordinates *when* units of rendering work are executed on the browser's main thread.
+- **Core Mechanisms**:
+  - **Priority Queue**: Tasks are prioritized across lanes (e.g., `Immediate`, `UserBlocking`, `Normal`, `Low`, `Idle`). High-priority tasks (typing, clicks) jump ahead of low-priority tasks (transitions, data fetches).
+  - **Cooperative Time Slicing**: During rendering, React repeatedly queries `shouldYield()`. If the current time slice budget (~5ms deadline) expires, work yields to the browser.
+  - **Event Loop Integration**: Rather than running in a synchronous loop, yielding uses macrotask channels (via **`MessageChannel`**) to yield execution, allowing the browser to paint, run animations, and process I/O before React resumes.
+  - **Task Starvation Prevention**: Every task has an expiration deadline based on priority. If a task is repeatedly interrupted or delayed until its deadline expires, it turns synchronous to prevent starvation.
 
 ---
 
 ### Question c1ca8cf9-5698-42af-8de6-979656513296
 
-- Discuss what concurency means in React.
+- What does concurrency mean in React, and how is it fundamentally enabled by the Fiber Reconciler?
 
 ### Answer
 
-- React concurrency is **not about running your components in parallel threads**.
-- It’s about letting React **control when and how rendering work happens** so the **UI stays responsive**.
-
-- **Concurrent React**:
-
-  - Rendering is **interruptible**
-  - React can:
-  - **pause work**
-  - **resume later**
-  - **throw away outdated work**
-
-  - 👉 Think of it like:
-
-  - React becomes a **scheduler**, not just a renderer.
+- **What Concurrency Means**:
+  - React Concurrency is **cooperative task switching on a single thread**, not multi-threaded parallel execution.
+  - It allows React to **pause, resume, prioritize, or completely discard** render passes without blocking user interactions or frame rendering.
+- **Why Fiber is the Enabling Foundation**:
+  - In React 15, the call stack held execution state; pausing was impossible because execution had to run to completion.
+  - **Fiber converts the call stack into heap-allocated objects**: Each fiber node stores its own pointer to `child`, `sibling`, and `return`.
+  - React can pause traversal at any individual fiber node, store the pointer in memory, yield to the browser, and resume from that exact fiber later.
+  - If a newer state update arrives mid-render (e.g., a new keystroke), React can abandon the current in-progress WIP tree and start fresh without leaving inconsistent UI in the DOM.
 
 ---
 
 ### Question bce4d62d-f135-4c1d-95fb-af4903b8031a
 
-- Key mechanisms of React concurrency
-- what are some concurrency APIs in React?
+- What are the primary React Concurrency APIs, and how do they differentiate urgent from non-urgent updates?
 
 ### Answer
 
-1. **Time slicing**
+- **Urgent vs. Transition Updates**:
+  - **Urgent Updates** (direct user input like typing, clicking, dragging) require immediate visual feedback.
+  - **Transition Updates** (filtering large lists, switching tabs, fetching search results) can tolerate brief delays without degrading user experience.
+- **Primary Concurrency APIs**:
+  - **`useTransition` / `startTransition`**: Wraps state updates to mark them as low-priority transitions. React keeps the current UI interactive and can interrupt the transition render if an urgent update occurs.
+  - **`useDeferredValue`**: Defers updating a derived value until urgent render work completes, keeping input elements responsive while heavy child trees re-render in the background.
+  - **`Suspense`**: Coordinates asynchronous dependencies (data fetching, lazy code loading), rendering fallback UI without blocking the rest of the application tree.
 
-   - React **breaks rendering work into small chunks**
-   - It can **yield to the main thread** to handle user input or other high-priority tasks
-   - This **prevents blocking the UI** and keeps the app responsive
-   - Work → pause → browser work → resume → repeat
+```javascript
+const [isPending, startTransition] = useTransition();
 
-2. **Interruptible rendering**
+function handleChange(e) {
+  // Urgent: updates input immediately
+  setText(e.target.value);
 
-   - React can **stop rendering work in the middle** if a higher-priority update comes in
-   - It can **discard outdated work** and start fresh with the new update
-
-   ```
-    setInputValue("a"); // high priority
-    setBigListFilter(...); // low priority
-   ```
-
-   React can:
-
-   - stop rendering the big list
-   - handle input first
-
-3. **Priority System (lanes)**
-
-   - React assigns **priorities to updates**
-   - **High-priority updates** (like user input) can **interrupt low-priority updates** (like rendering a large list)
-   - This ensures that the most important updates are handled first
-
-4. **Throw away work**
-
+  // Non-urgent: interruptible rendering for heavy filter computation
+  startTransition(() => {
+    setSearchQuery(e.target.value);
+  });
+}
 ```
-  setSearch("r");
-  setSearch("re");
-  setSearch("rea");
-```
-
-- If state updates again mid-render:
-- React can **throw away the previous work** and start fresh with the latest state
-
-- **Concurrency APIs in React**:
-  - `startTransition`: Marks updates as **non-urgent**, allowing React to **prioritize more important updates first**.
-  - `useTransition`: A hook that allows you to manage transitions in your components, providing a way to indicate that certain updates can be **interrupted or deferred**.
-  - `Suspense`: Lets you wait for some code to load or data to be fetched before rendering a component, improving the user experience by **avoiding loading states** and keeping the UI responsive.
-  - `useDeferredValue`: A hook that allows you to **defer the rendering of a value** until the next render, helping to keep the UI responsive during high-priority updates.
-
----
-
-### Question 850ee8ca-322b-455b-8bbd-45a1292f58c6
-
-- What is the connection between React concurrency and the Fiber Reconciler?
-
-### Answer
-
-👉 **Fiber** = **data structure + engine**
-👉 **Concurrency** = **capability built on top of Fiber**
-
-- Without Fiber:
-
-  - **no pausing**
-  - **no prioritization**
-  - **no scheduling**
