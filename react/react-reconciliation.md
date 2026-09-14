@@ -24,7 +24,7 @@ Reconciliation is the process by which React updates the DOM to match your compo
 
 ---
 
-### Question
+### Question 3fad64f4-6827-4903-acdb-0c3596f109f5
 
 - what happen when one of the component identity change?
 
@@ -36,7 +36,7 @@ Reconciliation is the process by which React updates the DOM to match your compo
 
 ---
 
-### Question
+### Question b79ce095-44c7-4220-a3c5-e8bbd6ba5c9c
 
 - What is Re-render exactly?
 
@@ -46,7 +46,7 @@ Reconciliation is the process by which React updates the DOM to match your compo
 
 ---
 
-### Question
+### Question d89b1aa8-6c01-450e-b9ef-1f68fa5d7072
 
 - What happen during unmount and remount?
 
@@ -274,7 +274,7 @@ const Component = () => {
 
 - JS: ❗ Once a function is running, it runs until it returns. The call stack is filled with function calls, making it impossible to pause or interrupt the execution.
 
-### Question
+### Question af721df7-312b-4ffb-895c-58f257e08504
 
 - .render() vs. The Reconciliation Process
 
@@ -298,7 +298,7 @@ const Component = () => {
 
 ---
 
-### Question
+### Question 185b6ee2-4bfa-4ddb-b706-809242739908
 
 - component tree vs element tree
 
