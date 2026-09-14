@@ -6,8 +6,8 @@
 
 ### Answer
 
-- Answer: fetch() does not reject its returned Promise on HTTP error responses (e.g., 404 Not Found or 500 Internal Server Error). The promise only rejects if there is a network failure or if the request was aborted/blocked (e.g., CORS violation, offline).
-- Follow-up / Correct Handling: You must check the response.ok boolean property (which is true for HTTP status codes 200–299) or inspect response.status.
+- Answer: `fetch()` **does not reject** its returned Promise on **HTTP error responses** (e.g., 404 Not Found or 500 Internal Server Error). The promise only rejects if there is a **network failure** or if the request was **aborted/blocked** (e.g., CORS violation, offline).
+- Follow-up / Correct Handling: You must check the **`response.ok`** boolean property (which is true for HTTP status codes 200–299) or inspect **`response.status`**.
 
 ```javascript
 const response = await fetch("/api/data");
@@ -25,11 +25,11 @@ const data = await response.json();
 
 ### Answer
 
-- Promises vs Callbacks: fetch is native and Promise-based; XMLHttpRequest uses event listeners/callbacks.
-- HTTP Error Handling: axios automatically rejects on status codes outside 2xx; fetch requires manual checks (response.ok).
-- Request Cancellation: fetch uses AbortController, whereas axios uses CancelToken/AbortController, and XHR uses .abort().
-- Automatic JSON Transformation: axios automatically parses JSON; fetch requires calling .json().
-- Upload/Download Progress: XHR and axios easily track upload progress via event listeners (onprogress). fetch does not have built-in upload progress listeners (though download progress can be read via ReadableStream).
+- **Promises vs Callbacks**: fetch is **native and Promise-based**; XMLHttpRequest uses **event listeners/callbacks**.
+- **HTTP Error Handling**: axios automatically **rejects on status codes outside 2xx**; fetch requires **manual checks (`response.ok`)**.
+- **Request Cancellation**: fetch uses **`AbortController`**, whereas axios uses **`CancelToken`/`AbortController`**, and XHR uses **`.abort()`**.
+- **Automatic JSON Transformation**: axios **automatically parses JSON**; fetch requires calling **`.json()`**.
+- **Upload/Download Progress**: XHR and axios easily track **upload progress** via event listeners (`onprogress`). fetch does not have built-in upload progress listeners (though **download progress** can be read via **`ReadableStream`**).
 
 ---
 
@@ -39,7 +39,7 @@ const data = await response.json();
 
 ### Answer
 
-- Answer: fetch yields HTTP headers as soon as they arrive. However, reading the HTTP response body occurs asynchronously as data packets stream over the network. Methods like response.json() read the body stream to completion and parse it, returning a Promise that resolves when the reading/parsing is finished.
+- Answer: fetch yields **HTTP headers** as soon as they arrive. However, reading the **HTTP response body** occurs **asynchronously** as data packets stream over the network. Methods like **`response.json()`** read the body stream to completion and parse it, returning a Promise that resolves when the reading/parsing is finished.
 
 ---
 
@@ -49,8 +49,8 @@ const data = await response.json();
 
 ### Answer
 
-- Answer: response.body is a ReadableStream. Once consumed by methods like .json(), .text(), or .blob(), the stream is locked and emptied to prevent storing the entire payload repeatedly in memory.
-- Workaround: If you need to read the body multiple times (e.g., for logging and then parsing), you must duplicate the response first using const clonedResponse = response.clone().
+- Answer: `response.body` is a **`ReadableStream`**. Once consumed by methods like `.json()`, `.text()`, or `.blob()`, the stream is **locked and emptied** to prevent storing the entire payload repeatedly in memory.
+- Workaround: If you need to read the body multiple times (e.g., for logging and then parsing), you must duplicate the response first using `const clonedResponse = response.clone()`.
 
 ---
 
@@ -60,11 +60,11 @@ const data = await response.json();
 
 ### Answer
 
-- Answer: By default (in modern browsers), fetch sends same-origin credentials (cookies, HTTP basic auth) automatically, but omits them for cross-origin requests unless specified.
-- credentials option:
-  - 'same-origin' (default): Sends credentials only to the same origin.
-  - 'include': Always sends credentials, even on cross-origin requests (requires Access-Control-Allow-Credentials: true header from the backend).
-  - 'omit': Never sends or receives credentials.
+- Answer: By default (in modern browsers), fetch sends **same-origin credentials** (cookies, HTTP basic auth) automatically, but **omits them for cross-origin requests** unless specified.
+- **`credentials` option**:
+  - **`'same-origin'` (default)**: Sends credentials **only to the same origin**.
+  - **`'include'`**: Always **sends credentials**, even on **cross-origin requests** (requires `Access-Control-Allow-Credentials: true` header from the backend).
+  - **`'omit'`**: Never sends or receives credentials.
 
 ---
 
@@ -74,9 +74,9 @@ const data = await response.json();
 
 ### Answer
 
-- 'cors' (default): Standard CORS request. Expects appropriate CORS headers back from cross-origin servers.
-- 'same-origin': Rejects requests made to cross-origin URLs before network dispatch.
-- 'no-cors': Intended for opaque requests (e.g., sending analytics beacons or loading third-party media). The response status is 0, response type is 'opaque', and the body cannot be read via JS.
+- **`'cors'` (default)**: Standard **CORS request**. Expects appropriate CORS headers back from cross-origin servers.
+- **`'same-origin'`**: **Rejects requests** made to cross-origin URLs before network dispatch.
+- **`'no-cors'`**: Intended for **opaque requests** (e.g., sending analytics beacons or loading third-party media). The response status is 0, response type is **`'opaque'`**, and the body cannot be read via JS.
 
 ---
 
@@ -113,8 +113,8 @@ async function fetchWithRetry(url, options = {}, retries = 3, delay = 1000) {
 
 ### Answer
 
-- Answer: Normally, when a user navigates away or closes a tab, standard fetch() requests may be cancelled by the browser.
-- Setting keepalive: true in fetch() allows the request to outlive the page session (up to browser quota limits, typically ~64KB).
+- Answer: Normally, when a user navigates away or closes a tab, standard `fetch()` requests may be **cancelled by the browser**.
+- Setting **`keepalive: true`** in `fetch()` allows the request to **outlive the page session** (up to browser quota limits, typically ~64KB).
 
 ```javascript
 window.addEventListener("unload", () => {
@@ -127,7 +127,7 @@ window.addEventListener("unload", () => {
 });
 ```
 
-- Alternative: navigator.sendBeacon(url, data) is specifically designed for fire-and-forget analytics on unload, but fetch({ keepalive: true }) supports custom HTTP methods and headers.
+- Alternative: **`navigator.sendBeacon(url, data)`** is specifically designed for **fire-and-forget analytics on unload**, but `fetch({ keepalive: true })` supports **custom HTTP methods and headers**.
 
 ---
 
@@ -137,7 +137,7 @@ window.addEventListener("unload", () => {
 
 ### Answer
 
-- Answer: The connect-src CSP directive restricts the URLs to which script interfaces like fetch, XHR, or WebSockets can send requests. If a web app attempts to fetch('https://api.external.com') without that domain whitelisted in connect-src, the browser blocks the request and throws a TypeError.
+- Answer: The **`connect-src` CSP directive** restricts the URLs to which script interfaces like fetch, XHR, or WebSockets can send requests. If a web app attempts to `fetch('https://api.external.com')` without that domain whitelisted in `connect-src`, the browser **blocks the request** and throws a **`TypeError`**.
 
 ---
 
@@ -147,8 +147,8 @@ window.addEventListener("unload", () => {
 
 ### Answer
 
-- Answer: They control what Referer header is sent with the outbound request.
-- You can configure referrerPolicy to options like 'no-referrer', 'strict-origin-when-cross-origin', or 'same-origin' to prevent sensitive URL parameters or internal domain structure from leaking to third-party endpoints.
+- Answer: They control what **`Referer` header** is sent with the outbound request.
+- You can configure **`referrerPolicy`** to options like `'no-referrer'`, `'strict-origin-when-cross-origin'`, or `'same-origin'` to prevent **sensitive URL parameters or internal domain structure** from leaking to third-party endpoints.
 
 ---
 
@@ -158,8 +158,8 @@ window.addEventListener("unload", () => {
 
 ### Answer
 
-- Answer: An HTTP 204 No Content or 205 Reset Content status code returns an empty body. Attempting to run response.json() on an empty string causes a SyntaxError: Unexpected end of JSON input.
-- Prevention: Check response.status === 204 or verify content before parsing:
+- Answer: An **HTTP 204 No Content** or **205 Reset Content** status code returns an **empty body**. Attempting to run `response.json()` on an empty string causes a **`SyntaxError: Unexpected end of JSON input`**.
+- Prevention: Check **`response.status === 204`** or verify content before parsing:
 
 ```javascript
 async function parseResponse(response) {
@@ -178,7 +178,7 @@ async function parseResponse(response) {
 
 ### Answer
 
-- Answer: You can calculate progress by reading the response stream chunk-by-chunk using response.body.getReader() combined with the Content-Length response header:
+- Answer: You can calculate progress by reading the response stream chunk-by-chunk using **`response.body.getReader()`** combined with the **`Content-Length`** response header:
 
 ```javascript
 const response = await fetch("/large-file.pdf");
@@ -201,7 +201,7 @@ while (true) {
 
 ### Answer
 
-- Service Workers can intercept every fetch() request made by a web app via the fetch event listener.
+- **Service Workers** can intercept every `fetch()` request made by a web app via the **`fetch` event listener**.
 
 ```javascript
 // Service Worker context
@@ -214,7 +214,7 @@ self.addEventListener("fetch", (event) => {
 });
 ```
 
-- This enables offline support, request caching strategies (e.g., Cache-First, Network-First), and custom request manipulation.
+- This enables **offline support**, **request caching strategies** (e.g., Cache-First, Network-First), and **custom request manipulation**.
 
 ---
 
@@ -224,7 +224,7 @@ self.addEventListener("fetch", (event) => {
 
 ### Answer
 
-- Since native fetch doesn't have an interceptor API, you Monkey-Patch the global window.fetch function:
+- Since native fetch doesn't have an interceptor API, you **Monkey-Patch** the global **`window.fetch`** function:
 
 ```javascript
 const originalFetch = window.fetch;
@@ -284,11 +284,11 @@ function fetchDeduplicated(url, options) {
 
 ### Answer
 
-- Answer: Next.js (App Router) patches the native fetch on the server side to integrate data fetching directly with Next.js's Caching and Revalidation infrastructure.
+- Answer: Next.js (App Router) patches the native fetch on the server side to integrate data fetching directly with Next.js's **Caching and Revalidation infrastructure**.
 - Key Features Added:
-  - Request Memoization: Multiple fetch calls for the exact same URL and options within a single server render tree are automatically deduplicated (only 1 network request is made).
-  - Data Cache: Allows caching fetched responses across server requests and deployments.
-  - Revalidation: Control cache expiration via time intervals or tag-based invalidation.
+  - **Request Memoization**: Multiple fetch calls for the exact same URL and options within a single server render tree are automatically **deduplicated** (only 1 network request is made).
+  - **Data Cache**: Allows **caching fetched responses** across server requests and deployments.
+  - **Revalidation**: Control cache expiration via **time intervals** or **tag-based invalidation**.
 
 ---
 
@@ -298,9 +298,9 @@ function fetchDeduplicated(url, options) {
 
 ### Answer
 
-- cache: 'force-cache' (Default in Next.js 13/14 SSG): Caches the response permanently in the Data Cache until manually revalidated.
-- cache: 'no-store' (Dynamic / SSR): Opts out of caching entirely. Fetches fresh data on every request.
-- Time-based Revalidation:
+- **`cache: 'force-cache'` (Default in Next.js 13/14 SSG)**: Caches the response permanently in the **Data Cache** until manually revalidated.
+- **`cache: 'no-store'` (Dynamic / SSR)**: **Opts out of caching entirely**. Fetches fresh data on every request.
+- **Time-based Revalidation**:
 
 ```javascript
 // Revalidates data at most once every 60 seconds (ISR)
@@ -309,7 +309,7 @@ fetch("https://api.example.com/data", {
 });
 ```
 
-- Tag-based Revalidation:
+- **Tag-based Revalidation**:
 
 ```javascript
 // Associate request with a tag
@@ -329,8 +329,8 @@ revalidateTag("products");
 
 ### Answer
 
-- Request Memoization (React): Deduplicates identical fetch requests within a single request lifecycle (e.g., rendering a single page component tree). It exists in memory and is discarded once the render finishes.
-- Data Cache (Next.js): Persists data across multiple incoming user requests and deployments (e.g., stored on disk or key-value store like Redis/Vercel Data Cache).
+- **Request Memoization (React)**: Deduplicates identical fetch requests within a **single request lifecycle** (e.g., rendering a single page component tree). It exists in **memory** and is discarded once the render finishes.
+- **Data Cache (Next.js)**: Persists data across **multiple incoming user requests and deployments** (e.g., stored on disk or key-value store like Redis/Vercel Data Cache).
 
 ---
 
@@ -340,13 +340,13 @@ revalidateTag("products");
 
 ### Answer
 
-- Answer: You can control how fetch interacts with the browser's HTTP cache using the cache init option:
-  - default: Standard browser behavior. Checks HTTP cache first (respecting Cache-Control headers).
-  - no-store: Bypasses browser cache entirely. Does not look in cache, does not store response in cache.
-  - no-cache: Checks cache, but forces browser to send a conditional request (If-None-Match / ETag) to the server to revalidate before serving cached data.
-  - reload: Ignores existing cache, fetches fresh data from server, and updates the cache with the new response.
-  - force-cache: Uses cached response regardless of age/freshness. Only fetches if no cache match exists.
-  - only-if-cached: Returns cached response if available; fails with network error if not in cache (only works with mode: 'same-origin').
+- Answer: You can control how fetch interacts with the browser's HTTP cache using the **`cache` init option**:
+  - **`default`**: Standard browser behavior. Checks HTTP cache first (respecting `Cache-Control` headers).
+  - **`no-store`**: Bypasses browser cache entirely. Does not look in cache, does not store response in cache.
+  - **`no-cache`**: Checks cache, but forces browser to send a conditional request (`If-None-Match` / `ETag`) to the server to revalidate before serving cached data.
+  - **`reload`**: Ignores existing cache, fetches fresh data from server, and updates the cache with the new response.
+  - **`force-cache`**: Uses cached response regardless of age/freshness. Only fetches if no cache match exists.
+  - **`only-if-cached`**: Returns cached response if available; fails with network error if not in cache (only works with `mode: 'same-origin'`).
 
 ---
 
@@ -356,8 +356,8 @@ revalidateTag("products");
 
 ### Answer
 
-- no-store: Strictly forbids storing any request or response in cache storage. Essential for highly sensitive data (e.g., banking details).
-- no-cache: Allows storing the response in cache, but requires revalidation with the origin server (using ETag or Last-Modified) before returning the cached asset. If server returns 304 Not Modified, the cached asset is used.
+- **`no-store`**: Strictly forbids storing any request or response in cache storage. Essential for **highly sensitive data** (e.g., banking details).
+- **`no-cache`**: Allows storing the response in cache, but requires **revalidation with the origin server** (using ETag or Last-Modified) before returning the cached asset. If server returns **304 Not Modified**, the cached asset is used.
 
 ---
 
@@ -367,7 +367,7 @@ revalidateTag("products");
 
 ### Answer
 
-- Answer: The Cache API (caches.open()) is a programmatic storage system for Request/Response pairs, independent of standard HTTP header caching. It is primarily used by Service Workers for offline PWA storage.
+- Answer: The **Cache API (`caches.open()`)** is a programmatic storage system for Request/Response pairs, independent of standard HTTP header caching. It is primarily used by **Service Workers** for offline PWA storage.
 
 ```javascript
 async function getCachedOrFetch(requestUrl) {
@@ -394,10 +394,10 @@ async function getCachedOrFetch(requestUrl) {
 
 ### Answer
 
-- Synchronous & Thread-Blocking: document.cookie reads/writes synchronously on the main thread, forcing disk/IPC I/O that can cause frame drops and UI jank.
-- No Service Worker Support: document.cookie depends on the DOM (document), making cookies inaccessible within Web Workers and Service Workers.
-- Fragile String Parsing: Standard operations require custom regex/string parsing and string formatting ("name=val; path=/; SameSite=Lax").
-- No Change Detection: Reacting to cookie changes previously required polling or cross-tab messaging hacks.
+- **Synchronous & Thread-Blocking**: `document.cookie` reads/writes synchronously on the **main thread**, forcing disk/IPC I/O that can cause **frame drops and UI jank**.
+- **No Service Worker Support**: `document.cookie` depends on the **DOM (`document`)**, making cookies inaccessible within **Web Workers and Service Workers**.
+- **Fragile String Parsing**: Standard operations require custom regex/string parsing and string formatting (`"name=val; path=/; SameSite=Lax"`).
+- **No Change Detection**: Reacting to cookie changes previously required **polling or cross-tab messaging hacks**.
 
 ---
 
@@ -407,18 +407,18 @@ async function getCachedOrFetch(requestUrl) {
 
 ### Answer
 
-- Asynchronous, non-blocking
-  - executing cookie store access off the main thread.
-- Service Worker Integration
-- Reactive Event Model
+- **Asynchronous, non-blocking**
+  - executing cookie store access **off the main thread**.
+- **Service Worker Integration**
+- **Reactive Event Model**
   `cookieStore.addEventListener('cookiechange', (event) => {`
 
-- Security & Scope Boundaries
-  - Secure Context Required: Only accessible over HTTPS (or localhost).
-  - HttpOnly Invisibility: Designed for security boundaries; JavaScript cannot read or mutate HttpOnly cookies via cookieStore (just as with document.cookie).
-  - Same-Origin Policy: Enforces domain and path scoping restrictions strictly based on current origin semantics.
+- **Security & Scope Boundaries**
+  - **Secure Context Required**: Only accessible over HTTPS (or localhost).
+  - **HttpOnly Invisibility**: Designed for security boundaries; JavaScript cannot read or mutate HttpOnly cookies via cookieStore (just as with `document.cookie`).
+  - **Same-Origin Policy**: Enforces domain and path scoping restrictions strictly based on current origin semantics.
 
-- notice:
+- **notice**:
   - Safari and Firefox lack stable default support.
 
 ---
