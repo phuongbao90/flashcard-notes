@@ -22,7 +22,7 @@ Output only question-and-answer pairs. Use `### Question` and `### Answer` headi
 For new pairs, use `### Question` exactly. When filling existing pairs, preserve the original heading, including any question ID; do not create or replace IDs.
 
 ````markdown
-### Question
+### Question fc0a759b-f429-4089-b525-7cd02be98d70
 
 - How does `fetch()` handle HTTP error statuses such as 404 or 500?
 
@@ -46,7 +46,7 @@ const data = await response.json();
 
 ---
 
-### Question
+### Question bc4a652d-0bac-4cad-a8e2-55474e0b4310
 
 - When should you check `response.status` instead of relying only on `response.ok`?
 
