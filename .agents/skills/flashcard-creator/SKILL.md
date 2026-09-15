@@ -2,7 +2,7 @@
 name: flashcard-creator
 description: Generate structured technical questions and answers for staff level React and Next.js developers, or fill blank sections in existing Q&A files. Use for technical flashcards, interview preparation, and Q&A learning materials. Do not apply to ordinary technical explanations unless Q&A formatting is requested.
 metadata:
-  version: "1.0.0"
+  version: "1.1.0"
 ---
 
 # Technical Q&A
@@ -17,7 +17,7 @@ Create concise (can sacrifice grammar for clarity), practical Q&A content that t
 
 ## Required Output Format
 
-Output only question-and-answer pairs. Use `### Question` and `### Answer` headings, one question bullet, and answer bullets. Separate pairs with `---` on its own line. Do not add an introduction, conclusion, category headings, or answer subsection headings.
+Output only question-and-answer pairs. Use `### Question` and `### Answer` headings, one question bullet, and answer bullets. End each answer with one or more "More detail on ..." button links for authoritative documentation. Separate pairs with `---` on its own line. Do not add an introduction, conclusion, category headings, or answer subsection headings.
 
 For new pairs, use `### Question` exactly. When filling existing pairs, preserve the original heading, including any question ID; do not create or replace IDs.
 
@@ -41,6 +41,9 @@ if (!response.ok) {
 const data = await response.json();
 ```
 
+- [More detail on Response.ok](https://developer.mozilla.org/en-US/docs/Web/API/Response/ok)
+- [More detail on Fetch API error handling](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch#checking_that_the_fetch_was_successful)
+
 ---
 
 ### Question
@@ -51,6 +54,8 @@ const data = await response.json();
 
 - Use **`response.status`** when handling a particular status requires different behavior, such as treating a 404 as an absent resource.
 - **`response.ok`** groups statuses from 200 through 299 as successful; it does not describe the response body or guarantee that JSON parsing will succeed.
+
+- [More detail on HTTP response status codes](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status)
 ````
 
 ## Question Quality
@@ -69,12 +74,20 @@ const data = await response.json();
 - Include a minimal, focused code block only when it improves understanding. Use an appropriate language tag and keep the example within its answer block.
 - Do not invent APIs or behavior. Verify uncertain or version-dependent claims against authoritative documentation when available; omit unsupported claims rather than guessing.
 
+## Documentation Buttons ("More Detail")
+
+- At the end of each answer, provide one or more text button links in the format:
+  `- [More detail on <Topic or API>](<URL>)`
+- Multiple buttons can be included if the question covers distinct concepts (e.g. guide + API reference).
+- Links must point to official, authoritative sources (`react.dev`, `nextjs.org`, `developer.mozilla.org`, `tanstack.com`, `reactnative.dev`, etc.).
+- Always link directly to specific deep-link guides or API reference anchors rather than general root domains.
+
 ## Fill Blank Sections
 
 When asked to complete existing content:
 
 1. Preserve all non-blank content, question IDs, and pair order. Do not reformat or correct existing content unless requested.
-2. Fill a blank answer from its question, following the answer guidelines.
+2. Fill a blank answer from its question, following the answer guidelines (including adding the "More detail" buttons).
 3. Fill a blank question from its answer. If both are blank, infer the topic from the file's subject or surrounding content.
 4. If the topic cannot be inferred, request the missing context instead of inventing it.
 5. Ensure each completed pair has one question block and one answer block. If fixing an existing structural problem would change non-blank content, identify the need for a separate repair rather than silently editing it.
@@ -92,6 +105,7 @@ Apply these only when useful, without changing the required output format:
 ## Final Check
 
 - Each generated pair contains the required headings, one question bullet, and a direct answer in bullets.
+- Each answer ends with one or more `- [More detail on ...] (<URL>)` button links pointing to authoritative documentation.
 - Pairs are separated by `---`, and code fences are balanced.
 - Answers include relevant behavior and directly address their questions.
 - No extra headings or conversational text appear in generated Q&A output.
