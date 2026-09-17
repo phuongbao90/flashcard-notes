@@ -1,1 +1,2 @@
 - When generate new Q&A pairs, must use "flashcard-creator" skill to ensure questions and answers are concise, clear, and memorable.
+- When asked to generate **temp questions**, create a new file in the `.temp-questions` folder with the name `temp-questions-<topic>.md` and save the generated questions there (only questions without answers).

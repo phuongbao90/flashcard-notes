@@ -61,7 +61,6 @@ const data = await response.json();
 ## Question Quality
 
 - Ask one concise, specific technical question per pair.
-- Test reasoning about behavior, trade-offs, edge cases, or internal mechanics rather than memorized definitions.
 - Prefer questions such as “Why does React re-render a component?” or “What problem does `useMemo` solve?”
 - Avoid trivial definitions, yes/no questions, and vague prompts such as “Is React fast?”
 
@@ -73,14 +72,7 @@ const data = await response.json();
 - Use simple, precise language and concise bullets. Highlight key terms with **bold** and API names with inline code.
 - Include a minimal, focused code block only when it improves understanding. Use an appropriate language tag and keep the example within its answer block.
 - Do not invent APIs or behavior. Verify uncertain or version-dependent claims against authoritative documentation when available; omit unsupported claims rather than guessing.
-
-## Documentation Buttons ("More Detail")
-
-- At the end of each answer, provide one or more text button links in the format:
-  `- [More detail on <Topic or API>](<URL>)`
-- Multiple buttons can be included if the question covers distinct concepts (e.g. guide + API reference).
-- Links must point to official, authoritative sources (`react.dev`, `nextjs.org`, `developer.mozilla.org`, `tanstack.com`, `reactnative.dev`, etc.).
-- Always link directly to specific deep-link guides or API reference anchors rather than general root domains.
+- Knowledge, captured from high-quality, high-trust resources
 
 ## Fill Blank Sections
 
