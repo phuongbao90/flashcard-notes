@@ -66,6 +66,12 @@ const data = await response.json();
 
 ## Answer Quality
 
+- Use markdown for both front and back fields
+- Test exactly one fact or idea per card
+- Make questions atomic and simple
+- Allow multiple simple cards for important concepts
+- Create multiple variants of important questions from different angles
+- Connect cards to personal goals and projects to avoid "orphan" facts
 - Start with a direct answer explaining the core concept.
 - Include relevant behavioral details, caveats, or common mistakes. Do not invent a gotcha merely to fill a bullet.
 - Add practical usage, comparisons, follow-up clarification, or performance considerations only when they help answer the question.
