@@ -735,3 +735,394 @@ const queryClient = new QueryClient({
 
 - [More detail on Preload Scanner behavior](https://web.dev/articles/preload-scanner)
 - [More detail on Priority Hints](https://web.dev/articles/fetch-priority)
+
+---
+
+### Question 029843c0-09ec-45c9-8e4d-17e630aa7d3f
+
+- Case Study: A team struggles to lower INP from 580ms to the < 200ms threshold. How do you break down INP into its 3 distinct phases (Input Delay, Processing Duration, Presentation Delay), diagnose which phase is the culprit using the Long Animation Frames (LoAF) API, and optimize each phase?
+
+### Answer
+
+- **Symptom & Metric**: **INP fails at 580ms**. The total duration from user tap/key to next frame paint spans three phases: **Input Delay**, **Processing Duration**, and **Presentation Delay**.
+- **Anatomy of the 3 INP Phases**:
+  1. **Input Delay**: Time between physical user gesture and the start of the event callback (queued behind other main-thread Long Tasks).
+  2. **Processing Duration**: Time spent executing JavaScript event handlers (`onClick`, `onKeyDown`).
+  3. **Presentation Delay**: Time from event handler completion to the browser calculating layout, painting pixels, and presenting the frame on screen.
+- **Diagnostic Steps with LoAF (Long Animation Frames API)**:
+  - Register a `PerformanceObserver` for `long-animation-frame` in DevTools or RUM script. Inspect `loaf.scripts` to see exact script sources, compile times, and execution durations.
+  - In DevTools **Performance** panel, click the interaction in the **Interactions track**: the Summary tab breaks down the percentage of time spent in Input Delay vs Processing vs Presentation Delay.
+- **Root Cause & Targeted Fixes**:
+  - **If Input Delay dominates**: Main thread is clogged before the event fires. Fix: Break up background Long Tasks using `scheduler.yield()`, defer non-essential analytics scripts, and avoid synchronous work during idle callbacks.
+  - **If Processing Duration dominates**: Event handler executes too much synchronous work. Fix: Move work to Web Workers, defer secondary state updates using `startTransition` or `useDeferredValue`, and debounce/throttle high-frequency inputs.
+  - **If Presentation Delay dominates**: Browser layout/paint engine is overwhelmed by massive DOM updates. Fix: Reduce DOM tree depth, avoid layout thrashing, virtualize rendered lists, and apply CSS `content-visibility: auto`.
+
+```javascript
+// Diagnosing INP bottlenecks with the Long Animation Frames (LoAF) API
+const observer = new PerformanceObserver((list) => {
+  for (const entry of list.getEntries()) {
+    console.log("LoAF duration:", entry.duration);
+    console.log("Blocking duration:", entry.blockingDuration);
+    for (const script of entry.scripts) {
+      console.log(`Culprit: ${script.invoker}, execution: ${script.executionDuration}ms`);
+    }
+  }
+});
+observer.observe({ type: "long-animation-frame", buffered: true });
+```
+
+- [More detail on INP phase breakdown](https://web.dev/articles/optimize-inp)
+- [More detail on Long Animation Frames API](https://developer.mozilla.org/en-US/docs/Web/API/Long_Animation_Frames_API)
+
+---
+
+### Question 96197929-8305-49a6-ba85-a429e81fc33e
+
+- Case Study: A Next.js application imports a single utility function from a shared component library, yet the client bundle increases by 450KB. What root causes break tree-shaking (barrel files, CommonJS, missing `sideEffects`), and how do you enforce tree-shaking-friendly code?
+
+### Answer
+
+- **Symptom & Metric**: Importing `import { formatDate } from '@/lib/utils'` or `import { Button } from '@company/ui'` pulls the entire library (including charts, date-fns, and icons) into the client chunk, ballooning bundle size.
+- **Diagnostic Steps**:
+  1. Open bundle report via `@next/bundle-analyzer` or `source-map-explorer`.
+  2. Search for the bundled chunk: observe unused components and dependencies bundled alongside `formatDate`.
+  3. Inspect `package.json` of the imported package: check whether `"sideEffects": false` is missing.
+  4. Inspect build output: verify whether modules are compiled to CommonJS (`module.exports` / `require`) instead of ES Modules (`import` / `export`).
+- **Root Causes**:
+  - **Barrel Files (`index.ts`)**: Re-exporting hundreds of modules from a central index causes bundlers to evaluate the module graph conservatively if any module exhibits side effects.
+  - **CommonJS Output**: Tree-shaking relies on ESM's static structure (`import`/`export`). CommonJS dynamic exports (`module.exports = ...`) prevent bundlers from safely eliminating dead code.
+  - **Missing `"sideEffects": false`**: Without this flag in `package.json`, bundlers assume importing any file executes global code (e.g. polyfills, prototypes) and retain dead code.
+  - **Circular Dependencies**: Circular module imports prevent bundlers from analyzing usage order, forcing the inclusion of the entire cycle.
+- **Fixes**:
+  - Add `"sideEffects": false` (or specify an array of side-effect files like `["*.css"]`) in `package.json`.
+  - Use path-based deep imports (`import Button from '@company/ui/Button'`) or configure Next.js `optimizePackageImports` in `next.config.js`.
+  - Ensure packages publish clean ESM (`"type": "module"` and `"module": "./esm/index.js"`).
+
+```javascript
+// next.config.mjs: Automatically rewrites barrel imports to direct paths
+const nextConfig = {
+  experimental: {
+    optimizePackageImports: ["lucide-react", "@company/ui", "lodash-es"],
+  },
+};
+export default nextConfig;
+```
+
+- [More detail on tree-shaking mechanics](https://web.dev/articles/reduce-javascript-payloads-with-tree-shaking)
+- [More detail on Next.js package import optimization](https://nextjs.org/docs/app/api-reference/next-config-js/optimizePackageImports)
+
+---
+
+### Question 628e6db2-ac9f-49d6-ae23-e4d99f60d210
+
+- Case Study: After a production build, the shared vendor chunk swells to 1.8MB. How do you use `@next/bundle-analyzer` to identify duplicate dependencies and configure Webpack/Next.js chunk splitting?
+
+### Answer
+
+- **Symptom & Metric**: First Load JS shared by all routes exceeds 1.8MB; audit reports 500KB+ in duplicate libraries; TBT and FCP degrade significantly.
+- **Diagnostic Steps**:
+  1. Install and configure `@next/bundle-analyzer`: `ANALYZE=true pnpm build`.
+  2. Open the interactive zoomable treemap visualization (`client.html`).
+  3. Search for duplicate package names: discover multiple conflicting versions of libraries (e.g., `date-fns` v2 and v3, or both `lodash` and `lodash-es` bundled simultaneously).
+  4. Identify oversized monolithic dependencies (e.g., `moment.js` bundling all international locales, or uncompressed heavy crypto libraries).
+- **Root Cause**: Transitive dependencies requiring different semver ranges cause npm/pnpm to install duplicate nested packages; lack of custom chunk splitting causes one rarely-used dependency to inflate the shared framework bundle.
+- **Fixes**:
+  - **Deduplicate Dependencies**: Use package manager overrides (`pnpm dedupe` or `"resolutions": { "date-fns": "3.x" }`) to force a single version.
+  - **Swap Heavy Dependencies**: Replace `moment` with `date-fns` or native `Intl.DateTimeFormat`; replace `lodash` with native ES methods.
+  - **Granular Chunk Splitting**: Split oversized vendors out of the initial critical chunk so only routes requiring them download the bytes.
+
+```javascript
+// next.config.mjs
+import bundleAnalyzer from "@next/bundle-analyzer";
+
+const withBundleAnalyzer = bundleAnalyzer({
+  enabled: process.env.ANALYZE === "true",
+});
+
+export default withBundleAnalyzer({
+  webpack(config, { isServer }) {
+    if (!isServer) {
+      // Exclude moment.js locales from client bundle
+      config.plugins.push(
+        new config.webpack.IgnorePlugin({
+          resourceRegExp: /^\.\/locale$/,
+          contextRegExp: /moment$/,
+        })
+      );
+    }
+    return config;
+  },
+});
+```
+
+- [More detail on Next.js Bundle Analyzer](https://nextjs.org/docs/app/building-your-application/optimizing/bundle-analyzer)
+- [More detail on Webpack Code Splitting](https://webpack.js.org/guides/code-splitting/)
+
+---
+
+### Question 4ae9ae99-34bc-4ae5-bcf7-66a124030790
+
+- Case Study: Mobile users download desktop-sized 4K images on an e-commerce catalog despite using Next.js `next/image`. How do you audit image delivery, configure the `sizes` attribute, and use blur placeholders?
+
+### Answer
+
+- **Symptom & Metric**: Mobile devices download 1.8MB images instead of 40KB thumbnails; LCP exceeds 4s on mobile; cellular data usage is excessive.
+- **Diagnostic Steps**:
+  1. In Chrome DevTools **Network** tab, filter by `Img`.
+  2. Emulate iPhone 14 (viewport width 390px, DPR 3).
+  3. Check the `Size` and the requested image URL query params: `/_next/image?url=...&w=3840&q=75`.
+  4. Inspect the `<img>` tag generated by Next.js: observe missing or default `sizes="100vw"` on a multi-column grid item.
+- **Root Cause**: When `sizes` is omitted or set to `100vw` on an image inside a CSS grid or flexbox (e.g. 4 cards per row), the browser calculates candidate sizes based on viewport width (390px * 3x DPR ≈ 1200px) instead of the actual rendered slot width (≈ 90px).
+- **Fixes**:
+  - **Explicit `sizes` attribute**: Tell the browser the exact rendered layout width across breakpoints so it fetches the smallest matching candidate from `srcset`.
+  - **`placeholder="blur"`**: Eliminate layout pop and perceived loading latency using automatically generated blur hashes for static imports or `blurDataURL` for remote images.
+  - **Avoid LCP lazy loading**: Ensure LCP hero images have `priority` (or `loading="eager"`), never `loading="lazy"`.
+
+```tsx
+// Correctly sized multi-column grid image with blur placeholder
+<Image
+  src={product.imageUrl}
+  alt={product.name}
+  width={600}
+  height={400}
+  // Mobile: 100vw, Tablet: 50vw, Desktop 4-col: 25vw
+  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+  placeholder="blur"
+  blurDataURL="data:image/svg+xml;base64,..."
+  className="object-cover rounded-lg"
+/>
+```
+
+- [More detail on next/image optimization](https://nextjs.org/docs/app/building-your-application/optimizing/images)
+- [More detail on responsive images and sizes attribute](https://web.dev/articles/responsive-images)
+
+---
+
+### Question 37846b97-42fa-40c9-b66d-b0799d844897
+
+- Case Study: A Next.js application built with runtime CSS-in-JS (Styled Components / Emotion) suffers from high First Contentful Paint (FCP) and heavy main-thread CPU overhead during rendering. Why does runtime CSS-in-JS hurt performance, and how do you optimize critical CSS?
+
+### Answer
+
+- **Symptom & Metric**: Slow FCP (2.4s) and high TBT; DevTools Performance recording shows prolonged JavaScript execution spent inside `insertRule`, `serializeStyles`, or hash generation during initial render.
+- **Diagnostic Steps**:
+  1. Record a DevTools **Performance** profile during page hydration and theme switching.
+  2. Inspect the **Bottom-Up** flame chart: look for CPU time consumed by `emotion.esm.js` or `styled-components.browser.esm.js`.
+  3. Check HTML source response: notice hundreds of `<style data-emotion="...">` tags injected into `<head>`, blocking streaming SSR.
+- **Root Cause**: Runtime CSS-in-JS parses, hashes, and generates CSS strings on every component render in JavaScript on both server and client. This prevents streaming HTML chunks, bloats the client JS bundle (15–30KB engine overhead), and blocks the main thread during style tag insertion.
+- **Fixes**:
+  - **Zero-Runtime Styling**: Migrate to zero-runtime solutions such as **Tailwind CSS**, **CSS Modules**, or **Vanilla Extract**, where styles compile ahead-of-time (AOT) into static `.css` files.
+  - **Inlining Critical CSS**: Ensure above-the-fold styles are inlined in `<head>` to prevent render-blocking HTTP roundtrips, while non-critical CSS is deferred.
+  - **CSS Streaming Compatibility**: Next.js App Router natively supports React Server Components and parallel streaming only when using zero-runtime or compiler-based styling.
+
+```css
+/* Zero-runtime CSS Modules: Zero JS overhead, scoped at build time */
+.heroButton {
+  background-color: #2563eb;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.375rem;
+  transition: background-color 0.2s;
+}
+.heroButton:hover {
+  background-color: #1d4ed8;
+}
+```
+
+- [More detail on Critical CSS optimization](https://web.dev/articles/extract-critical-css)
+- [More detail on CSS-in-JS performance costs](https://calibreapp.com/blog/css-in-js-performance)
+
+---
+
+### Question 94bdc118-635f-495c-991a-2f66fd288854
+
+- Case Study: An engineering team suffers from "memoization fatigue", wrapping every hook, callback, and component in `useMemo`, `useCallback`, and `React.memo`. Why does blanket memoization often degrade performance, and when is it actually warranted?
+
+### Answer
+
+- **Symptom & Metric**: Memory usage rises; code complexity spikes; profiling reveals no measurable rendering improvement—in some cases, execution slows down.
+- **Diagnostic Steps**:
+  1. Open **React DevTools Profiler** and compare commit times before and after removing trivial `useMemo` hooks.
+  2. Inspect hook dependency arrays: find unstable object literals, inline functions, or missing dependencies that cause memoization to fail on every single render.
+  3. Measure allocation costs: every `useMemo` call incurs the overhead of allocating an array, storing dependency references in memory, and comparing dependencies on each tick.
+- **Root Cause**:
+  - **Trivial Computation Overhead**: Calculating simple transforms (e.g. `items.filter().map()`) over 20 items takes < 0.05ms, which is cheaper than the dependency array allocation and shallow comparison checks.
+  - **Broken Reference Chains**: Wrapping a callback in `useCallback` is completely useless if the child component receiving it is NOT wrapped in `React.memo` (the child re-renders regardless).
+- **Guidelines for Warranted Memoization**:
+  - **Heavy Computations**: Transforming large datasets (1,000+ items) or performing expensive algorithms (regex parsing, matrix math).
+  - **Preserving Identity for Memoized Children**: Passing callbacks or objects to children that are explicitly wrapped in `React.memo` or used in `useEffect` dependency arrays.
+  - **Component Composition Alternatives**: Moving state down to the leaf node or lifting unchanged JSX as `children` eliminates re-renders with zero memoization overhead.
+
+```tsx
+// ❌ Bad: Trivial calculation; allocation overhead exceeds compute cost
+const total = useMemo(() => items.reduce((a, b) => a + b.price, 0), [items]);
+
+// ✅ Good: Component composition eliminates re-renders without React.memo
+function SplitLayout({ children }: { children: React.ReactNode }) {
+  const [theme, setTheme] = useState("dark"); // Fast local state
+  return (
+    <div className={theme}>
+      <button onClick={() => setTheme((t) => (t === "dark" ? "light" : "dark"))}>
+        Toggle
+      </button>
+      {/* children are passed from parent, so they DO NOT re-render when theme updates! */}
+      {children}
+    </div>
+  );
+}
+```
+
+- [More detail on React useMemo performance trade-offs](https://react.dev/reference/react/useMemo#should-you-add-usememo-everywhere)
+- [More detail on optimizing re-renders with composition](https://react.dev/learn/rendering-lists#keeping-list-items-in-order)
+
+---
+
+### Question ff681ef0-ce7d-4437-bfd5-7f4ae7acf43b
+
+- Case Study: A form with 40 interactive controls suffers from sluggish typing. How do you use the React DevTools Profiler to distinguish between Render Phase and Commit Phase bottlenecks, and identify the root cause?
+
+### Answer
+
+- **Symptom & Metric**: Keystroke latency of 120ms per character in a multi-input form; typing feels unresponsive.
+- **Diagnostic Steps**:
+  1. Open **React DevTools Profiler** -> Settings -> Check **"Record why each component rendered while profiling"**.
+  2. Click Record -> type 5 characters into an input -> click Stop.
+  3. Analyze the **Flamegraph** and **Ranked** chart:
+     - Check **Render Phase** duration (amber bars showing time spent executing component functions and diffing virtual DOM).
+     - Check **Commit Phase** duration (blue bars showing time spent applying changes to the actual DOM, running `useLayoutEffect`, and browser painting).
+  4. Click the bottleneck component to inspect "Why did this render?": observe *"Hook 3 changed"* or *"Props changed: onChange"*.
+- **Root Cause**:
+  - **Render Phase Bottleneck**: The parent form re-evaluates 40 child components on every keystroke because state is held at the root level and passed down through inline props.
+  - **Commit Phase Bottleneck**: Heavy side-effects executing synchronously inside `useLayoutEffect` or forcing immediate browser reflows after mounting.
+- **Fixes**:
+  - **Isolate Form State**: Use uncontrolled inputs with `useRef` or libraries with atomic subscriptions (e.g., `react-hook-form`) so typing mutates only the targeted `<input>` without re-rendering the parent or sibling inputs.
+  - **Defer Layout Effects**: Move expensive calculations from `useLayoutEffect` to `useEffect` or Web Workers.
+
+```tsx
+// Using React Hook Form: Only the active input renders on keystroke; parent does not re-render
+import { useForm } from "react-hook-form";
+
+function FastForm() {
+  const { register, handleSubmit } = useForm();
+  return (
+    <form onSubmit={handleSubmit((data) => console.log(data))}>
+      {/* Native uncontrolled inputs with micro-subscriptions */}
+      <input {...register("firstName")} />
+      <input {...register("lastName")} />
+      <button type="submit">Submit</button>
+    </form>
+  );
+}
+```
+
+- [More detail on React Profiler](https://react.dev/reference/react/Profiler)
+- [More detail on React Hook Form performance](https://react-hook-form.com/advanced-usage)
+
+---
+
+### Question 355067dc-ce28-4766-9340-cc0a99d6487c
+
+- Case Study: Next.js `<Link>` components on a product catalog with 200 items trigger 200 concurrent RSC prefetch requests, causing server edge throttling and mobile bandwidth depletion. How do resource hints (`preload`, `prefetch`, `preconnect`) differ, and how do you tame Next.js prefetching?
+
+### Answer
+
+- **Symptom & Metric**: Mobile data usage surges by 35MB on page load; Edge CDN logs show 200+ parallel `.rsc` requests when entering the viewport, causing 429 Too Many Requests errors.
+- **Resource Hint Comparison**:
+  - **`preload`**: Mandatory, high-priority download for resources needed on the *current page* immediately (e.g. hero fonts, critical LCP image).
+  - **`prefetch`**: Speculative, low-priority download for resources likely needed on the *next navigation* during browser idle time.
+  - **`preconnect`**: Establishes early DNS lookup, TCP handshake, and TLS negotiation to an external origin (e.g. `https://fonts.gstatic.com`) without downloading bytes yet.
+  - **`dns-prefetch`**: Resolves only DNS for third-party origins (fallback for older browsers).
+- **Root Cause**: Next.js App Router `<Link>` defaults to `prefetch={true}`, initiating speculative prefetching of RSC payloads for every link that enters the browser viewport via `IntersectionObserver`.
+- **Fixes**:
+  - **Disable Viewport Prefetching**: Set `prefetch={false}` on links inside dense grids, carousels, or table lists.
+  - **Prefetch on Hover / Intent**: Trigger prefetch imperatively via `router.prefetch(href)` only when the user hovers over or focuses the link.
+
+```tsx
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+
+function ProductCard({ product }: { product: Product }) {
+  const router = useRouter();
+
+  return (
+    <div
+      // Speculatively prefetch only on user intent (mouse hover)
+      onMouseEnter={() => router.prefetch(`/product/${product.id}`)}
+    >
+      {/* prefetch={false} disables automatic viewport prefetching */}
+      <Link href={`/product/${product.id}`} prefetch={false}>
+        <h3>{product.name}</h3>
+      </Link>
+    </div>
+  );
+}
+```
+
+- [More detail on Resource Hints](https://web.dev/articles/resource-hints)
+- [More detail on Next.js Link prefetching](https://nextjs.org/docs/app/api-reference/components/link#prefetch)
+
+---
+
+### Question d811b5f5-bf4d-4c7d-81e0-030429a5cd1e
+
+- Case Study: An engineering team achieves a perfect 100 score on Google Lighthouse in CI, yet fails the Core Web Vitals assessment in Google Search Console / Chrome User Experience Report (CrUX). Why does synthetic lab data diverge from Real User Monitoring (RUM), and how do you bridge the gap?
+
+### Answer
+
+- **Symptom & Metric**: Lighthouse reports 100/100 (LCP 1.1s, CLS 0.01, TBT 0ms), but CrUX reports 75th percentile LCP of 3.8s and INP of 420ms, causing SEO ranking penalties.
+- **Why Synthetic Lab (Lighthouse) Diverges from Field Data (RUM/CrUX)**:
+  - **Clean State vs Dirty State**: Lighthouse tests run on cold cache, zero cookies, fast desktop/emulated CPU, and zero browser extensions. Real users have bloated local storage, concurrent background tabs, ad blockers, and legacy extensions injecting content.
+  - **Single Page Load vs Full Lifecycle**: Lighthouse measures the initial page load and stops. It cannot measure **INP** (which aggregates all interactions across the entire user session, such as clicking complex dropdowns or infinite scrolling).
+  - **Device & Network Heterogeneity**: Lighthouse emulates a specific mid-tier Moto G4 on a 4G connection. Real users access the site over congested 3G, spotty subway tunnels, low-end Android devices with thermal throttling, and battery saver modes.
+- **Diagnostic & Monitoring Strategy**:
+  - Collect **Field Data (RUM)** using the official `web-vitals` JavaScript library and send 75th percentile metrics directly to an analytics backend (Datadog, Vercel Analytics, or BigQuery).
+  - Segment RUM metrics by device tier, connection type (`navigator.connection.effectiveType`), and geography to pinpoint underperforming cohorts.
+
+```typescript
+import { onCLS, onINP, onLCP } from "web-vitals";
+
+function sendToAnalytics(metric: any) {
+  const body = JSON.stringify({
+    name: metric.name,
+    value: metric.value,
+    rating: metric.rating, // 'good' | 'needs-improvement' | 'poor'
+    delta: metric.delta,
+    id: metric.id,
+    navigationType: metric.navigationType,
+  });
+
+  // Use sendBeacon to ensure telemetry delivers even if page unloads
+  navigator.sendBeacon("/api/rum", body);
+}
+
+onCLS(sendToAnalytics);
+onINP(sendToAnalytics);
+onLCP(sendToAnalytics);
+```
+
+- [More detail on Lab vs Field data](https://web.dev/articles/lab-and-field-data-differences)
+- [More detail on the web-vitals library](https://github.com/GoogleChrome/web-vitals)
+
+---
+
+### Question 048f5f8a-55cd-4bee-b876-3127708941b8
+
+- Case Study: A global web application suffers from sporadic 6-second page stalls in Europe and Asia that cannot be reproduced on local developer machines. How do you use WebPageTest (Filmstrip, Connection View, SPOF testing) to isolate the network failure?
+
+### Answer
+
+- **Symptom & Metric**: Users in distant geographies report blank screens lasting > 6 seconds; local testing on M3 MacBooks over fiber reveals zero issues.
+- **Diagnostic Steps with WebPageTest**:
+  1. Configure WebPageTest test runs from target regions (e.g. Frankfurt, Tokyo) with realistic mobile connection profiles (4G / 3G).
+  2. Inspect the **Filmstrip View**: compare visual progression frame-by-frame (e.g. 0.1s intervals) to identify the exact visual freeze point.
+  3. Inspect the **Connection View**: analyze TCP handshake latency, TLS negotiation rounds, and connection reuse across third-party domains.
+  4. Perform **Single Point of Failure (SPOF) Testing**: route third-party origins (e.g., external font providers, tag managers) to `blackhole.webpagetest.org` to verify if a third-party outage blocks the entire page from rendering.
+- **Root Causes Discovered**:
+  - **Synchronous Third-Party SPOF**: An external analytics or font CDN hosted in the US times out after 5,000ms, blocking the parser and delaying First Contentful Paint.
+  - **High Roundtrip (RTT) Overhead**: Missing CDN edge termination forces clients across the globe to perform 4 round-trips (DNS + TCP + TLS + HTTP GET) back to a single origin server in `us-east-1`.
+- **Fixes**:
+  - **Terminating TLS at Edge**: Deploy an edge CDN (Cloudflare, CloudFront, Fastly) with Anycast routing to terminate TCP/TLS within 10ms of the user.
+  - **Eliminate SPOF**: Make all third-party scripts asynchronous (`<script async>`) or load via Web Workers, ensuring no external host failure can freeze page rendering.
+
+- [More detail on WebPageTest documentation](https://docs.webpagetest.org/)
+- [More detail on Single Point of Failure (SPOF) testing](https://www.webpagetest.org/spof)
+
