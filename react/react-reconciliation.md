@@ -6,11 +6,14 @@
 
 ### Answer
 
-- **Reconciliation** is React's recursive algorithm for comparing two Virtual DOM trees and computing the minimal set of real DOM mutations needed.
+- **Reconciliation** is React's tree-diffing algorithm for comparing two element trees against the Fiber tree to compute the minimal set of real DOM mutations needed.
 - A generic tree diff algorithm operates in **O(n³)** time; React reduces this to **O(n)** using two core heuristics:
   - **Different Element Types**: Two elements of different types (e.g., changing from `<div>` to `<span>`, or `<ComponentA>` to `<ComponentB>`) produce entirely different trees. React destroys (unmounts) the old tree and builds the new one from scratch.
   - **Keys for Lists**: Child elements with a stable **`key` prop** maintain identity across renders, allowing React to match children across renders regardless of array reordering, insertions, or deletions.
-- **Diffing Scope**: React diffs elements level-by-level (breadth-first per sibling group) rather than exploring deeper subtrees if a parent type has changed.
+- **Diffing Scope**: React diffs elements level-by-level (per sibling group during downward traversal) rather than exploring deeper subtrees if a parent type has changed.
+
+- [More detail on React Reconciliation](https://legacy.reactjs.org/docs/reconciliation.html)
+- [More detail on Preserving and Resetting State](https://react.dev/learn/preserving-and-resetting-state)
 
 ---
 
@@ -29,6 +32,8 @@
 - **Commit Phase (DOM mutations & effects)**:
   - React applies the computed mutations to the **Real DOM** in a single, **synchronous, uninterruptible** pass to avoid visual tearing.
   - Executes lifecycle methods and hooks: `useLayoutEffect` synchronously after DOM mutations, then `useEffect` asynchronously after paint.
+
+- [More detail on Render and Commit](https://react.dev/learn/render-and-commit)
 
 ---
 
@@ -49,6 +54,8 @@
 {toggle ? <A key="shared-id" /> : <B key="shared-id" />}
 ```
 
+- [More detail on Preserving and Resetting State](https://react.dev/learn/preserving-and-resetting-state#same-component-at-the-same-position-preserves-state)
+
 ---
 
 ### Question b79ce095-44c7-4220-a3c5-e8bbd6ba5c9c
@@ -66,6 +73,8 @@
   - Occurs when the component's **type changes, key changes, or its position shifts** without a persistent key.
   - React completely **destroys the existing component instance**, wipes out its **internal state and refs**, runs effect cleanups, and removes the DOM node.
   - Mounts a **brand-new instance** from scratch, initializing default state and re-running all mount effects.
+
+- [More detail on Resetting State at the Same Position](https://react.dev/learn/preserving-and-resetting-state#resetting-state-at-the-same-position)
 
 ---
 
@@ -103,6 +112,8 @@ const UserInfoForm = () => {
   - Assign distinct **`key` props** (e.g., `<input key="company" ... />` and `<input key="personal" ... />`).
   - This forces React to recognize an **identity change**, unmounting the previous input and mounting a clean, empty input element.
 
+- [More detail on Resetting State with a Key](https://react.dev/learn/preserving-and-resetting-state#option-2-resetting-state-with-a-key)
+
 ---
 
 ### Question 6a7e2c98-57f4-434e-91f2-e862b0fa63a9
@@ -130,6 +141,8 @@ const Form = () => {
   - **Performance Degradation**: Continuous DOM teardown and recreation bypasses reconciliation reuse.
 - **Solution**: Declare subcomponents outside the parent component, or pass them as children/props.
 
+- [More detail on Nesting Component Definitions](https://react.dev/learn/your-first-component#nesting-and-organizing-components)
+
 ---
 
 ### Question 5e9b0e56-b89b-4a54-8351-f4f56a6ff48c
@@ -155,6 +168,8 @@ const Form = () => {
 - **Stability**:
   - Even if `items` changes length from 10 to 0, `<StaticElement />` remains at slot index 1 with an unchanged component type and implicit key. Its **identity is preserved**.
 
+- [More detail on Rendering Lists and Keys](https://react.dev/learn/rendering-lists#rules-of-keys)
+
 ---
 
 ### Question c8486715-9739-4469-b9d8-df5347b7fdcf
@@ -176,6 +191,9 @@ const Form = () => {
 - **Real DOM**:
   - The browser's actual native document tree rendered by the layout engine. Only mutated in the synchronous commit phase.
 
+- [More detail on Describing the UI](https://react.dev/learn/describing-the-ui)
+- [More detail on React Fiber Architecture](https://github.com/acdlite/react-fiber-architecture)
+
 ---
 
 ### Question ca6dd89d-e9fe-4795-b216-870744d55ddb
@@ -196,6 +214,8 @@ const Form = () => {
   - **`flags` (formerly `effectTag`)**: Bitmask describing required DOM operations (e.g., `Placement`, `Update`, `Deletion`).
   - **`alternate`**: Pointer linking the `current` fiber node to its corresponding `workInProgress` counterpart.
 
+- [More detail on Fiber node structure](https://github.com/acdlite/react-fiber-architecture#what-is-a-fiber)
+
 ---
 
 ### Question 7215ab54-4c86-4d4e-bf29-1c1001464f74
@@ -211,6 +231,9 @@ const Form = () => {
   - **Synchronous & Uninterruptible**: In JavaScript, a running function runs to completion. A large tree update could tie up the main thread for 50-100ms+.
   - **Main Thread Starvation (Jank)**: Blocked browser tasks like user clicks, keystrokes, and 60fps frame painting (~16.6ms window), causing noticeable frame drops and latency.
   - **No Update Prioritization**: A background data fetch update was processed with the same urgency as an active text input or hover animation.
+
+- [More detail on Fiber Architecture Motivation](https://github.com/acdlite/react-fiber-architecture)
+- [More detail on Design Principles - Scheduling](https://legacy.reactjs.org/docs/design-principles.html#scheduling)
 
 ---
 
@@ -235,6 +258,8 @@ const Form = () => {
      - React executes all DOM mutations and effect hooks synchronously.
      - React switches the root's `current` pointer to point to the `workInProgress` tree (`FiberRoot.current = workInProgress`). The old `current` becomes the next WIP pool.
 
+- [More detail on Fiber Double Buffering](https://github.com/acdlite/react-fiber-architecture#double-buffering)
+
 ---
 
 ### Question cf0d08ae-89a5-4649-9fc5-57315ad61c81
@@ -252,8 +277,10 @@ const Form = () => {
 - **`completeWork` (Upward Pass - Node Finalization & Effect Bubbling)**:
   - Invoked once a fiber's leaf children have finished `beginWork`, traveling back up via `return` pointers.
   - For host DOM components, creates or updates the underlying DOM instance in memory.
-  - Collects child **mutation flags / effects** into an aggregated effect list so the commit phase can apply them without re-traversing the full tree.
+  - Bubbles child **mutation flags** up into parent **`subtreeFlags`** bitmasks (or effect lists in legacy React) so the commit phase can skip subtrees without pending mutations in O(1) time.
   - No real DOM mutations occur during either phase; real DOM is touched only in the commit phase.
+
+- [More detail on Fiber render phase traversal](https://github.com/facebook/react/blob/main/packages/react-reconciler/src/ReactFiberWorkLoop.js)
 
 ---
 
@@ -274,6 +301,8 @@ const Form = () => {
   - A bailout is aborted if a child inside the subtree schedules a state update, or if the component consumes a `useContext` whose value changed.
   - Passing inline object literals, arrays, or anonymous functions breaks shallow prop equality unless stabilized via `useMemo` / `useCallback`.
 
+- [More detail on React.memo](https://react.dev/reference/react/memo)
+
 ---
 
 ### Question d805c828-f436-4618-8444-88313b135486
@@ -288,6 +317,8 @@ const Form = () => {
   - **Cooperative Time Slicing**: During rendering, React repeatedly queries `shouldYield()`. If the current time slice budget (~5ms deadline) expires, work yields to the browser.
   - **Event Loop Integration**: Rather than running in a synchronous loop, yielding uses macrotask channels (via **`MessageChannel`**) to yield execution, allowing the browser to paint, run animations, and process I/O before React resumes.
   - **Task Starvation Prevention**: Every task has an expiration deadline based on priority. If a task is repeatedly interrupted or delayed until its deadline expires, it turns synchronous to prevent starvation.
+
+- [More detail on React Scheduler](https://github.com/facebook/react/tree/main/packages/scheduler)
 
 ---
 
@@ -305,6 +336,8 @@ const Form = () => {
   - **Fiber converts the call stack into heap-allocated objects**: Each fiber node stores its own pointer to `child`, `sibling`, and `return`.
   - React can pause traversal at any individual fiber node, store the pointer in memory, yield to the browser, and resume from that exact fiber later.
   - If a newer state update arrives mid-render (e.g., a new keystroke), React can abandon the current in-progress WIP tree and start fresh without leaving inconsistent UI in the DOM.
+
+- [More detail on Concurrent React](https://react.dev/blog/2022/03/29/react-v18#what-is-concurrent-react)
 
 ---
 
@@ -335,3 +368,86 @@ function handleChange(e) {
   });
 }
 ```
+
+- [More detail on useTransition](https://react.dev/reference/react/useTransition)
+- [More detail on useDeferredValue](https://react.dev/reference/react/useDeferredValue)
+
+---
+
+### Question 0aaa8374-7ff4-41be-a864-2d3ba0dc027a
+
+- How does Automatic Batching in React 18 differ from legacy batching, and how does it operate across asynchronous boundaries?
+
+### Answer
+
+- **Legacy Batching (React <=17)**:
+  - React only batched state updates triggered within **React synthetic event handlers** (e.g., `onClick`, `onChange`).
+  - Updates inside `setTimeout`, native `addEventListener`, or Promise chains (`fetch().then()`) were **not batched**, triggering separate, synchronous render passes for each `setState`.
+- **Automatic Batching (React 18+)**:
+  - All state updates scheduled within the same browser task or microtask are **automatically batched into a single render pass**, regardless of origin (Promises, timeouts, native event listeners).
+- **Execution Mechanism**:
+  - React enqueues update objects onto the Fiber's update queue and schedules a microtask via the Scheduler. When the current task finishes, React coalesces the pending updates into one coordinated render.
+
+- [More detail on Automatic batching in React 18](https://react.dev/blog/2022/03/29/react-v18#new-feature-automatic-batching)
+
+---
+
+### Question da053ce9-0492-43e5-8267-7b42ed40c9b4
+
+- When and why would you use `flushSync`, and what architectural cost does it introduce?
+
+### Answer
+
+- **Purpose of `flushSync`**:
+  - Forces React to opt out of batching and immediately flush pending updates synchronously to mutate the Real DOM before the surrounding code continues.
+- **Primary Use Case**:
+  - Reading layout or geometry immediately after state change (e.g., scrolling a chat container to the bottom immediately after adding a new message).
+- **Architectural Costs & Tradeoffs**:
+  - **De-optimizes Rendering**: Bypasses the Scheduler and cooperative time slicing; turns rendering synchronous and blocking.
+  - **Performance Hit**: Can induce layout thrashing and frame drops if executed frequently.
+  - May interrupt active transitions and force pending fallback Suspense boundaries to display prematurely.
+
+- [More detail on flushSync](https://react.dev/reference/react-dom/flushSync)
+
+---
+
+### Question 3f5e77d7-0487-442c-ba2c-86db6b088c8f
+
+- What are the three distinct sub-phases of the Fiber Commit Phase, and in what sequence are DOM mutations and effects executed?
+
+### Answer
+
+- The commit phase executes **synchronously and uninterruptibly** on the Real DOM in three sequential passes:
+  - **Before Mutation Phase (`commitBeforeMutationEffects`)**:
+    - Reads current state of the DOM.
+    - Executes class lifecycle `getSnapshotBeforeUpdate`.
+    - Schedules passive effects (`useEffect`) to run asynchronously after paint via the Scheduler.
+  - **Mutation Phase (`commitMutationEffects`)**:
+    - Detaches existing host refs (`ref.current = null`).
+    - Executes host DOM mutations matching flags: `Placement` (`appendChild` / `insertBefore`), `Update` (`updateDOMProperties`), and `ChildDeletion` (`removeChild`, calling effect cleanups and unmount lifecycles).
+  - **Layout Phase (`commitLayoutEffects`)**:
+    - Real DOM has been mutated and is in its final layout state before paint.
+    - Executes synchronous lifecycle methods and **`useLayoutEffect` create callbacks**.
+    - Attaches new refs (`commitAttachRef`).
+- **Passive Effects Phase (Post-paint)**:
+  - Browser paints the updated DOM; React Scheduler runs scheduled `useEffect` cleanup and setup functions asynchronously via `MessageChannel`.
+
+- [More detail on Render and Commit phases](https://react.dev/learn/render-and-commit#step-3-react-commits-changes-to-the-dom)
+
+---
+
+### Question e88e5615-e76e-488b-82bf-cf0425e8d0aa
+
+- How does the execution timing of `useLayoutEffect` versus `useEffect` relate to the browser paint cycle?
+
+### Answer
+
+- **`useLayoutEffect` (Pre-paint / Synchronous)**:
+  - Executes during the **Layout sub-phase** of commit, immediately after Real DOM mutations but **before the browser paints**.
+  - **Blocks the browser**: Any state update scheduled inside `useLayoutEffect` triggers a synchronous re-render and re-commit pass before the browser paints, preventing visual flickering when measuring DOM geometry.
+- **`useEffect` (Post-paint / Asynchronous)**:
+  - Deferred and executed asynchronously by the Scheduler **after the browser has painted** the current frame.
+  - **Non-blocking**: Does not block user interactions or frame rendering; ideal for side effects like network requests, data subscriptions, and timers.
+
+- [More detail on useLayoutEffect](https://react.dev/reference/react/useLayoutEffect)
+- [More detail on useEffect execution timing](https://react.dev/reference/react/useEffect)

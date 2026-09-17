@@ -270,7 +270,7 @@ const { title, ariaLabel } = userSubmittedAttributes;
 
 ---
 
-### Question
+### Question 032c63cf-509b-460c-a7f4-66650c2bce76
 
 - How should an engineering team implement DOMPurify in a Next.js application that renders user-generated rich text within Server Components?
 
@@ -294,7 +294,7 @@ export function sanitizeHtml(rawHtml: string): string {
 
 ---
 
-### Question
+### Question 88826ca8-24a0-4009-9367-451255439bf7
 
 - What security tradeoffs exist when loading third-party scripts via `next/script` using `strategy="afterInteractive"` versus `strategy="lazyOnload"`?
 
@@ -307,7 +307,7 @@ export function sanitizeHtml(rawHtml: string): string {
 
 ---
 
-### Question
+### Question e862a2fd-00d2-48e3-8256-d8fb8aee4477
 
 - Why does combining `allow-scripts` and `allow-same-origin` in an `<iframe sandbox>` attribute neutralize the sandbox security boundary?
 

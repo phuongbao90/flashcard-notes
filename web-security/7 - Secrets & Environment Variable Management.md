@@ -116,7 +116,7 @@ REVOKE CREATE, DROP, ALTER ON SCHEMA public FROM app_user;
 
 ---
 
-### Question
+### Question 3fdfe743-85a8-4edc-ac57-ebf95220b5cf
 
 - How does schema validation using `@t3-oss/env-nextjs` or Zod prevent deployment failures and secret misconfigurations in Next.js applications?
 
@@ -150,7 +150,7 @@ export const env = createEnv({
 
 ---
 
-### Question
+### Question 222b222e-96a7-4940-95ed-1ddad4ab6a40
 
 - What security risk occurs when logging third-party API webhook payloads inside a Server Action or Route Handler, and how is it resolved?
 
@@ -171,7 +171,7 @@ export async function POST(req: Request) {
 
 ---
 
-### Question
+### Question fbc2c3a9-8b4f-448f-b175-1564148c55e5
 
 - In Next.js, what is the exact file loading precedence for environment variables, and why should `.env.local` never be checked into Git?
 

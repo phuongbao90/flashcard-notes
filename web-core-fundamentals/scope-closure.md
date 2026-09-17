@@ -22,6 +22,7 @@ function outer() {
 }
 ```
 
+- [More detail on Closures](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures)
 ---
 
 ### Question 3ad00b3c-c56a-49a2-8adf-b999f87bce65
@@ -45,6 +46,7 @@ function setupListener() {
 }
 ```
 
+- [More detail on Memory management](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Memory_Management)
 ---
 
 ### Question f8794474-238c-42d3-9c24-0c9ca44ce762
@@ -71,6 +73,8 @@ function Counter() {
 }
 ```
 
+- [More detail on Closures](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures)
+- [More detail on useEffect](https://react.dev/reference/react/useEffect)
 ---
 
 ### Question 293676e0-13c1-41c3-89ee-b8c634f8874d
@@ -93,6 +97,7 @@ for (let j = 0; j < 3; j++) {
 }
 ```
 
+- [More detail on Closures in loops: a common mistake](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures#creating_closures_in_loops_a_common_mistake)
 ---
 
 ### Question f3bba3c0-5320-4ab4-a614-d246c713c7d3
@@ -124,6 +129,8 @@ class Counter {
 }
 ```
 
+- [More detail on Private class fields](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_properties)
+- [More detail on Closures](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures)
 ---
 
 ### Question a4a1f84d-e232-4ab3-b9b5-52736b9edab9
@@ -149,6 +156,8 @@ switch (action) {
 }
 ```
 
+- [More detail on switch](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/switch)
+- [More detail on try...catch](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/try...catch)
 ---
 
 ### Question 81369ccb-db4d-4b2e-93af-d6c0c46cd476
@@ -170,6 +179,7 @@ const config = (() => {
 // secretKey and buildEnv are completely inaccessible outside
 ```
 
+- [More detail on IIFE](https://developer.mozilla.org/en-US/docs/Glossary/IIFE)
 ---
 
 ### Question fd86430c-fe06-408e-98ee-8472eef8f27a
@@ -191,6 +201,7 @@ var moduleItem = "module scoped"; // window.moduleItem === undefined
 export { moduleItem };
 ```
 
+- [More detail on JavaScript modules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules)
 ---
 
 ### Question 5cd336c3-4e95-40c2-b5e5-191799182884
@@ -222,6 +233,7 @@ obj.getRegular()(); // undefined (or throws in strict mode)
 obj.getArrow()(); // "App"
 ```
 
+- [More detail on Arrow functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions)
 ---
 
 ### Question 2324071f-cdad-4893-95dd-4666b3de7fc8
@@ -243,6 +255,8 @@ function dynamicScope(str) {
 dynamicScope("var x = 20;"); // 20
 ```
 
+- [More detail on eval()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval)
+- [More detail on the with statement](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/with)
 ---
 
 ### Question 7cd06052-f918-48b9-a19a-c28a74df63b2
@@ -272,6 +286,7 @@ function outer() {
 const getSmall = outer(); // Keeps shared outer context (and largeData) alive
 ```
 
+- [More detail on Shapes and Inline Caches](https://mathiasbynens.be/notes/shapes-ics)
 ---
 
 ### Question 6bed4502-1570-48fb-b905-5602d34aa09f
@@ -298,6 +313,7 @@ function AsyncCounter() {
 }
 ```
 
+- [More detail on useRef](https://react.dev/reference/react/useRef)
 ---
 
 ### Question a76aa1c2-6beb-481e-91ff-aaf598e727e5
@@ -328,6 +344,7 @@ console.log(fn2());
 - Both `increment` and `decrement` functions are created within the same execution context of `createCounters` and share the exact same `count` **environment record binding**.
 - Mutating `count` inside `fn1` **updates the shared reference in memory**, which is immediately reflected when `fn2` subsequently executes.
 
+- [More detail on Closures](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures)
 ---
 
 ### Question 1811cdbd-0ccc-4840-993c-e9beec049cd0
@@ -356,6 +373,7 @@ console.log(a);
 - The parameter `a` **shadows the global `a = 1`** inside `test()`, so `a = 2` mutates the parameter binding, not the global variable `a`.
 - The block declaration `let a = 3` creates a **separate block-scoped variable `a` that shadows the parameter `a`** inside the `if` block, leaving the parameter `a` as `2` outside the block and global `a` unchanged as `1`.
 
+- [More detail on Closures](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures)
 ---
 
 ### Question 86f730d7-e885-495a-8627-3400768669d1
@@ -385,6 +403,7 @@ obj.showNameDelayed();
 - `showName` is invoked directly as a **method on `obj`**, binding `this` dynamically to `obj`.
 - The standard callback function passed to `setTimeout` is executed later by the timer subsystem as a **standalone function call**, resetting its `this` binding to `window` (or `undefined` in strict mode).
 
+- [More detail on this](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this)
 ---
 
 ### Question 8825f913-dda5-4677-930a-71d7e02952e5
@@ -409,6 +428,7 @@ console.log(b(3));
 - Inside the function body, recursive execution references **variable identifier `a`** instead of its named function expression identifier `recursive`.
 - When `a` is re-assigned to `null`, `b` still references the function object, but internal evaluation of `a(n - 1)` dynamically **resolves `a` to `null` via scope lookup**, failing at invocation.
 
+- [More detail on function expressions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/function)
 ---
 
 ### Question aaa5c62b-e656-4296-877e-2171cd202c99
@@ -432,6 +452,7 @@ console.log(val);
 - The IIFE receives `10` as an argument assigned to its parameter `val`.
 - Parameter `val` is a **local function-scoped variable that shadows the global `val`**; modifying `val` inside the IIFE mutates only the local parameter, leaving global `val` as `10`.
 
+- [More detail on IIFE](https://developer.mozilla.org/en-US/docs/Glossary/IIFE)
 ---
 
 ### Question a5a073b1-254f-4ce6-aba8-1e7e14f3b1df
@@ -462,6 +483,7 @@ function Component() {
 - The `setTimeout` callback **closes over the primitive `count` snapshot** from the render context in which `handleClick` was invoked (0 for render 0, 1 for render 1).
 - `countRef.current` points to the **same mutable heap object reference across renders**, so both delayed timeouts read the updated final property value (`2`).
 
+- [More detail on useRef](https://react.dev/reference/react/useRef)
 ---
 
 ### Question dd1ec0aa-5615-4569-a65d-c5a29349bc20
@@ -487,6 +509,7 @@ console.log(fn());
 - When `outer()` executes, `getValue` is defined and **closes over `outer`'s environment record containing binding `x`**.
 - By the time `outer()` completes and returns `getValue`, runtime execution has reached `var x = 100`, **populating the environment record entry with `100`** before `fn()` is invoked.
 
+- [More detail on Closures](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures)
 ---
 
 ### Question b72aac60-14f5-47c7-acb0-6751dfe3a461
@@ -516,6 +539,7 @@ console.log(funcs[1]());
 - The IIFE executes immediately on each loop iteration, **creating a distinct execution context and capturing the current `i` value in its parameter `capturedI`**.
 - The returned inner function **closes over `capturedI` (unique per IIFE context)**, preserving `0` and `1` despite `i` being a single mutated `var` binding in the outer scope.
 
+- [More detail on Closures](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures)
 ---
 
 ### Question 2a2b6626-ada9-4f98-abf1-e0867e4f37cf
@@ -542,6 +566,7 @@ delayLog();
 - The `setTimeout` callback **captures the environment record binding reference for `message`**, not a snapshot copy of its string primitive value at the time `setTimeout` was called.
 - Before the event loop runs the timer callback, synchronous execution continues and updates `message` to `"Modified"`, which is what the callback reads upon execution.
 
+- [More detail on Closures](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures)
 ---
 
 ### Question 94d7b70b-87ea-41ef-869f-a8cadb9af6b5
@@ -565,6 +590,8 @@ export async function GET(request) {
 - Modifying `userCache` inside a request handler causes **cross-request state bleed**, exposing private data of User A to User B and creating race conditions.
 - Server-side state must be **scoped strictly per request** (inside request handler execution context) or managed via request-isolated storage like React `cache()` or Node.js `AsyncLocalStorage`.
 
+- [More detail on React cache()](https://react.dev/reference/react/cache)
+- [More detail on AsyncLocalStorage](https://nodejs.org/api/async_context.html)
 ---
 
 ### Question 06ea94ee-34d0-4e5b-b803-b79720dd2e07
@@ -596,6 +623,7 @@ function useInterval(callback, delay) {
 - By reading `savedCallback.current()` inside `setInterval`, the timer closure **accesses the latest function reference** without needing `callback` in `useEffect`'s dependency array.
 - This **decouples callback identity updates from timer setup/teardown cycles**, eliminating stale closures while avoiding timer resets.
 
+- [More detail on useRef](https://react.dev/reference/react/useRef)
 ---
 
 ### Question 872e0c10-6995-49b3-af08-bec7bf238750
@@ -619,3 +647,5 @@ function UserProfile({ userId }) {
 - Attaching `handler` inside `useEffect` creates a **long-lived closure bound to the DOM `window` root**, retaining `userId` and the component's enclosing environment record in memory.
 - When `UserProfile` unmounts or `userId` updates, the old listener remains attached to `window`, **keeping its captured lexical scope reachable by the garbage collector**.
 - Returning a cleanup function (`removeEventListener`) **severs the DOM reference to `handler`**, enabling GC to reclaim the component's unmounted scope context and memory.
+
+- [More detail on useEffect cleanup](https://react.dev/reference/react/useEffect)

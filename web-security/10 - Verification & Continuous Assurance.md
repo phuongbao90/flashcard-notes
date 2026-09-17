@@ -132,7 +132,7 @@ export async function POST(req: Request) {
 
 ---
 
-### Question
+### Question 499f96f7-4126-446d-b370-580edf5412e7
 
 - How can pre-commit Git hooks using Husky, lint-staged, and Gitleaks prevent API keys and `.env` files from entering the Git commit history?
 
@@ -154,7 +154,7 @@ export async function POST(req: Request) {
 
 ---
 
-### Question
+### Question fc53e365-2047-4211-97b4-937d0f37478e
 
 - How should automated integration tests be structured using Vitest to verify Data Access Layer (DAL) authorization without booting the full Next.js HTTP server?
 
@@ -185,7 +185,7 @@ describe('DAL Tenant Isolation', () => {
 
 ---
 
-### Question
+### Question 10dda303-9ed8-477c-a888-2b5d6741b501
 
 - What are the tradeoffs between Static Application Security Testing (SAST) and Dynamic Application Security Testing (DAST) when auditing Next.js Server Actions?
 

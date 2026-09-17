@@ -13,6 +13,7 @@
 - ***Paint*** fills pixels (text, colors, borders, shadows) onto visual display layers.
 - ***Composite*** combines separate drawn layers on the ***GPU*** in the correct order for screen output.
 
+- [More detail on Critical rendering path](https://developer.mozilla.org/en-US/docs/Web/Performance/Critical_rendering_path)
 ---
 
 ### Question 10d9f8d1-d2c4-4dbd-882a-24c1f255d1f7
@@ -38,6 +39,8 @@
 }
 ```
 
+- [More detail on CSS Triggers](https://csstriggers.com/)
+- [More detail on Rendering performance](https://web.dev/articles/rendering-performance)
 ---
 
 ### Question fdb47120-65f9-4bf2-b588-f278309dba83
@@ -65,6 +68,7 @@ elements.forEach((el, index) => {
 });
 ```
 
+- [More detail on Avoid large, complex layouts and layout thrashing](https://web.dev/articles/avoid-large-complex-layouts-and-layout-thrashing)
 ---
 
 ### Question 0c404700-38cb-4948-bd3c-109470d49787
@@ -87,6 +91,7 @@ elements.forEach((el, index) => {
 <script async src="https://analytics.example.com/tracker.js"></script>
 ```
 
+- [More detail on the script element: async and defer](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script)
 ---
 
 ### Question 56e81168-30ff-4d48-8ae9-0e9e4320255c
@@ -116,6 +121,8 @@ console.log("5");
 // Output order: 1, 5, 3: Microtask, 4: rAF, 2: Macrotask
 ```
 
+- [More detail on Tasks, microtasks, queues and schedules](https://jakearchibald.com/2015/tasks-microtasks-queues-and-schedules/)
+- [More detail on Event loop processing model (HTML spec)](https://html.spec.whatwg.org/multipage/webappapis.html#event-loop-processing-model)
 ---
 
 ### Question 7622da40-285e-473b-a069-ce1155a85741
@@ -144,6 +151,7 @@ const objA = {}; objA.x = 1; objA.y = 2;
 const objB = {}; objB.y = 2; objB.x = 1; // Different hidden class structure!
 ```
 
+- [More detail on Shapes and Inline Caches](https://mathiasbynens.be/notes/shapes-ics)
 ---
 
 ### Question c7bbfa22-8ef2-4d50-a9f7-d63002d5ceb7
@@ -175,6 +183,7 @@ function createLeak() {
 }
 ```
 
+- [More detail on Trash talk: the V8 garbage collector](https://v8.dev/blog/trash-talk)
 ---
 
 ### Question 426f91b2-38ec-45b5-abf9-d7b49211d03c
@@ -189,6 +198,7 @@ function createLeak() {
 - ***Plugin / Utility Processes***: Runs isolated processes for network, audio, extensions, or storage sandboxes.
 - ***Security & Stability***: Isolating renderer processes inside restricted OS sandboxes prevents a malicious website crash or exploit from corrupting host OS memory or crashing unrelated browser tabs.
 
+- [More detail on Inside look at a modern browser, part 1](https://developer.chrome.com/blog/inside-browser-part1)
 ---
 
 ### Question 59e17d5f-d9bc-409f-9460-75a09288c1a6
@@ -203,6 +213,7 @@ function createLeak() {
 - ***Off-Main-Thread Animations*** / ***Smooth Scrolling***: When user scrolls or triggers transform animations, the Compositor Thread directly manipulates compositor layers and generates frame commands without waiting for JS execution on the Main Thread.
 - Gotcha: Heavy synchronous JS on Main Thread blocks event listeners and layout recalculation, but off-main-thread CSS transforms continue running smoothly.
 
+- [More detail on Inside look at a modern browser, part 3](https://developer.chrome.com/blog/inside-browser-part3)
 ---
 
 ### Question cc722b8b-d97d-45d4-a562-c34f62854035
@@ -228,6 +239,8 @@ function createLeak() {
 <link rel="prefetch" href="/next-page.js" as="script" />
 ```
 
+- [More detail on Preload scanner](https://web.dev/articles/preload-scanner)
+- [More detail on the link element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/link)
 ---
 
 ### Question ecccb8ed-71cc-41b6-9b1f-7ed91d20982c
@@ -254,6 +267,7 @@ window.addEventListener("pageshow", (event) => {
 });
 ```
 
+- [More detail on Back/forward cache](https://web.dev/articles/bfcache)
 ---
 
 ### Question 55a5171c-31d2-4df0-9f7d-47d8056c78ad
@@ -271,6 +285,8 @@ window.addEventListener("pageshow", (event) => {
   - `Content-Type` is `application/json`.
 - Engine sends preflight `OPTIONS` request first; if `Access-Control-Allow-Origin` and `Access-Control-Allow-Methods` pass validation, the actual request is dispatched.
 
+- [More detail on CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS)
+- [More detail on Fetch spec: CORS protocol](https://fetch.spec.whatwg.org/#http-cors-protocol)
 ---
 
 ### Question e5d73d46-4058-454e-a2a9-e2dafa6a50a9
@@ -300,6 +316,8 @@ btn.addEventListener("click", () => {
 });
 ```
 
+- [More detail on stopPropagation()](https://developer.mozilla.org/en-US/docs/Web/API/Event/stopPropagation)
+- [More detail on stopImmediatePropagation()](https://developer.mozilla.org/en-US/docs/Web/API/Event/stopImmediatePropagation)
 ---
 
 ### Question ef84d851-3d34-4fe0-b2ee-426d259f2231
@@ -321,8 +339,8 @@ async function processLargeDataset(items) {
     
     // Yield to main thread every 50 items to prevent INP regression
     if (i % 50 === 0) {
-      if ("yield" in performance.scheduler) {
-        await performance.scheduler.yield();
+      if ("yield" in window.scheduler) {
+        await window.scheduler.yield();
       } else {
         await new Promise(resolve => setTimeout(resolve, 0));
       }
@@ -331,6 +349,8 @@ async function processLargeDataset(items) {
 }
 ```
 
+- [More detail on Optimize long tasks](https://web.dev/articles/optimize-long-tasks)
+- [More detail on Prioritized Task Scheduling API](https://developer.mozilla.org/en-US/docs/Web/API/Prioritized_Task_Scheduling_API)
 ---
 
 ### Question 316042f3-2520-4439-aa68-9e5db78a75f8
@@ -346,6 +366,7 @@ async function processLargeDataset(items) {
 - `SameSite=None; Secure`: Sends cookie cross-site; requires `Secure` flag.
 - ***Storage Partitioning / CHIPS*** (Cookies Having Independent Partitioned State): Modern browser engines partition cookies and storage (`localStorage`, `IndexedDB`) by top-level site context to block cross-site tracking across third-party iframes.
 
+- [More detail on Set-Cookie](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie)
 ---
 
 ### Question 0555bc0c-c9ee-43be-adbb-91489eed16d4
@@ -377,6 +398,7 @@ self.addEventListener("fetch", (event) => {
 });
 ```
 
+- [More detail on the Service Worker API](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API)
 ---
 
 ### Question 9ec0cbb6-666e-4868-8b3b-9d16c51fec3b
@@ -391,6 +413,8 @@ self.addEventListener("fetch", (event) => {
 - ***HTTP/3 (QUIC over UDP)***: Replaces TCP with UDP + QUIC. Streams are independent at the transport layer; dropping a packet on Stream A does NOT block Stream B.
 - Gotcha: TCP slow start means a single HTTP/2 connection takes time to ramp up bandwidth; ***domain sharding*** (splitting static assets across multiple subdomains) is an anti-pattern in HTTP/2 and HTTP/3.
 
+- [More detail on HTTP/2](https://developer.mozilla.org/en-US/docs/Glossary/HTTP_2)
+- [More detail on HTTP/3](https://developer.mozilla.org/en-US/docs/Glossary/HTTP_3)
 ---
 
 ### Question 746eb43e-9b51-4202-93ba-3032753bcc71
@@ -417,6 +441,7 @@ self.addEventListener("fetch", (event) => {
 </script>
 ```
 
+- [More detail on Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP)
 ---
 
 ### Question 71746b9d-edc7-40bb-bd39-faeefb8d09ce
@@ -430,6 +455,8 @@ self.addEventListener("fetch", (event) => {
 - ***Origin Private File System (OPFS)***: Highly optimized private virtual filesystem sandboxed to origin. Accessing file handles via Web Workers provides an `FileSystemSyncAccessHandle` for direct, synchronous, un-buffered binary read/write locks (ideal for SQLite/Wasm databases).
 - ***Storage Eviction***: Under storage pressure, browser engines dynamically evict `best-effort` origin caches, but `persisted` storage (requested via `navigator.storage.persist()`) is protected from automatic deletion.
 
+- [More detail on the File System API (OPFS)](https://developer.mozilla.org/en-US/docs/Web/API/File_System_API)
+- [More detail on IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB)
 ---
 
 ### Question d773c5d0-c0c2-45f4-9329-0d19a3c681c1
@@ -453,6 +480,7 @@ self.addEventListener("fetch", (event) => {
 }
 ```
 
+- [More detail on font-display](https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display)
 ---
 
 ### Question 0b023b5b-b77e-40ab-ad4f-c83dc5548ce1
@@ -466,6 +494,7 @@ self.addEventListener("fetch", (event) => {
 - ***React Virtual DOM***: JavaScript memory tree of React elements. Does NOT provide CSS encapsulation or native DOM isolation; reconciliation computes minimal DOM patches before calling browser DOM APIs.
 - ***Synthetic Event System***: React attaches top-level event listeners to the root container (`#root`), capturing events bubbling up the native DOM tree and re-dispatching synthetic wrappers.
 
+- [More detail on Using Shadow DOM](https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_shadow_DOM)
 ---
 
 ### Question fa21b6eb-4396-4dbf-802c-75ddfa9df5f0
@@ -492,6 +521,8 @@ while (true) {
 }
 ```
 
+- [More detail on the Streams API](https://developer.mozilla.org/en-US/docs/Web/API/Streams_API)
+- [More detail on the WHATWG Streams spec](https://streams.spec.whatwg.org/)
 ---
 
 ### Question c9f992ff-fdb4-4a9e-b3da-b8ca0d75b02a
@@ -506,6 +537,7 @@ while (true) {
 - ***Pointer Compression***: In 64-bit builds, 64-bit heap object pointers consume heavy cache space. V8 compresses pointers down to 32-bit relative offsets from a base 4GB V8 isolate heap base pointer.
 - Benefit: Cuts JS heap memory footprint by 40% and improves CPU L1/L2 cache hit rates significantly.
 
+- [More detail on Pointer compression in V8](https://v8.dev/blog/pointer-compression)
 ---
 
 ### Question 0520b465-c6c3-45f6-bf9e-c9b16f3611f0
@@ -535,6 +567,7 @@ function navigateToPage(newUrl) {
 }
 ```
 
+- [More detail on the View Transitions API](https://developer.mozilla.org/en-US/docs/Web/API/View_Transitions_API)
 ---
 
 ### Question 8039151b-018f-41d9-b119-d1009cc4667e
@@ -547,3 +580,6 @@ function navigateToPage(newUrl) {
 - ***Linear Memory***: Wasm has no direct access to JS Garbage Collector or JS objects. It operates exclusively on an array buffer (`WebAssembly.Memory`) representing a contiguous block of raw memory bytes.
 - ***JS-to-Wasm Bridge***: Passing complex data structures (objects, strings, arrays) requires encoding data into UTF-8 / binary buffers in JS, writing bytes into `WebAssembly.Memory` pointers, and reading raw memory addresses inside Wasm.
 - ***SharedArrayBuffer & Atomics***: Allows true multithreaded shared memory access across Web Workers and Wasm threads using atomic operations (`Atomics.wait()`, `Atomics.notify()`) for thread synchronization.
+
+- [More detail on WebAssembly](https://developer.mozilla.org/en-US/docs/WebAssembly)
+- [More detail on WebAssembly.Memory](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WebAssembly/Memory)

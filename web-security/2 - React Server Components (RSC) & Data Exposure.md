@@ -351,7 +351,7 @@ export default function Page() {
 
 ---
 
-### Question
+### Question 90e8aac3-b152-426a-ac3d-5f7aa1ac5c24
 
 - In a multi-tenant B2B SaaS application, how should a Data Access Layer (DAL) function be structured to prevent cross-tenant data leakage when querying organization data in Server Components?
 
@@ -379,7 +379,7 @@ export async function getTenantWorkspaceDTO(workspaceId: string) {
 
 ---
 
-### Question
+### Question 3cdf88a2-132a-49bc-94ad-2dcc6e4dcb49
 
 - When protecting sensitive object structures in React Server Components, what are the tradeoffs between using React's `experimental_taintObjectReference` versus standard Data Transfer Object (DTO) mapping functions?
 
@@ -392,7 +392,7 @@ export async function getTenantWorkspaceDTO(workspaceId: string) {
 
 ---
 
-### Question
+### Question 3454bd03-6ade-435a-b0ae-8e4d9e1f6c89
 
 - What security vulnerability exists in this Server Component that passes data to a Client Component, and why does TypeScript fail to catch it?
 

@@ -2,7 +2,7 @@
 
 ### Question d6cab4d1-ba51-4487-973c-c13168863148
 
-- explaim credential option in fetch api
+- Explain the `credentials` option in the fetch API
 
 ### Answer
 
@@ -25,6 +25,8 @@
       - Preventing user session cookies from leaking or cluttering requests where cookies are unnecessary.
       - Improving cacheability on CDNs (since requests without Cookie headers are easier to cache).
 
+- [More detail on Using the Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch)
+- [More detail on HTTP cookies](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies)
 ---
 
 ### Question a86c53bf-4bf0-4a01-a482-354990f6f574
@@ -37,6 +39,7 @@
   - If your frontend and backend share the exact same domain (e.g. Next.js / monolith), using Pure HttpOnly Cookies for everything is great and very easy!
   - If your frontend and backend are on different domains/ports or you have a mobile app, the Hybrid Pattern is safer and much less headache with browser cookie restrictions.
 
+- [More detail on HTTP cookies](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies)
 ---
 
 ### Question b5e973bc-93fc-4640-a50e-a81f59deb1b2
@@ -59,6 +62,8 @@
   - And your backend API is at https://api.myapp-backend.com
 - Reason 3: Support for Mobile Apps & Microservices
 
+- [More detail on Set-Cookie](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie)
+- [More detail on OWASP CSRF Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html)
 ---
 
 ### Question 7a6dcb21-940c-4e45-84a0-647374f03878
@@ -72,6 +77,8 @@
 2. Restrict APIs to Content-Type: application/json
    Standard HTML forms (form) can only send application/x-www-form-urlencoded, multipart/form-data, or text/plain. They cannot send application/json.
 
+- [More detail on OWASP CSRF Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html)
+- [More detail on Set-Cookie: SameSite](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie)
 ---
 
 ### Question 45a9dffe-c276-43c2-9671-93adfcf6dbc7
@@ -90,6 +97,7 @@
   - Does not prevent CSRF: The browser will still send HttpOnly cookies automatically on cross-site requests (use SameSite attribute and anti-CSRF tokens for CSRF protection).
   - Does not encrypt data: It does not protect against network interception (use the Secure flag to mandate HTTPS).
 
+- [More detail on Set-Cookie: HttpOnly](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie)
 ---
 
 ### Question 619e5bcf-3a62-474c-a3c6-0f0c3f7239fc
@@ -106,6 +114,8 @@
 - For server side
   - simple, use cookies() from 'next/headers'
 
+- [More detail on Route Handlers](https://nextjs.org/docs/app/building-your-application/routing/route-handlers)
+- [More detail on cookies()](https://nextjs.org/docs/app/api-reference/functions/cookies)
 ---
 
 ### Question 7a94bb92-c1b2-4dc1-98e1-069ea2c508b9
@@ -116,6 +126,8 @@
 
 - The browser will block the response due to CORS policy violation. When credentials are included, the server must specify an exact origin in Access-Control-Allow-Origin (e.g., Access-Control-Allow-Origin: https://example.com) and cannot use a wildcard (*).
 
+- [More detail on CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS)
+- [More detail on Fetch spec: CORS protocol](https://fetch.spec.whatwg.org/#http-cors-protocol)
 ---
 
 ### Question 36ec264a-e143-43b2-98e3-a1d216ebea9f
@@ -127,6 +139,7 @@
 - Client-side: The browser automatically attaches HttpOnly cookies to outgoing API calls when credentials: "include" (or "same-origin") is set.
 - SSR (Server-side): Server Components run in Node.js, not the browser. They must read incoming cookies using next/headers (cookies()) from the incoming HTTP request and explicitly forward the Cookie header when making server-side fetch requests to a backend API
 
+- [More detail on cookies()](https://nextjs.org/docs/app/api-reference/functions/cookies)
 ---
 
 ### Question ed65b32a-95a5-44cf-b5c6-cb41a84ffffd
@@ -140,6 +153,7 @@
 3. Secure flag on HTTP: If the cookie has the Secure flag but dev environment runs on http://, the browser will ignore the cookie.
 4. Domain/Path mismatch: Ensure the cookie's Domain and Path attributes match the backend endpoint URL.
 
+- [More detail on Using the Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch)
 ---
 
 ### Question e962a731-8240-4fc8-a27e-b100b8fb4146
@@ -152,6 +166,8 @@
 - Observer Efficiency: Observers (Intersection, Resize, Mutation) are computed asynchronously by the browser off the main thread and batched via microtasks.
 - Element-Level Precision: Scroll/resize events only report window state. Observers watch specific DOM elements regardless of how or why their position/size changed (e.g., sidebar toggling, parent layout shift).
 
+- [More detail on IntersectionObserver](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver)
+- [More detail on ResizeObserver](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver)
 ---
 
 ### Question 90b55d22-e940-4acf-9bb9-7393353c06f6
@@ -163,9 +179,10 @@
 Core Web Vitals are a set of specific metrics defined by Google to measure real-world user experience for web performance, visual stability, and interactivity. The 3 Core Web Vitals (as of 2024+) are:
 
 1. LCP (Largest Contentful Paint): Measures loading performance. Target: ≤2.5s
-2. NP (Interaction to Next Paint): Measures runtime interactivity and responsiveness (replaced FID in March 2024).Target: ≤200ms.
+2. INP (Interaction to Next Paint): Measures runtime interactivity and responsiveness (replaced FID in March 2024). Target: ≤200ms.
 3. CLS (Cumulative Layout Shift): Measures visual stability. Target: ≤0.1.
 
+- [More detail on Web Vitals](https://web.dev/vitals)
 ---
 
 ### Question 029142e1-74c4-44fe-9233-626b7dd11066
@@ -186,6 +203,7 @@ Core Web Vitals are a set of specific metrics defined by Google to measure real-
   - Optimize image formats & sizing: Modern formats (AVIF/WebP), responsive srcset.
   - CDN and caching: Serve static assets edge-cached via a CDN to minimize TTFB.
 
+- [More detail on Optimize LCP](https://web.dev/articles/optimize-lcp)
 ---
 
 ### Question 3ddc5fc8-cea1-437e-b5a2-74259443b4b2
@@ -200,6 +218,7 @@ Core Web Vitals are a set of specific metrics defined by Google to measure real-
   - Processing Time (running event handlers).
   - Presentation Delay (browser repainting the frame).
 
+- [More detail on Optimize INP](https://web.dev/articles/optimize-inp)
 ---
 
 ### Question 6ae786c4-f3d1-401a-b564-af17f370f1b8
@@ -218,6 +237,7 @@ Core Web Vitals are a set of specific metrics defined by Google to measure real-
   - Reserve space for dynamic content: Skeleton loaders or fixed-height containers for ads/banners.
   - Font loading: Use font-display: swap or local font fallbacks with CSS size-adjust.
 
+- [More detail on Optimize CLS](https://web.dev/articles/optimize-cls)
 ---
 
 ### Question cf365dbf-2458-4bab-9464-87e5fbad7d4c
@@ -234,6 +254,8 @@ Core Web Vitals are a set of specific metrics defined by Google to measure real-
   - useTransition & useDeferredValue: Mark non-urgent UI updates as low priority, yielding to user inputs to keep INP under 200ms.
   - React Server Components (RSC): Shift non-interactive component logic to the server, shipping 0kB JS for those components to the client.
 
+- [More detail on Suspense](https://react.dev/reference/react/Suspense)
+- [More detail on Optimize INP](https://web.dev/articles/optimize-inp)
 ---
 
 ### Question 4cac218d-b517-4b22-8b63-35104dfa2a96
@@ -249,6 +271,8 @@ Core Web Vitals are a set of specific metrics defined by Google to measure real-
   - Downloads font files at build time and hosts them with static assets.
   - Uses CSS size-adjust to match fallbacks with web fonts, eliminating layout shifts (zero CLS) caused by font loading.
 
+- [More detail on next/image](https://nextjs.org/docs/app/api-reference/components/image)
+- [More detail on next/font](https://nextjs.org/docs/app/building-your-application/optimizing/fonts)
 ---
 
 ### Question fc125c60-94a8-441e-a909-b3ab3768e999
@@ -262,6 +286,7 @@ Core Web Vitals are a set of specific metrics defined by Google to measure real-
 - Optimize Third-Party Scripts (next/script): Load non-critical analytics or chat widgets using strategies like strategy="lazyOnload" or strategy="afterInteractive".
 - Tree Shaking & Barrel Imports: Avoid importing full library bundles (e.g., import { debounce } from 'lodash' vs import debounce from 'lodash/debounce').
 
+- [More detail on Lazy Loading (next/dynamic)](https://nextjs.org/docs/app/guides/lazy-loading)
 ---
 
 ### Question 24a3b318-847b-4021-9dcb-ab5fa811dc53
@@ -270,9 +295,19 @@ Core Web Vitals are a set of specific metrics defined by Google to measure real-
 
 ### Answer
 
-- Next.js has built-in support for reporting Web Vitals via the useReportWebVitals hook (App Router / Pages Router)
-- Or using the standard standalone web-vitals JavaScript library:
+- Next.js has built-in support for reporting Web Vitals via the **`useReportWebVitals`** hook (App Router / Pages Router).
+- Or use the standalone **`web-vitals`** library (what `useReportWebVitals` wraps) to send metrics to any analytics endpoint:
 
+```javascript
+import { onCLS, onINP, onLCP } from "web-vitals";
+
+onCLS(console.log);
+onINP(console.log);
+onLCP(console.log);
+```
+
+- [More detail on useReportWebVitals](https://nextjs.org/docs/app/api-reference/functions/use-report-web-vitals)
+- [More detail on the web-vitals library](https://github.com/GoogleChrome/web-vitals)
 ---
 
 ### Question b589e3ec-3ae2-421d-b7ca-0295feffbd49
@@ -288,6 +323,7 @@ Core Web Vitals are a set of specific metrics defined by Google to measure real-
   - Pre-render & Render Time: Time spent painting.
 - Diagnosing React INP: LoAF exposes the exact script URL, function name, and character offset that triggered the long frame, allowing you to trace a delayed paint directly back to a specific React handler or component render.
 
+- [More detail on Optimize INP](https://web.dev/articles/optimize-inp)
 ---
 
 ### Question 841bf2be-0fbb-4dda-96e3-3793695ac40a
@@ -299,6 +335,7 @@ Core Web Vitals are a set of specific metrics defined by Google to measure real-
 - Problem: Standard React state updates (setState) are synchronous and urgent. If updating a state causes 100 components to re-render, React blocks the main thread until all 100 components finish rendering. If a user clicks during this time, the click input handler is delayed (high INP).
 - Under the Hood: startTransition marks the update as non-urgent concurrent work. If a user interacts with the page (e.g., typing another key or clicking a tab) while React is mid-render, React interrupts the low-priority render, handles the user event immediately (keeping INP low), and then resumes or restarts the background render.
 
+- [More detail on useTransition](https://react.dev/reference/react/useTransition)
 ---
 
 ### Question ac7e7afb-848c-4236-bd3a-c14c4bf139c9
@@ -315,7 +352,7 @@ When performing heavy non-React CPU computations (e.g., data processing, heavy a
     for (let i = 0; i < items.length; i++) {
       processItem(items[i]);
       if (i % 100 === 0 && "scheduler" in window) {
-        await performance.scheduler.yield(); // Yields control briefly
+        await scheduler.yield(); // Yields control briefly
       }
     }
   }
@@ -323,6 +360,8 @@ When performing heavy non-React CPU computations (e.g., data processing, heavy a
 - setTimeout / requestIdleCallback Fallback: Yields execution to the macro-task queue.
 - Web Workers: Offload non-DOM, compute-heavy JS entirely off the main thread to a background worker thread.
 
+- [More detail on Prioritized Task Scheduling API](https://developer.mozilla.org/en-US/docs/Web/API/Prioritized_Task_Scheduling_API)
+- [More detail on Optimize long tasks](https://web.dev/articles/optimize-long-tasks)
 ---
 
 ### Question 79133187-0142-44ae-83ad-321b13da86af
@@ -337,6 +376,8 @@ When performing heavy non-React CPU computations (e.g., data processing, heavy a
   - If Middleware performs blocking synchronous operations, un-cached external API fetches, or complex crypto operations on cold-starts, it adds direct delay to TTFB.
 - Best Practice: Keep Middleware minimal (e.g., header rewrites, lightweight auth token checks). Avoid heavy database or external API calls inside Middleware.
 
+- [More detail on Middleware](https://nextjs.org/docs/app/api-reference/file-conventions/middleware)
+- [More detail on Optimize TTFB](https://web.dev/articles/optimize-ttfb)
 ---
 
 ### Question 3963fde4-af70-4e4b-86d1-d550720347a2
@@ -351,6 +392,7 @@ When performing heavy non-React CPU computations (e.g., data processing, heavy a
   - Slow dynamic components wrapped in `<Suspense>` fetch data asynchronously on the server.
   - Once ready, the server streams the remaining HTML chunk and inline `<script>` tags down the open HTTP connection to swap out the fallback skeleton in real-time.
 
+- [More detail on renderToReadableStream](https://react.dev/reference/react-dom/server/renderToReadableStream)
 ---
 
 ### Question a575f79b-a46f-41f3-b6b4-2e0b842f5420
@@ -365,6 +407,7 @@ When performing heavy non-React CPU computations (e.g., data processing, heavy a
   - When a request arrives, the static shell is served instantly from the Edge CDN (Instant TTFB & near-zero FCP/LCP for static content).
   - Concurrently, dynamic `<Suspense>` holes stream in parallel from the server without delaying the initial page shell delivery.
 
+- [More detail on Partial Prerendering](https://nextjs.org/docs/app/building-your-application/rendering/partial-prerendering)
 ---
 
 ### Question 01f5e2ca-11dd-4ae7-b3ed-af8f12156886
@@ -377,6 +420,8 @@ When performing heavy non-React CPU computations (e.g., data processing, heavy a
 - top, left, width, height: Trigger the Layout phase. The browser must recalculate positions and dimensions of the element and all surrounding sibling/parent elements. This causes layout recalculation and contributes to CLS.
 - transform (e.g., translate3d, scale) & opacity: Skip Layout and Paint phases entirely. They run directly on the GPU in the Composite phase without moving other elements in the DOM tree, resulting in 0 CLS.
 
+- [More detail on CSS Triggers](https://csstriggers.com/)
+- [More detail on the animations guide](https://web.dev/articles/animations-guide)
 ---
 
 ### Question 360bf58e-8ed3-47de-8de1-a4cecb958ddb
@@ -400,6 +445,8 @@ When performing heavy non-React CPU computations (e.g., data processing, heavy a
 - Reproduce CPU Throttling in Chrome DevTools: Enable 4x/6x CPU throttling and record a trace using the Performance Panel while interacting with the identified target.
 - Inspect Flame Chart: Search for long orange task bars indicating long handlers, synchronous layout thrashing (forced reflows), or un-memoized heavy React component subtrees.
 
+- [More detail on the web-vitals library](https://github.com/GoogleChrome/web-vitals)
+- [More detail on Optimize INP](https://web.dev/articles/optimize-inp)
 ---
 
 ### Question 184581ac-89e1-4239-954a-9fb4a84d437b
@@ -433,6 +480,7 @@ When performing heavy non-React CPU computations (e.g., data processing, heavy a
   - Use useLayoutEffect vs useEffect correctly in React: Use useLayoutEffect for DOM measurements before paint, but do not trigger state updates inside it that force re-layouts.
   - Prefer pure CSS: Use CSS Flexbox, Grid, or CSS container queries instead of measuring elements via JS.
 
+- [More detail on Avoid layout thrashing](https://web.dev/articles/avoid-large-complex-layouts-and-layout-thrashing)
 ---
 
 ### Question 0c738b08-4ea2-45b8-b7e1-fe3d45456601
@@ -456,6 +504,8 @@ When performing heavy non-React CPU computations (e.g., data processing, heavy a
   ```
   - Result: The browser downloads only the exact resolution needed for the client's viewport width, drastically reducing LCP download latency.
 
+- [More detail on Responsive images](https://developer.mozilla.org/en-US/docs/Web/HTML/Responsive_images)
+- [More detail on next/image: sizes](https://nextjs.org/docs/app/api-reference/components/image)
 ---
 
 ### Question 4d53d306-a391-4f28-9f80-9075f38eec6b
@@ -490,6 +540,7 @@ When performing heavy non-React CPU computations (e.g., data processing, heavy a
   }
   ```
 
+- [More detail on Optimize CLS](https://web.dev/articles/optimize-cls)
 ---
 
 ### Question 22d685c8-ab05-4259-b086-cd174f8f03db
@@ -510,6 +561,7 @@ When performing heavy non-React CPU computations (e.g., data processing, heavy a
 - Use iframe Isolation for Ads:
   - Wrap third-party ad tags in isolated iframe elements with fixed containers to prevent layout shifts (CLS).
 
+- [More detail on next/script](https://nextjs.org/docs/app/api-reference/components/script)
 ---
 
 ### Question 34948a8d-c2f3-4d9a-b342-e28a3f2397c5
@@ -542,6 +594,8 @@ When performing heavy non-React CPU computations (e.g., data processing, heavy a
   - Best Used For: Next page JS chunks or assets triggered during user hover (frameworks like Next.js perform this automatically).
   - CWV Metric Impact: Enables instant future page loads.
 
+- [More detail on rel=preload](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel/preload)
+- [More detail on rel=preconnect](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel/preconnect)
 ---
 
 ### Question 40e5440a-9268-40bb-b69e-179b454f92dd
@@ -572,6 +626,7 @@ useEffect(() => {
 }, [hasNextPage, isLoading]);
 ```
 
+- [More detail on IntersectionObserver](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver)
 ---
 
 ### Question 1ebb55df-3767-4baf-871a-56816d0d8b22
@@ -596,6 +651,7 @@ useEffect(() => {
   }, [node]);
   ```
 
+- [More detail on useRef](https://react.dev/reference/react/useRef)
 ---
 
 ### Question d205e744-8147-4f75-bc41-036c8e88a105
@@ -620,6 +676,7 @@ const observer = new IntersectionObserver((entries) => {
 });
 ```
 
+- [More detail on IntersectionObserver: observe()](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/observe)
 ---
 
 ### Question 7d8fe077-45d8-47e6-a102-5ed162e73df9
@@ -632,6 +689,7 @@ const observer = new IntersectionObserver((entries) => {
 - Debounce/Throttle State Updates: If tracking continuous intersection ratios, debounce the React state update.
 - Use rootMargin: Expand root margin (e.g., rootMargin: '100px 0px') to pre-trigger calculations before visual entry, smoothing UI rendering.
 
+- [More detail on IntersectionObserver: unobserve()](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/unobserve)
 ---
 
 ### Question cc1da63a-08c0-49b4-b752-f98ac0b0ec37
@@ -656,6 +714,7 @@ const observer = new PerformanceObserver((list) => {
 observer.observe({ type: "longtask", buffered: true });
 ```
 
+- [More detail on PerformanceObserver](https://developer.mozilla.org/en-US/docs/Web/API/PerformanceObserver)
 ---
 
 ### Question bba5c334-11fd-44d2-9187-07e508b57a7d
@@ -687,6 +746,7 @@ function setPreference(key, value) {
 }
 ```
 
+- [More detail on the Web Storage API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API)
 ---
 
 ### Question 4ac1d068-c189-45d4-8225-a7f3dccbade8
@@ -704,6 +764,7 @@ function setPreference(key, value) {
 - Best Practice & Modern Usage
   - Raw IndexedDB syntax is notoriously verbose and event-driven (request.onerror, request.onsuccess). Modern applications use lightweight promise wrappers like idb or full ORM-like libraries such as Dexie.js.
 
+- [More detail on IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB)
 ---
 
 ### Question c1b44d21-c572-4761-b959-75c869d18294
@@ -720,6 +781,7 @@ function setPreference(key, value) {
   - Event-Driven: Provides a cookiechange event listener to observe cookie modifications reactively.
 - Security Note: HttpOnly cookies remain inaccessible to JavaScript (including cookieStore), preserving defense-in-depth against token theft via XSS.
 
+- [More detail on the Cookie Store API](https://developer.mozilla.org/en-US/docs/Web/API/Cookie_Store_API)
 ---
 
 ### Question 625af0e6-3150-4c6a-972b-72c4aeae68fb
@@ -758,6 +820,7 @@ if (navigator.storage && navigator.storage.persist) {
 }
 ```
 
+- [More detail on StorageManager](https://developer.mozilla.org/en-US/docs/Web/API/StorageManager)
 ---
 
 ### Question 6b71fd8a-2640-4a74-aacf-23e51a93d2a3
@@ -770,21 +833,24 @@ if (navigator.storage && navigator.storage.persist) {
 - Sync vs. Async: Web Storage (localStorage/sessionStorage) operations are synchronous and block the main thread. IndexedDB is asynchronous and event/promise-based.
 - Scope & Lifecycle: localStorage persists indefinitely across tabs on the same origin. sessionStorage is scoped to a single tab context and dies when the tab closes. IndexedDB persists until explicitly deleted or cleared under storage pressure.
 
+- [More detail on the Web Storage API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API)
+- [More detail on IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB)
 ---
 
 ### Question 08589ae7-e36e-44f0-9729-d4e0efddea93
 
-- "Why is localStorage considered bad for application performance?"
+- Why is localStorage considered bad for application performance?
 
 ### Answer
 
 - localStorage executes synchronous file I/O on the main thread. When reading or writing large strings or parsing nested JSON structures (JSON.parse(localStorage.getItem(...))), JS execution blocks layout and rendering. This directly increases Total Blocking Time (TBT) during app startup and can cause jank, degrading Interaction to Next Paint (INP).
 
+- [More detail on Window: localStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)
 ---
 
 ### Question 1ca2499b-87b0-4544-8325-3984aeb6e650
 
-- "Where should you store a JWT access token: localStorage or HttpOnly Cookies? Why?"
+- Where should you store a JWT access token: localStorage or HttpOnly Cookies? Why?
 
 ### Answer
 
@@ -792,11 +858,13 @@ if (navigator.storage && navigator.storage.persist) {
 - HttpOnly Cookie: Immune to XSS script reads because document.cookie and JavaScript cannot access it. However, cookies automatically attach to requests, exposing the site to CSRF (Cross-Site Request Forgery).
 - Best Practice: Use HttpOnly cookies with SameSite=Strict (or Lax) and Secure flags. For SPAs needing fine-grained control, store refresh tokens in an HttpOnly cookie and keep access tokens in short-lived in-memory JS state (or secure worker memory).
 
+- [More detail on OWASP XSS Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html)
+- [More detail on Set-Cookie](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie)
 ---
 
 ### Question 71e8f39f-7167-455b-84d0-43633855b104
 
-- "How does the Cookie Store API differ from standard document.cookie?"
+- How does the Cookie Store API differ from standard document.cookie?
 
 ### Answer
 
@@ -804,11 +872,12 @@ if (navigator.storage && navigator.storage.persist) {
 - Service Worker Support: document.cookie isn't accessible in Service Workers. cookieStore is available in ServiceWorkerGlobalScope, allowing background sync tasks to read/update authentication context.
 - Reactive Events: It provides a cookiechange event listener so apps can react to cookie modifications without polling.
 
+- [More detail on the Cookie Store API](https://developer.mozilla.org/en-US/docs/Web/API/Cookie_Store_API)
 ---
 
 ### Question dcf67e78-4e55-4816-8aed-a62da46b70cd
 
-- "How can you synchronize state across multiple open tabs of the same website in real-time?"
+- How can you synchronize state across multiple open tabs of the same website in real-time?
 
 ### Answer
 
@@ -816,11 +885,13 @@ if (navigator.storage && navigator.storage.persist) {
 - BroadcastChannel API: Purpose-built for low-overhead pub/sub messaging between tabs, windows, or workers of the same origin.
 - SharedWorker: A single worker shared across tabs that acts as a centralized state authority.
 
+- [More detail on BroadcastChannel](https://developer.mozilla.org/en-US/docs/Web/API/BroadcastChannel)
+- [More detail on the storage event](https://developer.mozilla.org/en-US/docs/Web/API/Window/storage_event)
 ---
 
 ### Question 3137c628-8ee0-43f6-bda1-fc88aa9dff08
 
-- "How does Safari/WebKit’s ITP (Intelligent Tracking Prevention) affect client storage, and how do you handle it?"
+- How does Safari/WebKit’s ITP (Intelligent Tracking Prevention) affect client storage, and how do you handle it?
 
 ### Answer
 
@@ -830,11 +901,12 @@ if (navigator.storage && navigator.storage.persist) {
   - Encourage users to add the application to their home screen as a PWA (Standalone mode), which waives the aggressive 7-day eviction rule.
   - Prompt users to grant Persistent Storage (navigator.storage.persist()).
 
+- [More detail on WebKit ITP: full third-party cookie blocking](https://webkit.org/blog/10218/full-third-party-cookie-blocking-and-more/)
 ---
 
 ### Question bca52c0a-d87f-4559-9e35-e2e2becc8dad
 
-- "What happens when storage APIs are accessed in Private / Incognito Mode?"
+- What happens when storage APIs are accessed in Private / Incognito Mode?
 
 ### Answer
 
@@ -842,33 +914,37 @@ if (navigator.storage && navigator.storage.persist) {
 - Ephemeral Storage: All writes to localStorage, IndexedDB, or cookies exist only for the duration of the incognito session and are purged as soon as all incognito windows are closed.
 - Safari Legacy Quirks: Older versions of Safari threw a QuotaExceededError immediately on calling localStorage.setItem(). Defensive code should always wrap setItem calls in try...catch blocks.
 
+- [More detail on the Storage API](https://developer.mozilla.org/en-US/docs/Web/API/Storage_API)
 ---
 
 ### Question cef08a24-0183-4855-bcbc-a91e62fa2385
 
-- "What is Storage Partitioning (Double-Keying), and how does it impact localStorage inside `<iframe>`s?"
+- What is Storage Partitioning (Double-Keying), and how does it impact localStorage inside `<iframe>`s?
 
 ### Answer
 
 - Mechanism: Traditionally, storage was keyed only by origin (https://example.com). Modern browsers (Chrome, Firefox, Safari) key storage using (Top-Level Site, Embedded Site).
 - Impact on `<iframe>`: An iframe running https://widget.com inside https://site-a.com gets a completely isolated localStorage instance from the same https://widget.com iframe rendered inside https://site-b.com. Cross-site tracking via shared storage across different top-level domains is blocked.
 
+- [More detail on State Partitioning](https://developer.mozilla.org/en-US/docs/Web/Privacy/State_Partitioning)
 ---
 
 ### Question 1ac47ce1-d128-47bc-9700-f36d6de69408
 
-- "How do you decide between using the Cache API vs. IndexedDB in a Progressive Web App (PWA)?"
+- How do you decide between using the Cache API vs. IndexedDB in a Progressive Web App (PWA)?
 
 ### Answer
 
 - Cache API (caches): Specialized for HTTP Request/Response pairs. Ideal for static assets (HTML, CSS, JS bundles, images) and REST/GraphQL API response caching consumed directly by a Service Worker to intercept network fetches.
 - IndexedDB: Specialized for application state and structured data. Ideal for user-generated offline data, queueing offline mutation actions before syncing with the backend, or querying local datasets with indexes.
 
+- [More detail on the Cache API](https://developer.mozilla.org/en-US/docs/Web/API/Cache)
+- [More detail on IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB)
 ---
 
 ### Question 6a8d665d-9842-4389-bfbe-c3f363be2e21
 
-- "How do you prevent race conditions when writing to storage across multiple browser tabs?"
+- How do you prevent race conditions when writing to storage across multiple browser tabs?
 
 ### Answer
 
@@ -883,6 +959,7 @@ await navigator.locks.request("storage_update_lock", async (lock) => {
 });
 ```
 
+- [More detail on the Web Locks API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Locks_API)
 ---
 
 ### Question 2ec9d9ab-7dc1-435a-bfa3-3d052e44c968
@@ -919,6 +996,7 @@ app.get("/api/user", (req, res) => {
 });
 ```
 
+- [More detail on ETag](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/ETag)
 ---
 
 ### Question 04f133ee-3707-45ae-ae8c-6e4d20c125d8
@@ -945,4 +1023,5 @@ app.get("/api/user", (req, res) => {
   - Concurrency Control (`PUT`/`PATCH`): Use _**If-Match**_ to prevent overwriting someone else's edits.
   - Resumable Downloads: Use _**If-Range**_ to avoid fetching invalid range chunks when files mutate mid-download.
 
+- [More detail on HTTP conditional requests](https://developer.mozilla.org/en-US/docs/Web/HTTP/Conditional_requests)
 ---

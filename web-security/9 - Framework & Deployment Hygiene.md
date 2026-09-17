@@ -139,7 +139,7 @@ export async function GET(req: Request, { params }: { params: { filename: string
 
 ---
 
-### Question
+### Question 8a01f9f9-d262-42ce-b1ee-0643a07b51d7
 
 - How does Next.js `output: 'standalone'` in `next.config.js` minimize the security attack surface of production Docker containers?
 
@@ -159,7 +159,7 @@ module.exports = {
 
 ---
 
-### Question
+### Question 59438f22-05e1-45b0-aac2-cc65ae633ec3
 
 - What security vulnerability exists in this Next.js rewrite rule, and how can an external attacker exploit it?
 
@@ -184,7 +184,7 @@ module.exports = {
 
 ---
 
-### Question
+### Question c95aedbf-1ab3-4e7e-9d73-b50a9530ed04
 
 - What are the security and debugging tradeoffs between enabling hidden production source maps versus completely disabling source maps in Next.js?
 

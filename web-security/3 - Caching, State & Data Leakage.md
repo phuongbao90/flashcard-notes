@@ -257,7 +257,7 @@ export default function SearchPage() {
 
 ---
 
-### Question
+### Question 14bb34a7-eb09-4be4-bf27-a3f449df6e90
 
 - What cache configuration flaw in this Route Handler allows an e-commerce customer to receive another customer's cached cart or session data?
 
@@ -281,7 +281,7 @@ export async function GET(request: Request) {
 
 ---
 
-### Question
+### Question 69f5b544-4ee4-4d90-ae13-2d8e79f2592e
 
 - Trace how `router.refresh()` executes during a user logout action to purge stale authenticated data from the browser.
 
@@ -295,7 +295,7 @@ export async function GET(request: Request) {
 
 ---
 
-### Question
+### Question b24be407-1034-41f4-b7b1-82a9aa71873e
 
 - In an authenticated Next.js dashboard, what are the tradeoffs between setting `export const dynamic = 'force-dynamic'` at the layout level versus relying on individual dynamic functions (e.g., `cookies()`) in leaf components?
 

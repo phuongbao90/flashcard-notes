@@ -12,7 +12,7 @@
 - **Utility and Network Processes**: Independent isolated processes handling network protocol stacks, audio decoding, and storage subsystems.
 - **Mojo IPC**: Cross-platform message-passing framework using operating system pipes with strongly-typed interfaces defined via IDL files. Restricts untrusted renderer processes from executing arbitrary OS system calls directly.
 
-- [More detail on Chromium Multi-process Architecture](https://developer.chrome.com/docs/chromium/inside-browser-part1)
+- [More detail on Chromium Multi-process Architecture](https://developer.chrome.com/blog/inside-browser-part1)
 - [More detail on Mojo IPC](https://chromium.googlesource.com/chromium/src/+/main/docs/mojo_ipc_conversion.md)
 
 ---
@@ -45,7 +45,7 @@
 - **4. Commit Navigation**: Browser Process sends an IPC message to the renderer passing ownership of the document stream. Browser UI updates (URL bar, navigation history, security padlock).
 - **5. Document Loading & First Paint**: Renderer parses HTML, builds DOM/CSSOM, dispatches preloads, computes Layout, produces Paint display lists, and sends compositor frames to the GPU for presentation.
 
-- [More detail on Browser Navigation Flow](https://developer.chrome.com/docs/chromium/inside-browser-part2)
+- [More detail on Browser Navigation Flow](https://developer.chrome.com/blog/inside-browser-part2)
 
 ---
 
@@ -61,7 +61,7 @@
 - **Zero wasted work**: When the subsequent `200 OK` payload arrives, preloaded stylesheets and critical fonts are already downloaded or in flight, drastically reducing LCP and render-blocking delays.
 
 - [More detail on HTTP 103 Early Hints](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/103)
-- [More detail on Loading Performance with Early Hints](https://web.dev/articles/early-hints)
+- [More detail on Loading Performance with Early Hints](https://developer.chrome.com/docs/web-platform/early-hints)
 
 ---
 
@@ -107,7 +107,7 @@
 - **Indirect DOM blocking**: CSSOM construction itself does **not** block HTML parsing. However, if an external `<link rel="stylesheet">` is followed by a `<script>`, the browser pauses script execution until the stylesheet downloads and builds the CSSOM. Consequently, that script pauses the HTML parser, indirectly blocking DOM construction.
 
 - [More detail on Critical Rendering Path and CSSOM](https://developer.mozilla.org/en-US/docs/Web/Performance/Critical_rendering_path)
-- [More detail on Render-Blocking CSS](https://web.dev/articles/critical-rendering-path-render-blocking-css)
+- [More detail on Render-Blocking CSS](https://web.dev/learn/performance/understanding-the-critical-path)
 
 ---
 
@@ -124,7 +124,7 @@
 - **`display: contents`**: The element itself generates no layout box, but its children are promoted to the layout tree as direct layout children of the element's parent.
 - **Generated content**: Pseudo-elements (`::before`, `::after`) exist in the Layout Tree as generated visual boxes even though they are absent from the DOM Tree.
 
-- [More detail on Layout Tree and Box Model](https://developer.chrome.com/docs/chromium/inside-browser-part3#layout)
+- [More detail on Layout Tree and Box Model](https://developer.chrome.com/blog/inside-browser-part3#layout)
 
 ---
 
@@ -170,7 +170,7 @@ cards.forEach((card, i) => {
 ```
 
 - [More detail on Avoiding Layout Thrashing](https://web.dev/articles/avoid-large-complex-layouts-and-layout-thrashing)
-- [More detail on Properties that Trigger Layout](https://gist.github.com/paulirish/5d52fb08831300f08a9b)
+- [More detail on Properties that Trigger Layout](https://csstriggers.com/)
 
 ---
 
@@ -193,7 +193,7 @@ cards.forEach((card, i) => {
 - **Optimization**: Display lists can be cached and incrementally invalidated; moving an element along the screen allows existing paint records to be replayed at an offset without re-running paint code.
 
 - [More detail on The Stacking Context](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_positioned_layout/Understanding_z-index/Stacking_context)
-- [More detail on Painting in Blink](https://developer.chrome.com/docs/chromium/inside-browser-part3#paint)
+- [More detail on Painting in Blink](https://developer.chrome.com/blog/inside-browser-part3#paint)
 
 ---
 
@@ -244,7 +244,7 @@ cards.forEach((card, i) => {
 - **Viewport prioritization**: Tiles intersecting or immediately adjacent to the current viewport are rasterized first; distant offscreen tiles are rasterized lazily during idle cycles.
 - **Draw Quads & Viz**: Once rasterized, the Compositor Thread generates **Draw Quads** (bounding boxes with texture handles) wrapped in a **CompositorFrame**, which is submitted via IPC to the **Viz** service in the GPU Process to display on screen.
 
-- [More detail on Compositor Architecture](https://developer.chrome.com/docs/chromium/inside-browser-part3#compositing)
+- [More detail on Compositor Architecture](https://developer.chrome.com/blog/inside-browser-part3#compositing)
 - [More detail on Viz Architecture in Chromium](https://chromium.googlesource.com/chromium/src/+/main/components/viz/README.md)
 
 ---
@@ -266,7 +266,6 @@ window.addEventListener("touchstart", handleTouch, { passive: true });
 ```
 
 - [More detail on Passive Event Listeners](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#passive)
-- [More detail on Improving Scroll Performance with Passive Listeners](https://web.dev/articles/uses-passive-event-listeners)
 
 ---
 
@@ -355,7 +354,7 @@ delete p1.x; // p1 drops out of hidden class optimization!
 - **Megamorphic (Slowest)**: The call-site encounters 5 or more distinct hidden classes. V8 abandons local inlining and routes lookups through a global stub cache or generic hash table lookup.
 - **Impact on hot code**: Functions repeatedly invoked with heterogeneously shaped objects (e.g., passing varied config objects to a utility function) enter megamorphic states, preventing TurboFan inlining and slowing execution by up to an order of magnitude.
 
-- [More detail on V8 Inline Caches](https://v8.dev/blog/react-cliff)
+- [More detail on Shapes and Inline Caches](https://mathiasbynens.be/notes/shapes-ics)
 - [More detail on Polymorphic and Megamorphic ICs](https://mathiasbynens.be/notes/prototypes)
 
 ---
@@ -404,7 +403,7 @@ function removeCard() {
 ```
 
 - [More detail on Fixing Memory Leaks with DevTools](https://developer.chrome.com/docs/devtools/memory-problems)
-- [More detail on V8 DOM Wrapper Management](https://v8.dev/blog/oilpan)
+- [More detail on Memory Management](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Memory_Management)
 
 ---
 

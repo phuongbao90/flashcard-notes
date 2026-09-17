@@ -11,6 +11,8 @@
 - `picture`: **multiple image sources**, **art direction**, **responsive images**
   - use it for: hero images, banners, carousels, or any image that needs to be responsive and/or have different sources for different screen sizes or resolutions.
 
+- [More detail on the img element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img)
+- [More detail on the picture element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/picture)
 ---
 
 ### Question 13294c67-0acf-489e-ae9a-15da78816aba
@@ -24,6 +26,8 @@
 - **CLS (Cumulative Layout Shift)**: **Unsized images** cause layout shifts when they download and push surrounding content down.
   - **Optimization**: **Explicitly set `width` and `height` attributes** on `<img>` tags, or set **CSS `aspect-ratio`**, allowing the browser to calculate aspect ratio and reserve layout space before the image bytes land.
 
+- [More detail on Optimize LCP](https://web.dev/articles/optimize-lcp)
+- [More detail on Optimize CLS](https://web.dev/articles/optimize-cls)
 ---
 
 ### Question fc5280cf-08cc-4344-94a7-dc67d2581dda
@@ -36,6 +40,7 @@
 - **WebP**: Modern raster format widely supported across **98%+ of browsers**. Great balance of high compression and universal support.
 - **SVG**: XML-based **vector graphics**. **Resolution-independent** and tiny file size for sharp logos, icons, and simple illustrations. (Not for rich photography).
 
+- [More detail on Image file types guide](https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Image_types)
 ---
 
 ### Question 5b5a6ec9-2a25-4b12-9fcd-b2f71d423b3d
@@ -56,6 +61,7 @@
 </picture>
 ```
 
+- [More detail on the picture element and art direction](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/picture)
 ---
 
 ### Question 17c4db72-db7f-4287-9d75-9971f46fd09c
@@ -73,6 +79,7 @@
   - Ensure the server converts to **AVIF/WebP**.
   - **Avoid using CSS `background-image` for LCP elements** because the browser must parse CSS before initiating the image fetch request.
 
+- [More detail on Optimize LCP](https://web.dev/articles/optimize-lcp)
 ---
 
 ### Question 568bdc53-6731-403b-a8b8-53503b26c157
@@ -89,6 +96,7 @@
   - Only then does the browser discover the `background-image` URL and initiate the network request.
 - **Takeaway**: Always use standard HTML `<img>`, `<picture>`, or `<link rel="preload">` for LCP images so the Preload Scanner can discover them immediately without waiting for CSS execution.
 
+- [More detail on Preload scanner](https://web.dev/articles/preload-scanner)
 ---
 
 ### Question 7900d937-e699-4ff2-9648-e79a616cdabb
@@ -101,6 +109,7 @@
 - **When to use**: Below-the-fold images, dynamic galleries, or heavy list views.
 - **When to avoid**: Above-the-fold LCP hero images. Asynchronous decoding can slightly delay the actual painting of the hero image, increasing your overall LCP metric. For LCP images, use `decoding="sync"` or let the browser use default sync behavior.
 
+- [More detail on HTMLImageElement: decoding](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/decoding)
 ---
 
 ### Question 72ce330d-70b7-4b6c-b009-e0a02cefa962
@@ -114,6 +123,7 @@
 - **Common Mistake**: Leaving `sizes="100vw"` on images arranged in a multi-column desktop grid. If a grid item is only 25vw wide on desktop, leaving 100vw forces the browser to download an image 4x larger than necessary.
 - **Correct Example**: `sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"`.
 
+- [More detail on Responsive images](https://developer.mozilla.org/en-US/docs/Web/HTML/Responsive_images)
 ---
 
 ### Question d1bc0338-5d3e-4877-88f6-dd17052c8481
@@ -129,6 +139,7 @@
   - **Pros**: Faster builds; scales infinitely to millions of dynamic dynamic/CMS images; generates exact size requested on first view and caches it at the edge.
   - **Cons**: Cold-hit latency for the very first request of a specific size; serverless/compute cost for initial transformation.
 
+- [More detail on next/image](https://nextjs.org/docs/app/api-reference/components/image)
 ---
 
 ### Question 72b3347a-afbe-4c98-a699-4907a7720886
@@ -150,6 +161,7 @@ const cloudinaryLoader = ({ src, width, quality }: ImageLoaderProps) => {
 
 - **Why use it**: Offloads serverless compute costs from Vercel/Node server to a specialized third-party media engine.
 
+- [More detail on next/image: loader](https://nextjs.org/docs/app/api-reference/components/image)
 ---
 
 ### Question 8fe816e8-94f5-45af-b373-0f612fe48729
@@ -163,6 +175,7 @@ const cloudinaryLoader = ({ src, width, quality }: ImageLoaderProps) => {
   - **Convert to Video** (`<video>` tag with `autoplay loop muted playsinline`): Replacing a GIF with an **MP4/WebM video** reduces file size by **80%–90%**.
   - **Animated WebP / Animated AVIF**: Modern image formats support multi-frame animation with **superior lossy compression** compared to legacy GIF.
 
+- [More detail on Replace GIFs with video](https://web.dev/articles/replace-gifs-with-videos)
 ---
 
 ### Question c58bf1b6-3783-4daf-9064-2571c511bfb4
@@ -176,6 +189,7 @@ const cloudinaryLoader = ({ src, width, quality }: ImageLoaderProps) => {
 
 - **Red Flag to avoid**: Not knowing how `fill` works (forgetting that `fill` requires a `position: relative/absolute` parent container).
 
+- [More detail on next/image](https://nextjs.org/docs/app/api-reference/components/image)
 ---
 
 ### Question 37f388d0-1f66-47ea-9a05-7ca748c90ddc
@@ -193,6 +207,8 @@ const cloudinaryLoader = ({ src, width, quality }: ImageLoaderProps) => {
 - **Missing `width` & `height` attributes**: Causes **massive CLS** on initial render. (Fix: Add intrinsic `width="1200" height="600"`).
 - **No responsive `srcset` or `sizes`**: Mobile devices will download the full desktop-sized 4K image. (Fix: Add `srcset` and `sizes`, or use Next.js `<Image />`).
 
+- [More detail on HTMLImageElement: loading](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/loading)
+- [More detail on Optimize LCP](https://web.dev/articles/optimize-lcp)
 ---
 
 ### Question 426fb615-961b-40bb-b69f-dffa07b42e22
@@ -211,6 +227,7 @@ const cloudinaryLoader = ({ src, width, quality }: ImageLoaderProps) => {
    - On Vercel, optimized images are automatically stored on a **global Edge CDN** (200+ locations worldwide). A user in Tokyo gets the image from a Tokyo server.
    - On a self-hosted VPS in Frankfurt, a user in Tokyo has to fetch images across the ocean directly from your single Frankfurt VPS every time.
 
+- [More detail on next/image](https://nextjs.org/docs/app/api-reference/components/image)
 ---
 
 ### Question a4276ada-1c6a-4bdc-b0a1-aaa358d30be6
@@ -230,6 +247,7 @@ const cloudinaryLoader = ({ src, width, quality }: ImageLoaderProps) => {
   - Your VPS only serves the original source images. The CDN handles resizing, format conversion, and edge caching.
   - This **drastically reduces CPU load on your VPS** and ensures **fast global delivery**.
 
+- [More detail on next/image configuration](https://nextjs.org/docs/app/api-reference/components/image)
 ---
 
 ### Question a7985bc9-c61a-4810-b6a3-116d095da096
@@ -244,6 +262,8 @@ const cloudinaryLoader = ({ src, width, quality }: ImageLoaderProps) => {
   - **Inspects the file header** to extract its **intrinsic width and height** (1920x1080).
   - **Generates a tiny SVG/blur placeholder** to inline into the JavaScript bundle.
 
+- [More detail on the Autoplay guide](https://developer.mozilla.org/en-US/docs/Web/Media/Guides/Autoplay)
+- [More detail on the video element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/video)
 ---
 
 ### Question ae759367-3a6c-40d1-a5fc-52e32fff00e0
@@ -255,6 +275,7 @@ const cloudinaryLoader = ({ src, width, quality }: ImageLoaderProps) => {
 - **Scenario 1**: Generating **Base64 Blur Placeholders** (`plaiceholder`)
 - **Scenario 2**: **Static HTML Export** (`output: 'export'`) with Build-Time Plugins
 
+- [More detail on next/image](https://nextjs.org/docs/app/api-reference/components/image)
 ---
 
 ### Question 0216a032-7c58-4e15-85c7-4b54ca88846f
@@ -281,9 +302,9 @@ const cloudinaryLoader = ({ src, width, quality }: ImageLoaderProps) => {
    - lower framerate (e.g., 24fps instead of 60fps)
    - lower resolution (e.g., 720p instead of 1080p)
    - CSS dark overlay to hide compression artifacts
-5. Visual Tricks to Slash File Size (Bitrate Tuning)
-6. **Mobile & Accessibility Optimizations**
+5. **Mobile & Accessibility Optimizations**
 
+- [More detail on the Autoplay guide](https://developer.mozilla.org/en-US/docs/Web/Media/Guides/Autoplay)
 ---
 
 ### Question 592c9b20-5aa6-47cd-b66e-d46520743d0a
@@ -311,4 +332,6 @@ const cloudinaryLoader = ({ src, width, quality }: ImageLoaderProps) => {
   }, []);
   ```
 
+- [More detail on useEffect cleanup](https://react.dev/reference/react/useEffect)
+- [More detail on HTMLVideoElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement)
 ---

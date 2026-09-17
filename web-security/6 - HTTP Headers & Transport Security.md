@@ -224,7 +224,7 @@ if (origin && ALLOWED_ORIGINS.has(origin)) {
 
 ---
 
-### Question
+### Question 8f6f91c5-2be1-437b-bcda-7d5d8f5ee6c4
 
 - How should a Next.js application configure the `Permissions-Policy` HTTP response header to protect user privacy against third-party embedded iframes?
 
@@ -256,7 +256,7 @@ module.exports = {
 
 ---
 
-### Question
+### Question b2177f9e-0de8-40b9-92af-07443fdf9c1d
 
 - Trace how the `Referrer-Policy: strict-origin-when-cross-origin` header handles referrer transmission during different navigation flows.
 
@@ -270,7 +270,7 @@ module.exports = {
 
 ---
 
-### Question
+### Question 3f020f23-d19c-4789-8f5c-8010e2a63b1c
 
 - In a Next.js App Router application, what are the CSP security tradeoffs between using Tailwind CSS versus runtime CSS-in-JS libraries (e.g., styled-components)?
 

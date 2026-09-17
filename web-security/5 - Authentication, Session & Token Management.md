@@ -214,7 +214,7 @@ export async function POST(req: Request) {
 
 ---
 
-### Question
+### Question 9a730c1f-6e57-4088-8389-31d883d5e651
 
 - How can a Next.js web application synchronize session logout across multiple open browser tabs when a user signs out?
 
@@ -245,7 +245,7 @@ authChannel.onmessage = (event) => {
 
 ---
 
-### Question
+### Question 27bf8aa0-f761-4955-b29e-c09389cb0a4e
 
 - What architectural and operational tradeoffs arise when storing stateless JWTs directly in browser cookies compared to database-backed session IDs?
 
@@ -258,7 +258,7 @@ authChannel.onmessage = (event) => {
 
 ---
 
-### Question
+### Question aee37f6d-9b06-4636-9aa6-f379a0f39eb7
 
 - What configuration error prevents this session cookie from being accepted by modern browsers when using the `__Host-` prefix?
 

@@ -66,7 +66,7 @@
 ```
 
 - [More detail on Specificity with Functional Pseudo-classes](https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity)
-- [More detail on :is() and :where()](https://developer.chrome.com/articles/is-where/)
+- [More detail on :is()](https://developer.mozilla.org/en-US/docs/Web/CSS/:is)
 
 ---
 
@@ -92,7 +92,7 @@
 ```
 
 - [More detail on @scope](https://developer.mozilla.org/en-US/docs/Web/CSS/@scope)
-- [More detail on Limit the reach of your selectors with @scope](https://developer.chrome.com/docs/css-ui/@scope)
+- [More detail on CSS Cascading and Scoping (scope proximity)](https://www.w3.org/TR/css-cascade-6/)
 
 ---
 
@@ -307,7 +307,7 @@ img { vertical-align: bottom; }
 ```
 
 - [More detail on CSS Subgrid](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout/Subgrid)
-- [More detail on Subgrid Specification and Implementation](https://developer.chrome.com/docs/css-ui/subgrid)
+- [More detail on CSS Grid Level 2 (subgrid)](https://www.w3.org/TR/css-grid-2/)
 
 ---
 
@@ -398,7 +398,7 @@ img { vertical-align: bottom; }
   - `contain: strict` $\to$ `layout paint size style` (maximum optimization for fixed-size containers).
 
 - [More detail on CSS Containment](https://developer.mozilla.org/en-US/docs/Web/CSS/contain)
-- [More detail on Performance Benefits of CSS Containment](https://web.dev/articles/css-containment)
+- [More detail on CSS Containment Specification](https://www.w3.org/TR/css-contain-1/)
 
 ---
 
@@ -452,7 +452,7 @@ img { vertical-align: bottom; }
 ```
 
 - [More detail on CSS Container Queries](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_containment/Container_queries)
-- [More detail on Container Queries Guide](https://developer.chrome.com/docs/css-ui/container-queries)
+- [More detail on @container](https://developer.mozilla.org/en-US/docs/Web/CSS/@container)
 
 ---
 
@@ -531,7 +531,7 @@ img { vertical-align: bottom; }
 ```
 
 - [More detail on @property](https://developer.mozilla.org/en-US/docs/Web/CSS/@property)
-- [More detail on CSS Houdini: @property](https://developer.chrome.com/blog/at-property/)
+- [More detail on CSS Properties and Values API](https://drafts.css-houdini.org/css-properties-values-api/)
 
 ---
 
@@ -556,7 +556,7 @@ card.attributeStyleMap.set("transform", new CSSTransformValue([
 ```
 
 - [More detail on CSS Typed Object Model](https://developer.mozilla.org/en-US/docs/Web/API/CSS_Typed_OM_API)
-- [More detail on Working with the new CSS Typed OM](https://developer.chrome.com/articles/typedom/)
+- [More detail on CSS Typed OM Specification](https://drafts.css-houdini.org/css-typed-om/)
 
 ---
 
@@ -604,7 +604,7 @@ card.attributeStyleMap.set("transform", new CSSTransformValue([
 ```
 
 - [More detail on color-mix()](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/color-mix)
-- [More detail on CSS Color 5: color-mix()](https://developer.chrome.com/docs/css-ui/color-mix)
+- [More detail on CSS Color 5 Specification](https://www.w3.org/TR/css-color-5/)
 
 ---
 

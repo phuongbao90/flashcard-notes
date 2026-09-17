@@ -18,6 +18,8 @@ console.log(b); // ReferenceError: Cannot access 'b' before initialization
 let b = 2;
 ```
 
+- [More detail on Hoisting](https://developer.mozilla.org/en-US/docs/Glossary/Hoisting)
+- [More detail on the var statement](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/var)
 ---
 
 ### Question 175bd532-8305-46ab-8749-fb4e19c1373a
@@ -38,6 +40,8 @@ let x = 10; // TDZ ends here
 console.log(typeof y); // "undefined" (undeclared variable)
 ```
 
+- [More detail on the let statement](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/let)
+- [More detail on Cannot access lexical declaration before initialization](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Errors/Cant_access_lexical_declaration_before_init)
 ---
 
 ### Question 63a723c8-cc75-4abb-8b59-7737d2ee3250
@@ -58,6 +62,8 @@ expressedFn(); // TypeError: expressedFn is not a function
 var expressedFn = function() {};
 ```
 
+- [More detail on function declarations](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)
+- [More detail on Hoisting](https://developer.mozilla.org/en-US/docs/Glossary/Hoisting)
 ---
 
 ### Question a6148e76-1a69-4690-bdc5-524fb95961dc
@@ -79,6 +85,7 @@ function foo() {}
 console.log(typeof foo); // "number" (overwritten by runtime assignment)
 ```
 
+- [More detail on Hoisting](https://developer.mozilla.org/en-US/docs/Glossary/Hoisting)
 ---
 
 ### Question 19378986-c094-4e81-8dd5-f0affff04ac9
@@ -99,6 +106,7 @@ console.log(typeof foo); // "number" (overwritten by runtime assignment)
 console.log(typeof inner); // "undefined" (strictly block-scoped)
 ```
 
+- [More detail on Annex B web compatibility features](https://tc39.es/ecma262/multipage/additional-ecmascript-features-for-web-browsers.html)
 ---
 
 ### Question 50cdde85-ace4-4859-be6d-92eae6feaefe
@@ -121,6 +129,7 @@ class User {
 }
 ```
 
+- [More detail on class declarations](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/class)
 ---
 
 ### Question fd4e814f-95a1-4863-ba74-0ddd86f9bfe9
@@ -140,6 +149,8 @@ helper();
 import { helper } from "./utils.js";
 ```
 
+- [More detail on the import statement](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import)
+- [More detail on JavaScript modules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules)
 ---
 
 ### Question 8b15579c-df7e-43a6-afbf-95a1f5e88dee
@@ -163,6 +174,7 @@ test();
 - The local variable `x` is **hoisted to the top of `test()`'s function scope** during the creation phase and **initialized to `undefined`**.
 - The local `x` **shadows the outer `x = 1`**, so `console.log(x)` accesses the unassigned local `x` before its assignment statement executes.
 
+- [More detail on Hoisting](https://developer.mozilla.org/en-US/docs/Glossary/Hoisting)
 ---
 
 ### Question a8ab7f7f-fdc9-498e-abd0-2e3a06b30921
@@ -183,6 +195,7 @@ getOutput();
 - Parameter evaluation occurs **left-to-right** in a dedicated parameter scope; default parameters evaluate as `let`/`const`-like declarations.
 - When `x = y` is evaluated, parameter `y` has been declared in scope but not yet initialized, placing `y` in the **Temporal Dead Zone (TDZ)**.
 
+- [More detail on Default parameters](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
 ---
 
 ### Question eff09449-05fb-468b-8dc8-651b61757b7a
@@ -208,6 +221,7 @@ console.log(a);
 - Inside `foo()`, the function declaration `function a() {}` is **hoisted to the top of the function execution context**, creating a local variable `a` initialized to the function object.
 - The assignment `a = 10` **overwrites the local `a` binding inside `foo()`**, leaving the **outer/global variable `a` untouched at `1`**.
 
+- [More detail on Hoisting](https://developer.mozilla.org/en-US/docs/Glossary/Hoisting)
 ---
 
 ### Question 02cf2033-0c33-4fa9-af75-67fb460e2349
@@ -230,6 +244,7 @@ console.log(typeof fn);
 - During the creation phase, `function fn()` is **hoisted first**, initializing `fn` as a function object; the `var fn` declaration is ignored as `fn` is already bound.
 - During the execution phase, the statement `var fn = "hello"` assigns the string `"hello"` to `fn`, **overwriting the function reference** before `console.log` executes.
 
+- [More detail on Hoisting](https://developer.mozilla.org/en-US/docs/Glossary/Hoisting)
 ---
 
 ### Question 75328488-beb0-4ae8-aa3e-8ce31329f34e
@@ -254,6 +269,7 @@ if (true) {
 - In strict mode, function declarations inside block statements (`if`, `for`, `{}`) are **strictly block-scoped** and their declarations **hoist only to the top of that block**.
 - Because `foo()` is invoked in the outer scope before entering the `if` block, `foo` is not bound in the outer scope execution context.
 
+- [More detail on Annex B web compatibility features](https://tc39.es/ecma262/multipage/additional-ecmascript-features-for-web-browsers.html)
 ---
 
 ### Question 112d9162-faa3-4093-afdd-fd5d4f9c1d22
@@ -277,6 +293,7 @@ increment();
 - The inner `let count = 20` declaration **hoists to the top of `increment()`'s function scope**, creating a local `count` binding.
 - This inner binding **shadows the outer `let count = 10`**, but accessing it via `console.log(count)` fails because the local `count` is still in the **Temporal Dead Zone (TDZ)**.
 
+- [More detail on the let statement](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/let)
 ---
 
 ### Question 9a22ea6e-c333-4117-8076-fa9f0b4fcd60
@@ -302,10 +319,11 @@ run();
 
 ### Answer
 
-- Logs `"caught error"` twice (`"caught error"` inside catch block, `"caught error"` outside catch block).
+- Logs `"caught error"` inside the catch block, then `"outer error"` outside it.
 - The `catch (err)` parameter creates a **block-scoped binding for `err`** within the catch block; `err = "caught error"` updates this catch parameter.
-- However, `var err` inside the catch block is **function-hoisted to `run()`**, sharing the top-level `var err` variable, which causes the outer `err` variable to also be **mutated to `"caught error"`**.
+- However, `var err` inside the catch block is **function-hoisted to `run()`**, sharing the top-level `var err` variable, but the outer `var err` keeps its original `"outer error"` value: the catch parameter `err` shadows the function-scoped `var err` for the entire block, so the assignment lands on the parameter only.
 
+- [More detail on try...catch](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/try...catch)
 ---
 
 ### Question bde6798c-1342-47e1-9029-25e3db06d15b
@@ -331,6 +349,8 @@ switch (value) {
 }
 ```
 
+- [More detail on switch](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/switch)
+- [More detail on Cannot access lexical declaration before initialization](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Errors/Cant_access_lexical_declaration_before_init)
 ---
 
 ### Question b6298574-e53d-4787-a84c-0ff258167d3a
@@ -352,6 +372,7 @@ function demo(x = 1, y = () => x) {
 console.log(demo());
 ```
 
+- [More detail on Default parameters](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
 ---
 
 ### Question 5e64537e-c381-44e8-b553-350a7971abdc
@@ -376,6 +397,7 @@ if (true) {
 console.log(typeof fn); // "function"
 ```
 
+- [More detail on Annex B web compatibility features](https://tc39.es/ecma262/multipage/additional-ecmascript-features-for-web-browsers.html)
 ---
 
 ### Question 3b47d36e-e3a6-4da7-b3a2-a2253395d960
@@ -398,6 +420,7 @@ for (let j = 0; j < 3; j++) {
 }
 ```
 
+- [More detail on Closures in loops: a common mistake](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures#creating_closures_in_loops_a_common_mistake)
 ---
 
 ### Question 09d7af1c-0fee-41c3-afd5-57c315b2c3dd
@@ -418,3 +441,5 @@ class Config {
 
 console.log(Config.A);
 ```
+
+- [More detail on Static class fields](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static)

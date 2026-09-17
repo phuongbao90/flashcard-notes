@@ -172,7 +172,7 @@ export async function getAuditLogs(cursor?: string, requestedLimit = 20) {
 
 ---
 
-### Question
+### Question 62ed3d0a-f635-435e-9ad2-712f5d9e4808
 
 - How does integrating an edge security layer (e.g., Arcjet or Upstash Rate Limiter) in Next.js Middleware protect Server Actions from distributed credential stuffing?
 
@@ -205,7 +205,7 @@ export async function middleware(request: Request) {
 
 ---
 
-### Question
+### Question fbb5e1b9-5c76-4668-af94-0da064d70acc
 
 - What makes this email validation regular expression vulnerable to Regular Expression Denial of Service (ReDoS) during high-throughput user registrations?
 
@@ -223,7 +223,7 @@ const emailRegex = /^([a-zA-Z0-9_\.-]+)+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
 
 ---
 
-### Question
+### Question a830c6ee-29c3-451c-b541-39d76b118f3d
 
 - Trace how prototype pollution in a deep object merge function inside a Next.js Route Handler can lead to authorization bypass or application crashes.
 
