@@ -113,3 +113,71 @@ REVOKE CREATE, DROP, ALTER ON SCHEMA public FROM app_user;
 ```
 
 - [More detail on OWASP Database Security Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Database_Security_Cheat_Sheet.html)
+
+---
+
+### Question
+
+- How does schema validation using `@t3-oss/env-nextjs` or Zod prevent deployment failures and secret misconfigurations in Next.js applications?
+
+### Answer
+
+- **Build-time boundary verification**: Explicitly defines schemas for `server` and `client` environment variables, validating values during `next build`.
+- **Fail-fast crash guarantee**: If a critical production secret (e.g., `DATABASE_URL` or `STRIPE_SECRET_KEY`) is missing, mistyped, or prefixed incorrectly with `NEXT_PUBLIC_`, the build process halts with immediate schema diagnostics before code deploys to production.
+
+```typescript
+// env.mjs
+import { createEnv } from '@t3-oss/env-nextjs';
+import { z } from 'zod';
+
+export const env = createEnv({
+  server: {
+    DATABASE_URL: z.string().url(),
+    STRIPE_SECRET_KEY: z.string().startsWith('sk_'),
+  },
+  client: {
+    NEXT_PUBLIC_APP_URL: z.string().url(),
+  },
+  runtimeEnv: {
+    DATABASE_URL: process.env.DATABASE_URL,
+    STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
+    NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
+  },
+});
+```
+
+- [More detail on T3 Env Next.js documentation](https://env.t3.gg/docs/nextjs)
+
+---
+
+### Question
+
+- What security risk occurs when logging third-party API webhook payloads inside a Server Action or Route Handler, and how is it resolved?
+
+```typescript
+export async function POST(req: Request) {
+  const payload = await req.json();
+  console.log('Stripe webhook received:', payload, process.env.STRIPE_SECRET_KEY);
+  // ...
+}
+```
+
+### Answer
+
+- **Cloud log secret exfiltration**: Unsanitized `console.log` statements stream raw environment secrets and customer PII directly into third-party cloud logging services (e.g., Datadog, AWS CloudWatch, LogDNA), exposing credentials to developers and third-party integrations with read permissions.
+- **Remediation**: Use structured loggers with built-in secret redaction and mask any payload fields containing authorization headers, session tokens, or private keys before writing to `stdout`.
+
+- [More detail on OWASP Logging Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html)
+
+---
+
+### Question
+
+- In Next.js, what is the exact file loading precedence for environment variables, and why should `.env.local` never be checked into Git?
+
+### Answer
+
+- **Precedence order (highest to lowest)**: `process.env` (system environment) > `.env.production.local` / `.env.development.local` > `.env.local` > `.env.production` / `.env.development` > `.env`.
+- **`.env.local` purpose**: Designed exclusively for local machine overrides and developer-specific secrets; committing it to Git leaks individual credentials across team repositories.
+
+- [More detail on Next.js Environment Variable Load Order](https://nextjs.org/docs/app/building-your-application/configuring/environment-variables#environment-variable-load-order)

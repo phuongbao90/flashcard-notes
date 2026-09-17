@@ -9,6 +9,19 @@ metadata:
 
 Create concise (can sacrifice grammar for clarity), practical Q&A content that tests understanding of behavior, trade-offs, edge cases, and internal mechanics. Target senior to staff-level React and Next.js developers.
 
+# How to generate Q&A pairs
+
+- User will provide a topic or question. You need to decide the broadness of the provided topic, if it is too broad, break it down into multiple subtopics and generate multiple Q&A pairs. If the topic is too narrow, you can generate multiple Q&A pairs from different angles of the same topic.
+
+# Card Types
+
+- Concept: "What is X?" → vocabulary accuracy.
+- Mechanism: "Trace what happens when X executes." → process understanding.
+- Tradeoff: "When would you NOT use X?" → decision reasoning.
+- Application: "Given [context], which [tool/pattern] and why?" → transfer.
+- Debug: "What's wrong with this code?" → diagnostic thinking.
+- Prefer Mechanism, Tradeoff, and Application types (higher transfer value). At least 60% of cards should be these types.
+
 ## When to Apply
 
 - Generate technical interview questions with answers.
@@ -92,16 +105,9 @@ When asked to complete existing content:
 
 The preservation requirement takes precedence over normalizing existing headings or formatting in this mode.
 
-## Optional Learning Principles
-
-Apply these only when useful, without changing the required output format:
-
-- **Atomicity:** Keep each card focused on one discrete idea.
-- **Dual coding:** Suggest a relevant visual within an answer bullet when it aids understanding.
-- **Interleaving:** When review advice is requested, suggest shuffling related topics within an answer bullet to encourage comparison and retrieval.
-
 ## Final Check
 
+- 60%+ cards are Mechanism/Tradeoff/Application type.
 - Each generated pair contains the required headings, one question bullet, and a direct answer in bullets.
 - Each answer ends with one or more `- [More detail on ...] (<URL>)` button links pointing to authoritative documentation.
 - Pairs are separated by `---`, and code fences are balanced.

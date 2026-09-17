@@ -348,3 +348,70 @@ export default function Page() {
 ```
 
 - [More detail on React use Hook](https://react.dev/reference/react/use)
+
+---
+
+### Question
+
+- In a multi-tenant B2B SaaS application, how should a Data Access Layer (DAL) function be structured to prevent cross-tenant data leakage when querying organization data in Server Components?
+
+### Answer
+
+- **Enforce session-derived tenant context**: Extract the verified `organizationId` directly from the authenticated server session—never accept tenant identifiers from client-supplied query parameters or component props.
+- **Mandatory scoped queries**: Constrain every ORM or database query with an explicit tenant predicate (`where: { id: resourceId, organizationId }`) and return a strictly mapped DTO rather than the raw database model.
+
+```typescript
+export async function getTenantWorkspaceDTO(workspaceId: string) {
+  const session = await auth();
+  if (!session?.user?.organizationId) throw new Error('Unauthorized');
+
+  const workspace = await db.workspace.findFirst({
+    where: { id: workspaceId, organizationId: session.user.organizationId },
+    select: { id: true, name: true, plan: true },
+  });
+
+  if (!workspace) throw new Error('Not found or access denied');
+  return workspace;
+}
+```
+
+- [More detail on Next.js Data Access Layer](https://nextjs.org/docs/app/building-your-application/data-fetching/fetching-caching-and-revalidating#data-access-layer)
+
+---
+
+### Question
+
+- When protecting sensitive object structures in React Server Components, what are the tradeoffs between using React's `experimental_taintObjectReference` versus standard Data Transfer Object (DTO) mapping functions?
+
+### Answer
+
+- **`taintObjectReference`**: Provides a dynamic runtime safety net that throws immediately if a marked server object is passed across a client boundary, but requires experimental React flags and incurs runtime overhead.
+- **DTO mapping functions**: Provide strict compile-time type safety and build-time guarantees by stripping unneeded fields before serialization, but require disciplined developer adherence across every data-fetching function.
+
+- [More detail on React experimental_taintObjectReference](https://react.dev/reference/react/experimental_taintObjectReference)
+
+---
+
+### Question
+
+- What security vulnerability exists in this Server Component that passes data to a Client Component, and why does TypeScript fail to catch it?
+
+```tsx
+// app/dashboard/page.tsx (Server Component)
+export default async function DashboardPage() {
+  const user = await db.user.findUnique({ where: { id: 'usr_123' } });
+  return <ClientUserProfile user={user} />;
+}
+
+// components/ClientUserProfile.tsx ('use client')
+export function ClientUserProfile({ user }: { user: { name: string } }) {
+  return <div>Welcome, {user.name}</div>;
+}
+```
+
+### Answer
+
+- **Flight serialization leaks entire object**: TypeScript interface `{ user: { name: string } }` only narrows client-side static types; Next.js serializes the **entire runtime `user` record** (including password hashes, salts, and billing IDs) into the HTML Flight stream (`self.__next_f`).
+- **Mitigation**: Map the database entity to an explicit DTO containing only `name` inside the Server Component before passing it across the client component boundary.
+
+- [More detail on Passing Props to Client Components](https://nextjs.org/docs/app/building-your-application/rendering/server-components#passing-props-to-client-components)

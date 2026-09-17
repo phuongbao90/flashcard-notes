@@ -136,3 +136,61 @@ export async function GET(req: Request, { params }: { params: { filename: string
 ```
 
 - [More detail on OWASP Path Traversal](https://owasp.org/www-community/attacks/Path_Traversal)
+
+---
+
+### Question
+
+- How does Next.js `output: 'standalone'` in `next.config.js` minimize the security attack surface of production Docker containers?
+
+### Answer
+
+- **Automated dependency pruning**: Traces the entire application tree and copies only the minimal production files and packages needed into `.next/standalone`.
+- **Eliminating development attack surfaces**: Leaves behind `node_modules` development dependencies, build utilities, CLI tools, and test suites, shrinking Docker image size and eliminating unpatched dev-dependency vulnerabilities from the production container.
+
+```javascript
+// next.config.js
+module.exports = {
+  output: 'standalone',
+};
+```
+
+- [More detail on Next.js Docker Deployment](https://nextjs.org/docs/app/building-your-application/deploying#docker-image)
+
+---
+
+### Question
+
+- What security vulnerability exists in this Next.js rewrite rule, and how can an external attacker exploit it?
+
+```javascript
+// next.config.js
+module.exports = {
+  async rewrites() {
+    return [
+      { source: '/api/proxy/:slug*', destination: 'https://internal-service.local/api/:slug*' },
+    ];
+  },
+};
+```
+
+### Answer
+
+- **Reverse proxy path traversal**: The wildcard parameter `:slug*` blindly forwards untrusted path sequences to the internal service without validation.
+- **Exploitation**: An attacker issuing `GET /api/proxy/../../admin/database` forces the internal reverse proxy to traverse beyond the `/api/` prefix, accessing sensitive internal administrative endpoints that are not publicly exposed.
+- **Mitigation**: Validate destination subpaths, avoid wildcards across sensitive internal network bridges, and configure internal APIs to reject unnormalized URI paths.
+
+- [More detail on Next.js Rewrites](https://nextjs.org/docs/app/api-reference/next-config-js/rewrites)
+
+---
+
+### Question
+
+- What are the security and debugging tradeoffs between enabling hidden production source maps versus completely disabling source maps in Next.js?
+
+### Answer
+
+- **Hidden source maps (uploaded to error tracker)**: Generates source maps during build and uploads them directly to services like Sentry before deleting them from `.next/static`, providing full stack trace de-obfuscation without publishing source code to the public web.
+- **Disabling source maps completely**: Prevents any risk of accidental public deployment or reverse-engineering of proprietary business logic, but makes triaging production crashes, minified stack traces, and user error digests significantly more difficult.
+
+- [More detail on Next.js Production Source Maps](https://nextjs.org/docs/app/api-reference/next-config-js/productionBrowserSourceMaps)

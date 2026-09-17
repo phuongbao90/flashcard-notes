@@ -211,3 +211,69 @@ export async function POST(req: Request) {
 ```
 
 - [More detail on Next.js Server Actions CSRF Protection](https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations#security)
+
+---
+
+### Question
+
+- How can a Next.js web application synchronize session logout across multiple open browser tabs when a user signs out?
+
+### Answer
+
+- **Cross-tab event propagation**: When the user signs out, dispatch an event via the **`BroadcastChannel` API** (or write a timestamp to a `localStorage` sentinel key like `logout-event`).
+- **Synchronous client-side cleanup**: Sibling browser tabs listen for the channel event, immediately clear local client state, and call `router.push('/login')` combined with `router.refresh()` to ensure invalidated session cookies do not leave stale authenticated views mounted.
+
+```typescript
+// utils/auth-channel.ts
+export const authChannel = new BroadcastChannel('auth_sync');
+
+export function triggerClientLogout() {
+  authChannel.postMessage({ type: 'LOGOUT' });
+  window.location.href = '/login';
+}
+
+// In root client listener:
+authChannel.onmessage = (event) => {
+  if (event.data?.type === 'LOGOUT') {
+    router.replace('/login');
+    router.refresh();
+  }
+};
+```
+
+- [More detail on BroadcastChannel API](https://developer.mozilla.org/en-US/docs/Web/API/BroadcastChannel)
+
+---
+
+### Question
+
+- What architectural and operational tradeoffs arise when storing stateless JWTs directly in browser cookies compared to database-backed session IDs?
+
+### Answer
+
+- **Stateless JWTs**: Eliminate database lookup latency at the edge and scale horizontally with zero shared session storage, but cannot be instantaneously revoked prior to expiration and easily breach the browser's **4KB cookie limit**, risking HTTP 431 ("Request Header Fields Too Large") errors as claims accumulate.
+- **Database session IDs**: Keep cookies tiny (~32 bytes) and support immediate server-side revocation, but impose database query overhead on every authenticated request or require an external shared store like Redis.
+
+- [More detail on OWASP Session Management Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html)
+
+---
+
+### Question
+
+- What configuration error prevents this session cookie from being accepted by modern browsers when using the `__Host-` prefix?
+
+```typescript
+cookies().set('__Host-session', token, {
+  httpOnly: true,
+  secure: true,
+  domain: '.myapp.com',
+  path: '/dashboard',
+});
+```
+
+### Answer
+
+- **Invalid `domain` and `path` directives**: The `__Host-` prefix contract strictly mandates that the cookie must **omit the `domain` attribute** entirely (locking it to the exact originating host) and must specify **`path: '/'`**.
+- **Browser rejection**: If a server sends a `Set-Cookie` header with `__Host-` alongside a `domain` attribute or a restricted path like `/dashboard`, modern browsers silently drop the cookie without saving it.
+
+- [More detail on MDN Cookie Prefixes](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies#cookie_prefixes)

@@ -221,3 +221,62 @@ if (origin && ALLOWED_ORIGINS.has(origin)) {
 ```
 
 - [More detail on PortSwigger CORS Vulnerabilities](https://portswigger.net/web-security/cors)
+
+---
+
+### Question
+
+- How should a Next.js application configure the `Permissions-Policy` HTTP response header to protect user privacy against third-party embedded iframes?
+
+### Answer
+
+- **Feature delegation restriction**: Use `Permissions-Policy` in `next.config.js` or middleware to explicitly disallow sensitive browser hardware and payment APIs from running in untrusted third-party contexts.
+- **Explicit origin binding**: Restrict permissions like `camera`, `microphone`, and `geolocation` to `'self'` or empty `()`, preventing third-party ad widgets, chat embeds, or malicious scripts from covertly accessing user peripherals.
+
+```javascript
+// next.config.js
+module.exports = {
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'Permissions-Policy',
+            value: 'camera=(), microphone=(), geolocation=(), payment=(self)',
+          },
+        ],
+      },
+    ];
+  },
+};
+```
+
+- [More detail on Permissions-Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Permissions-Policy)
+
+---
+
+### Question
+
+- Trace how the `Referrer-Policy: strict-origin-when-cross-origin` header handles referrer transmission during different navigation flows.
+
+### Answer
+
+- **Same-origin navigation**: Sends the full URL (including path and non-fragment query parameters) when navigating between pages on the same HTTPS origin.
+- **Cross-origin HTTPS navigation**: Truncates the referrer to only the origin (`https://example.com/`), stripping sensitive token paths, workspace IDs, or reset keys.
+- **Protocol downgrade**: Suppresses the `Referer` header completely if a user navigates from a secure HTTPS origin to an insecure HTTP link.
+
+- [More detail on Referrer-Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy)
+
+---
+
+### Question
+
+- In a Next.js App Router application, what are the CSP security tradeoffs between using Tailwind CSS versus runtime CSS-in-JS libraries (e.g., styled-components)?
+
+### Answer
+
+- **Tailwind CSS**: Compiles all styles into static external `.css` bundles at build time, allowing strict Content Security Policies that completely omit `'unsafe-inline'` from `style-src`.
+- **Runtime CSS-in-JS**: Generates and inserts `<style>` tags dynamically into the DOM during client execution, requiring `'unsafe-inline'` or runtime dynamic style hashing in `style-src`, weakening XSS defenses against attribute-based CSS injection.
+
+- [More detail on Next.js Content Security Policy with Styling](https://nextjs.org/docs/app/building-your-application/configuring/content-security-policy)

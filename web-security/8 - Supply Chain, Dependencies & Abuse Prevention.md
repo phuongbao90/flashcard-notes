@@ -169,3 +169,68 @@ export async function getAuditLogs(cursor?: string, requestedLimit = 20) {
 ```
 
 - [More detail on OWASP API Security - Unrestricted Resource Consumption](https://owasp.org/API-Security/editions/2023/en/0xa4-unrestricted-resource-consumption/)
+
+---
+
+### Question
+
+- How does integrating an edge security layer (e.g., Arcjet or Upstash Rate Limiter) in Next.js Middleware protect Server Actions from distributed credential stuffing?
+
+### Answer
+
+- **Edge-layer request evaluation**: Middleware inspects incoming action headers (`Next-Action`) and client IP/identity signatures before the request reaches backend Node.js compute or database pools.
+- **Sliding-window enforcement**: Uses a globally coordinated Redis or edge-backed token bucket algorithm to throttle bursts and return HTTP 429 ("Too Many Requests") immediately, shielding downstream authentication systems from resource exhaustion.
+
+```typescript
+// middleware.ts
+import arcjet, { shield, slidingWindow } from '@arcjet/next';
+
+const aj = arcjet({
+  key: process.env.ARCJET_KEY!,
+  rules: [
+    shield({ mode: 'LIVE' }),
+    slidingWindow({ mode: 'LIVE', interval: '1m', max: 10 }),
+  ],
+});
+
+export async function middleware(request: Request) {
+  const decision = await aj.protect(request);
+  if (decision.isDenied()) {
+    return new Response('Too Many Requests', { status: 429 });
+  }
+}
+```
+
+- [More detail on Arcjet Rate Limiting for Next.js](https://docs.arcjet.com/)
+
+---
+
+### Question
+
+- What makes this email validation regular expression vulnerable to Regular Expression Denial of Service (ReDoS) during high-throughput user registrations?
+
+```javascript
+const emailRegex = /^([a-zA-Z0-9_\.-]+)+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+```
+
+### Answer
+
+- **Catastrophic backtracking via nested quantifiers**: The expression `([a-zA-Z0-9_\.-]+)+` allows multiple overlapping ways for the regex engine to partition the same string of valid characters.
+- **Exploitation**: An attacker submitting a string of 30+ repeating characters followed by an invalid character (e.g., `aaaaaaaaaaaaaaaaaaaaaaaaaaaa!`) forces exponential execution steps, pegging the Node.js event loop at 100% CPU and blocking concurrent requests.
+- **Mitigation**: Remove nested quantifiers (e.g., `/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/`) and enforce maximum string length limits before matching.
+
+- [More detail on OWASP Regular Expression Denial of Service (ReDoS)](https://owasp.org/www-community/attacks/Regular_expression_Denial_of_Service_-_ReDoS)
+
+---
+
+### Question
+
+- Trace how prototype pollution in a deep object merge function inside a Next.js Route Handler can lead to authorization bypass or application crashes.
+
+### Answer
+
+- **`__proto__` property traversal**: When an unvalidated JSON payload contains properties like `"__proto__": { "isAdmin": true }`, naive recursive merge functions traverse and assign values to the object prototype.
+- **Global object contamination**: Because JavaScript objects inherit from `Object.prototype`, the injected property becomes accessible on *every* object in the Node.js process (`({}).isAdmin === true`), corrupting security checks across all tenants and requests.
+- **Mitigation**: Freeze `Object.prototype`, ignore `__proto__` and `constructor` keys during cloning, or use `Object.create(null)` for unpollutable dictionary lookups.
+
+- [More detail on OWASP Prototype Pollution Prevention](https://cheatsheetseries.owasp.org/cheatsheets/Prototype_Pollution_Prevention_Cheat_Sheet.html)

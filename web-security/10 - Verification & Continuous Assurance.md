@@ -129,3 +129,69 @@ export async function POST(req: Request) {
 - **E - Elevation of Privilege**: Can a regular user perform admin functions? (Checked via DAL authorization checks on every operation, RBAC/ABAC enforcement).
 
 - [More detail on Microsoft STRIDE Threat Modeling](https://learn.microsoft.com/en-us/azure/security/develop/threat-modeling-tool-threats#stride-model)
+
+---
+
+### Question
+
+- How can pre-commit Git hooks using Husky, lint-staged, and Gitleaks prevent API keys and `.env` files from entering the Git commit history?
+
+### Answer
+
+- **Local pre-commit boundary**: Husky intercepts the `git commit` command on the developer's local machine before any commit object is written to the repository.
+- **Fast staged-file analysis**: `lint-staged` passes only newly modified or staged files to **Gitleaks**, which evaluates code against high-entropy patterns and secret rule sets; if a matched secret (e.g., Stripe key, private key) is found, the hook aborts the commit immediately.
+
+```json
+// package.json
+{
+  "lint-staged": {
+    "*": "gitleaks protect --staged --verbose"
+  }
+}
+```
+
+- [More detail on Gitleaks Secret Scanner](https://github.com/gitleaks/gitleaks)
+
+---
+
+### Question
+
+- How should automated integration tests be structured using Vitest to verify Data Access Layer (DAL) authorization without booting the full Next.js HTTP server?
+
+### Answer
+
+- **Isolated function testing**: Import and test DAL functions directly in Vitest or Jest, mocking the authentication provider (e.g., `vi.mock('@/lib/auth')`) to simulate different user sessions and roles.
+- **Cross-tenant assertion**: Attempt to query or mutate a resource belonging to Tenant A while authenticated as Tenant B; assert that the DAL function throws a 403 Forbidden or "Not Found" error, validating IDOR controls at sub-millisecond execution speeds.
+
+```typescript
+// tests/dal/workspace.test.ts
+import { describe, it, expect, vi } from 'vitest';
+import { getTenantWorkspaceDTO } from '@/lib/dal/workspaces';
+
+vi.mock('@/lib/auth', () => ({
+  auth: () => Promise.resolve({ user: { id: 'usr_1', organizationId: 'org_attacker' } }),
+}));
+
+describe('DAL Tenant Isolation', () => {
+  it('throws when accessing another organization workspace', async () => {
+    await expect(getTenantWorkspaceDTO('ws_victim_tenant')).rejects.toThrow(
+      'Not found or access denied'
+    );
+  });
+});
+```
+
+- [More detail on Next.js Data Access Layer Testing](https://nextjs.org/docs/app/building-your-application/data-fetching/fetching-caching-and-revalidating#data-access-layer)
+
+---
+
+### Question
+
+- What are the tradeoffs between Static Application Security Testing (SAST) and Dynamic Application Security Testing (DAST) when auditing Next.js Server Actions?
+
+### Answer
+
+- **SAST (Code scanning)**: Evaluates source files directly in CI to guarantee that every action defines a Zod schema and calls session auth functions before merging, but cannot test live reverse proxies or header transformations.
+- **DAST (Runtime probing)**: Discovers real action IDs from compiled chunks and shoots live HTTP payloads (e.g., oversized buffers, tampered JSON) to test actual runtime limits, but requires a deployed staging environment and cannot inspect unexported code paths.
+
+- [More detail on OWASP Source Code Analysis Tools](https://owasp.org/www-community/Source_Code_Analysis_Tools)

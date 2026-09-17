@@ -254,3 +254,54 @@ export default function SearchPage() {
 ```
 
 - [More detail on Next.js useSearchParams and Suspense](https://nextjs.org/docs/app/api-reference/functions/use-search-params#behavior)
+
+---
+
+### Question
+
+- What cache configuration flaw in this Route Handler allows an e-commerce customer to receive another customer's cached cart or session data?
+
+```typescript
+// app/api/cart/route.ts
+export async function GET(request: Request) {
+  const sessionToken = cookies().get('session')?.value;
+  const cart = await getCartForSession(sessionToken);
+  return Response.json(cart, {
+    headers: { 'Cache-Control': 'public, s-maxage=3600' },
+  });
+}
+```
+
+### Answer
+
+- **Public edge caching of user data**: Specifying `public, s-maxage=3600` instructs intermediate CDNs and reverse proxies to store and serve the authenticated response to all subsequent visitors requesting `/api/cart`.
+- **Mitigation**: Authenticated and user-specific endpoints must explicitly set `Cache-Control: private, no-store, no-cache, must-revalidate` to prevent CDN and browser cache sharing.
+
+- [More detail on Cache-Control directive security](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control)
+
+---
+
+### Question
+
+- Trace how `router.refresh()` executes during a user logout action to purge stale authenticated data from the browser.
+
+### Answer
+
+- **Client Router Cache invalidation**: Calling `router.refresh()` clears the client-side Next.js Router Cache for the current route segments.
+- **Server Flight refetch**: The browser immediately issues a new HTTP GET request with empty or updated session cookies to fetch fresh RSC Flight data from the server.
+- **In-place reconciliation**: React reconciles the root component tree with the unauthenticated server state, clearing user data from memory without a full page refresh.
+
+- [More detail on Next.js Router Cache Revalidation](https://nextjs.org/docs/app/building-your-application/caching#router-cache)
+
+---
+
+### Question
+
+- In an authenticated Next.js dashboard, what are the tradeoffs between setting `export const dynamic = 'force-dynamic'` at the layout level versus relying on individual dynamic functions (e.g., `cookies()`) in leaf components?
+
+### Answer
+
+- **`force-dynamic` at layout**: Guarantees zero accidental caching across all nested child components and subroutes (defense-in-depth), but disables static prerendering for static child components like sidebars and documentation.
+- **Relying on leaf dynamic functions**: Allows granular caching of non-sensitive components, but risks catastrophic cross-user data leakage if a developer creates a new subroute and forgets to call a dynamic trigger.
+
+- [More detail on Next.js Route Segment Config Dynamic](https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamic)

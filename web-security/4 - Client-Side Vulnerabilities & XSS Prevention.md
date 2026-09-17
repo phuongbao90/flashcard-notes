@@ -267,3 +267,53 @@ const { title, ariaLabel } = userSubmittedAttributes;
 ```
 
 - [More detail on React Props and Spread Attributes](https://react.dev/learn/passing-props-to-a-component#forwarding-props-with-the-jsx-spread-syntax)
+
+---
+
+### Question
+
+- How should an engineering team implement DOMPurify in a Next.js application that renders user-generated rich text within Server Components?
+
+### Answer
+
+- **Isomorphic DOM requirement**: Standard `dompurify` relies on the browser's `window` and DOM; in Node.js Server Components, import **`isomorphic-dompurify`** (or initialize with `jsdom`) to enable server-side sanitization.
+- **Strict tag allow-listing**: Configure allowed HTML tags (`ALLOWED_TAGS`) and attributes (`ALLOWED_ATTR`) to strip `<script>`, `<iframe>`, `onload`, and `onerror` handlers before passing the sanitized markup to `dangerouslySetInnerHTML`.
+
+```typescript
+import DOMPurify from 'isomorphic-dompurify';
+
+export function sanitizeHtml(rawHtml: string): string {
+  return DOMPurify.sanitize(rawHtml, {
+    ALLOWED_TAGS: ['b', 'i', 'em', 'strong', 'a', 'p', 'ul', 'li'],
+    ALLOWED_ATTR: ['href', 'target', 'rel'],
+  });
+}
+```
+
+- [More detail on isomorphic-dompurify](https://github.com/kkomelin/isomorphic-dompurify)
+
+---
+
+### Question
+
+- What security tradeoffs exist when loading third-party scripts via `next/script` using `strategy="afterInteractive"` versus `strategy="lazyOnload"`?
+
+### Answer
+
+- **`afterInteractive`**: Loads scripts early after the page becomes interactive, expanding the risk window for a compromised vendor script (e.g., chat widget) to access sensitive initial page inputs like payment or login credentials.
+- **`lazyOnload`**: Defers execution until network idle, minimizing early client-side exploit surfaces and performance impact, but risks losing early interaction tracking if the user navigates before the script initializes.
+
+- [More detail on Next.js Script Optimization](https://nextjs.org/docs/app/building-your-application/optimizing/scripts#strategy)
+
+---
+
+### Question
+
+- Why does combining `allow-scripts` and `allow-same-origin` in an `<iframe sandbox>` attribute neutralize the sandbox security boundary?
+
+### Answer
+
+- **Privilege escalation**: An untrusted script executing inside an iframe with both flags can access the parent origin's storage, cookies, and DOM APIs.
+- **Self-sandbox removal**: The script can access its own iframe element within the DOM tree and programmatically remove the `sandbox` attribute or spawn unsandboxed popup windows, completely bypassing origin isolation.
+
+- [More detail on HTML iframe sandbox attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe#sandbox)
