@@ -230,7 +230,7 @@
 - **Task:** Keep all four moving without silently dropping any of them.
 - **Action:** I sequenced work by business moments — campaigns and launches got priority windows — reused patterns and components across projects, and blocked dedicated time per project so context switching stayed deliberate.
 - **Result:** All the projects delivered, with the Next.js sites live and optimized for SEO and scalability alongside the real estate app.
-- **Worst case:** If business owners had pulled two launches into the same window, I would have asked them to rank the conflict explicitly and resequenced around the winner rather than silently burning my buffers; a second collision in a row would have told me the sequencing model was wrong.
+- **Worst case:** If business owners had disagreed with my sequencing and pulled two launches into the same window, I would have asked them to rank the conflict explicitly and resequenced around the winner; a second collision would have told me my model was too optimistic.
 - [More detail on triage](https://en.wikipedia.org/wiki/Triage)
 
 ---
@@ -371,7 +371,7 @@
 - **Task:** Disagree without damaging a partnership I depended on for user feedback.
 - **Action:** I asked what user problem the request was meant to solve, proposed a smaller version aimed directly at that problem, and agreed with them on how we would judge engagement once it shipped.
 - **Result:** We shipped the leaner feature, engagement validated the approach, and the stakeholders trusted my pushback more afterward, not less.
-- **Worst case:** If they had insisted on the full-cost feature despite my smaller proposal, I would have asked for an explicit time-boxed trial of the lean version before committing the larger build; engagement still lagging on the lean version would have been the signal to concede the disagreement.
+- **Worst case:** If marketing and sales had insisted on the full-cost feature despite my smaller proposal, I would have asked for an explicit time-boxed trial of the lean version before committing the larger build; engagement still lagging on the lean version would have been the signal to concede the disagreement.
 - [More detail on negotiation](https://en.wikipedia.org/wiki/Negotiation)
 
 ---
