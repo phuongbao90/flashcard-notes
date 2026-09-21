@@ -79,6 +79,28 @@
 
 ---
 
+### Question 878eaac8-7858-4f85-a7d9-8ad5b50481aa
+
+- How do Redux Toolkit's and Zustand's core update models differ?
+
+### Answer
+
+- **Redux Toolkit is reducer/event-centric**: a component dispatches an action describing what happened, middleware observes it, reducers compute the next immutable state, and the store notifies subscribers.
+- **Zustand is store/action-function-centric**: state and update functions live together in a store closure, and components call an action function that invokes `set()` directly.
+- The mental models differ: Redux asks **"what event happened, and how should the reducer transform state?"** — Zustand asks **"which store function should update the state?"**
+- Redux routes every update through one observable dispatch pipeline; Zustand executes updates through direct closure calls with a shorter path and less ceremony.
+- Neither is inherently more correct — the choice is between enforced event traceability and direct, minimal machinery.
+
+```text
+Redux Toolkit:  dispatch(action) → middleware → reducer → nextState → notify
+Zustand:        actionFunction() → set() → nextState → notify
+```
+
+- [More detail on Redux data flow](https://redux.js.org/tutorials/fundamentals/part-2-concepts-data-flow)
+- [More detail on Zustand](https://zustand.docs.pmnd.rs/)
+
+---
+
 ### Question 12bb0a33-bb6f-4b9e-84cc-92688747721f
 
 - Why does Redux have actions and reducers, while Zustand commonly doesn't?
@@ -101,7 +123,7 @@ const useCartStore = create((set) => ({
 }));
 ```
 
-- [More detail on Zustand without store actions](https://zustand.docs.pmnd.rs/guides/practice-with-no-store-actions)
+- [More detail on Zustand without store actions](https://zustand.docs.pmnd.rs/learn/guides/practice-with-no-store-actions)
 - [More detail on Redux state, actions, and reducers](https://redux.js.org/tutorials/fundamentals/part-3-state-actions-reducers)
 
 ---
@@ -181,7 +203,7 @@ updateName: (name) => set(produce((state) => { state.user.name = name; })),
 ```
 
 - [More detail on createSlice](https://redux-toolkit.js.org/api/createSlice)
-- [More detail on Zustand immutable state and merging](https://zustand.docs.pmnd.rs/guides/immutable-state-and-merging)
+- [More detail on Zustand immutable state and merging](https://zustand.docs.pmnd.rs/learn/guides/immutable-state-and-merging)
 
 ---
 
@@ -207,7 +229,7 @@ const count = useCounterStore((state) => state.value);
 ```
 
 - [More detail on useSelector](https://react-redux.js.org/api/hooks)
-- [More detail on the Zustand create API](https://zustand.docs.pmnd.rs/apis/create-store)
+- [More detail on the Zustand create API](https://zustand.docs.pmnd.rs/reference/apis/create-store)
 
 ---
 
@@ -236,7 +258,7 @@ const { name, email } = useUserStore(
 ```
 
 - [More detail on useSyncExternalStore](https://react.dev/reference/react/useSyncExternalStore)
-- [More detail on useShallow](https://zustand.docs.pmnd.rs/hooks/use-shallow)
+- [More detail on useShallow](https://zustand.docs.pmnd.rs/reference/hooks/use-shallow)
 
 ---
 
@@ -265,7 +287,7 @@ useUserStore.getState().logout();
 ```
 
 - [More detail on the Redux store](https://redux.js.org/api/store)
-- [More detail on the Zustand create API](https://zustand.docs.pmnd.rs/apis/create-store)
+- [More detail on the Zustand create API](https://zustand.docs.pmnd.rs/reference/apis/create-store)
 
 ---
 
@@ -447,8 +469,8 @@ const useCounterStore = create((set) => ({
 }));
 ```
 
-- [More detail on Zustand updating state](https://zustand.docs.pmnd.rs/guides/updating-state)
-- [More detail on the Zustand create API](https://zustand.docs.pmnd.rs/apis/create-store)
+- [More detail on Zustand updating state](https://zustand.docs.pmnd.rs/learn/guides/updating-state)
+- [More detail on the Zustand create API](https://zustand.docs.pmnd.rs/reference/apis/create-store)
 
 ---
 
@@ -554,7 +576,7 @@ const useUserStore = create((set) => ({
 ```
 
 - [More detail on createAsyncThunk](https://redux-toolkit.js.org/api/createAsyncThunk)
-- [More detail on Zustand with no store actions](https://zustand.docs.pmnd.rs/guides/practice-with-no-store-actions)
+- [More detail on Zustand with no store actions](https://zustand.docs.pmnd.rs/learn/guides/practice-with-no-store-actions)
 
 ---
 
@@ -633,8 +655,35 @@ const useCounterStore = create((set) => ({
 }));
 ```
 
-- [More detail on Zustand](https://zustand.docs.pmnd.rs/getting-started/introduction)
+- [More detail on Zustand](https://zustand.docs.pmnd.rs/)
 - [More detail on createSlice](https://redux-toolkit.js.org/api/createSlice)
+
+---
+
+### Question 9393cbed-4238-4476-a1fc-5f2951930190
+
+- Why can one Redux action update several slices at once, and how would Zustand achieve the same result?
+
+### Answer
+
+- Every reducer in the store receives every dispatched action, so one event can update several slices — reducers simply ignore actions they don't handle.
+- The action object is a shared **observation point**: middleware can react to the same event (analytics, logging, side effects) without the dispatching component knowing.
+- Zustand has no global broadcast — the caller must invoke each store action, or you co-locate the workflow inside one larger action function that performs several `set()` calls.
+- Tradeoff: Redux fan-out is **decoupled and declarative**; Zustand's is **explicit and local** — the caller owns the coordination.
+
+```ts
+// Redux: one dispatch, many slice reducers (and middleware) can respond
+dispatch({ type: "order/created", payload: order });
+
+// Zustand: one composite action coordinates the updates
+createOrder: (order) => {
+  set((state) => ({ orders: [...state.orders, order] }));
+  set((state) => ({ notifications: [...state.notifications, "Order created"] }));
+},
+```
+
+- [More detail on Redux state, actions, and reducers](https://redux.js.org/tutorials/fundamentals/part-3-state-actions-reducers)
+- [More detail on Zustand](https://zustand.docs.pmnd.rs/)
 
 ---
 
@@ -649,7 +698,7 @@ const useCounterStore = create((set) => ({
 - The tradeoff: RTK's conventions scale large teams and long-lived codebases; Zustand's freedom requires discipline to avoid fragmented, duplicated state as the app grows.
 - RTK adds indirection you must understand; Zustand removes indirection you may later miss.
 
-- [More detail on Zustand](https://zustand.docs.pmnd.rs/getting-started/introduction)
+- [More detail on Zustand](https://zustand.docs.pmnd.rs/)
 - [More detail on Redux Toolkit](https://redux-toolkit.js.org/)
 
 ---
@@ -692,7 +741,7 @@ import { useCounterStore } from "./useCounterStore";
 ```
 
 - [More detail on the React-Redux Provider](https://react-redux.js.org/api/provider)
-- [More detail on the Zustand createStore API](https://zustand.docs.pmnd.rs/apis/create-store)
+- [More detail on the Zustand createStore API](https://zustand.docs.pmnd.rs/reference/apis/create-store)
 
 ---
 
@@ -728,7 +777,97 @@ const logMiddleware = (config) => (set, get, api) =>
 ```
 
 - [More detail on Redux middleware](https://redux.js.org/understanding/history-and-design/middleware)
-- [More detail on Zustand devtools middleware](https://zustand.docs.pmnd.rs/middlewares/devtools)
+- [More detail on Zustand devtools middleware](https://zustand.docs.pmnd.rs/reference/middlewares/devtools)
+
+---
+
+### Question 83c62ffd-b387-400e-bd6d-f5c0ae9cabbf
+
+- Why can Redux middleware observe every action, while Zustand middleware cannot?
+
+### Answer
+
+- Redux funnels every update through `dispatch(action)`, so middleware sits on a single **event stream**: it sees every action object (`type` + `payload`) as it passes, regardless of which component dispatched it.
+- That makes cross-cutting reactions trivial — analytics on any action type, logging, auth gates, undo bookkeeping — without middleware knowing about individual components.
+- Zustand has no global event stream: store actions are ordinary function calls. Middleware wraps one store's `set`/`get`, so it observes **updates**, not named intents, and only for that store.
+- Zustand's closest equivalent is `subscribeWithSelector`, which observes state changes — useful for transient effects, but it sees transitions, not commands.
+
+```ts
+// Redux: middleware sees every action centrally
+const analytics = (store) => (next) => (action) => {
+  track(action.type);
+  return next(action);
+};
+
+// Zustand: middleware wraps a single store's set
+const log = (config) => (set, get) =>
+  config((...args) => {
+    console.log(args);
+    set(...args);
+  }, get);
+```
+
+- [More detail on Redux middleware](https://redux.js.org/understanding/history-and-design/middleware)
+- [More detail on Zustand subscribeWithSelector](https://zustand.docs.pmnd.rs/reference/middlewares/subscribe-with-selector)
+
+---
+
+### Question 8ea04e3c-3295-45f9-8398-b49877a451f4
+
+- How does Redux enforce where side effects live, and how does Zustand differ?
+
+### Answer
+
+- **Redux**: reducers must be pure — no API calls, timers, storage writes, or randomness — because they may be re-executed. Side effects are structurally pushed into middleware (thunks, sagas, listener middleware).
+- **Zustand**: no purity requirement. One store action can perform the API call, apply business logic, and update state with `set()`.
+- The difference is **enforcement vs freedom**: Redux guarantees isolation by contract; Zustand trusts the developer to separate concerns.
+- Zustand's convenience has a cost — async work, rules, and state updates can silently entangle in one function, so split the action when it grows.
+
+```ts
+// Redux: impure work is a thunk, never a reducer
+const fetchUser = createAsyncThunk("user/fetch", async (id) => api.getUser(id));
+
+// Zustand: effect + logic + state update can share one action
+login: async (credentials) => {
+  const user = await api.login(credentials);
+  set({ user });
+},
+```
+
+- [More detail on Redux state, actions, and reducers](https://redux.js.org/tutorials/fundamentals/part-3-state-actions-reducers)
+- [More detail on Zustand](https://zustand.docs.pmnd.rs/)
+
+---
+
+### Question 1bc38dd0-f759-41a4-8f13-a81813115a77
+
+- Does Redux itself keep a permanent history of dispatched actions?
+
+### Answer
+
+- No. The store holds the **current state**; each action is processed once and then discarded — the store does not archive actions.
+- Action history is an **observer feature**: Redux DevTools (via the devtools middleware or enhancer) records dispatched actions so they can be replayed.
+- Time travel works by recomputing state from a recorded action sequence, not by the store keeping past states in memory.
+- Practical consequence: replayability requires serializable actions **and** an external recorder — the core store alone provides neither.
+
+- [More detail on the Redux store](https://redux.js.org/tutorials/fundamentals/part-4-store)
+- [More detail on Redux DevTools](https://github.com/reduxjs/redux-devtools)
+
+---
+
+### Question 9c1f2abf-c22a-4a20-a37c-9aa8cb1af2f9
+
+- Why is time-travel debugging natural in Redux but an add-on in Zustand?
+
+### Answer
+
+- Redux state is a **pure fold over serializable actions**: replaying the same action sequence through the same reducers deterministically reproduces every state, which is exactly what DevTools time travel does.
+- Reducers cannot have side effects, so re-executing them during a replay is safe and repeatable.
+- Zustand updates are arbitrary function calls — often async and effectful — so its `devtools` middleware records **labelled state updates/snapshots** for the panel instead of a replayable action log; unlabeled updates are anonymous.
+- Consequence: Redux time travel is guaranteed by the architecture; Zustand's is best-effort tooling — pair it with named updates for readable history.
+
+- [More detail on Redux DevTools](https://github.com/reduxjs/redux-devtools)
+- [More detail on Zustand devtools middleware](https://zustand.docs.pmnd.rs/reference/middlewares/devtools)
 
 ---
 
@@ -757,7 +896,23 @@ const useCounterStore = create(
 ```
 
 - [More detail on Redux DevTools](https://github.com/reduxjs/redux-devtools)
-- [More detail on Zustand devtools middleware](https://zustand.docs.pmnd.rs/middlewares/devtools)
+- [More detail on Zustand devtools middleware](https://zustand.docs.pmnd.rs/reference/middlewares/devtools)
+
+---
+
+### Question 97485b1a-b265-4440-a0a6-5f9fac0daaeb
+
+- What is the relationship between Redux Toolkit and RTK Query?
+
+### Answer
+
+- **Redux Toolkit (RTK)** is the core package: `configureStore`, `createSlice`, `createAsyncThunk`, middleware, and Immer integration.
+- **RTK Query** is an optional **server-state layer** shipped in the same package: generated data-fetching hooks, caching, deduplication, polling, and cache invalidation.
+- Using RTK does **not** require RTK Query; using RTK Query requires adding its API slice to an RTK store.
+- Rule of thumb: RTK manages the client state you own; RTK Query manages the server state you only cache — they are not the same thing.
+
+- [More detail on RTK Query](https://redux-toolkit.js.org/rtk-query/overview)
+- [More detail on Redux Toolkit](https://redux-toolkit.js.org/)
 
 ---
 
@@ -906,6 +1061,22 @@ function App() {
 
 ---
 
+### Question e5d0c05a-976c-4c22-b639-14fce5250955
+
+- When should API data live in a server-state library instead of a Redux or Zustand store?
+
+### Answer
+
+- Server data is **not owned by the client** — it is cached, stale, shared across screens, and refetched, which client stores do not model out of the box.
+- **TanStack Query** or **RTK Query** provide caching, request deduplication, background refetch, polling, pagination, and invalidation, plus fetch lifecycle state.
+- Reimplementing that in Redux or Zustand means hand-rolling cache keys, staleness checks, loading flags, and invalidation logic.
+- Use client stores for client-owned state (UI settings, drafts, form flows) and a server-state library for fetched data — they are complementary, not competing.
+
+- [More detail on RTK Query](https://redux-toolkit.js.org/rtk-query/overview)
+- [More detail on TanStack Query](https://tanstack.com/query/latest)
+
+---
+
 ### Question be95f7c0-9874-423b-aa0a-d10bd0a10d85
 
 - Which would you choose for a large application: Redux Toolkit or Zustand? Why?
@@ -919,5 +1090,5 @@ function App() {
 - **Architectural decision**: RTK when standardization and integrated tooling dominate; Zustand + React Query when low overhead and flexibility dominate.
 
 - [More detail on when to use Redux](https://redux.js.org/faq/general#when-should-i-use-redux)
-- [More detail on Zustand](https://zustand.docs.pmnd.rs/getting-started/introduction)
+- [More detail on Zustand](https://zustand.docs.pmnd.rs/)
 - [More detail on RTK Query](https://redux-toolkit.js.org/rtk-query/overview)
