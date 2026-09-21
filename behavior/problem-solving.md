@@ -12,7 +12,8 @@
 - **Task:** Find the underlying cause so the complaints would stop permanently, not just pause.
 - **Action:** I reproduced the failure on real devices and traced it back through the app's state handling instead of the UI layer. The surface symptoms came from inconsistent state, so I fixed the state logic and covered it with regression checks.
 - **Result:** The complaints stopped, and we reached zero post-launch complaints after the fix shipped.
-- [More detail on the STAR method](https://capd.mit.edu/resources/the-star-method-for-behavioral-interviews/)
+- **Worst case:** If the state-handling fix had not stopped the complaints, I would have widened the trace to device logs and field conditions rather than retreating to UI patches; the signal to switch would have been continued complaints on a clean regression suite.
+- [More detail on root cause analysis](https://en.wikipedia.org/wiki/Root_cause_analysis)
 
 ---
 
@@ -26,7 +27,8 @@
 - **Task:** Isolate the actual cause instead of arguing anecdotes.
 - **Action:** I added Sentry session telemetry so we could watch what real user sessions did. Comparing sessions that showed the problem against ones that did not let me isolate the specific state issues behind it.
 - **Result:** We aimed the fix at the verified cause instead of a guess, and the telemetry stayed in place as a permanent evidence channel for the team.
-- [More detail on Situation, Task, Action, Result](https://en.wikipedia.org/wiki/Situation,_task,_action,_result)
+- **Worst case:** If the telemetry had stayed silent or pointed nowhere, my fallback was pairing structured hypotheses with targeted debug builds for affected users instead of waiting on session data; a week of sessions with no pattern would have been my cue to change approach.
+- [More detail on five whys](https://en.wikipedia.org/wiki/Five_whys)
 
 ---
 
@@ -40,7 +42,8 @@
 - **Task:** Improve responsiveness for real, not cosmetically.
 - **Action:** I traced the slowdowns to their source: unmanaged application state and redundant data fetching. I introduced scalable state management and caching with React Query, Redux, and Legend-State, matching each tool to the specific cause.
 - **Result:** The apps became noticeably more responsive, and the state-and-caching pattern was adopted across the monorepo instead of one-off UI patches.
-- [More detail on the STAR interview method](https://www.themuse.com/advice/star-interview-method)
+- **Worst case:** Had the responsiveness gains failed to appear after the state and caching work, I would have profiled network and render costs per screen before touching more code; the tell would be smooth frames in isolated tests but lag in real sessions.
+- [More detail on root cause analysis](https://en.wikipedia.org/wiki/Root_cause_analysis)
 
 ---
 
@@ -56,7 +59,8 @@
 - **Task:** Restore the client's trust quickly without shipping a hack that would break again.
 - **Action:** I told the client plainly what we knew and when they would hear next, reproduced the bug on real devices, fixed the root cause in state handling, and added regression coverage before reporting back.
 - **Result:** We reached zero post-launch complaints, and the honest, dated updates kept the client calm while the real fix landed.
-- [More detail on the STAR interview technique](https://www.mindtools.com/ah8ju2d/star-interview-technique)
+- **Worst case:** If the root-cause fix had missed the release window, I would have negotiated a scoped hotfix plus honest status calls with the client rather than shipping a patch I could not stand behind; the signal would be reproduction still failing on real devices after the fix.
+- [More detail on debugging](https://en.wikipedia.org/wiki/Debugging)
 
 ---
 
@@ -70,7 +74,8 @@
 - **Task:** Stabilize all five apps without freezing every team's work.
 - **Action:** I reproduced the problem in each affected app, isolated the shared component change as the common factor, scoped the blast radius, and fixed it once at the source rather than five times at the edges.
 - **Result:** All apps returned to stable behavior, and the monorepo structure actually made the trace faster than five separate codebases would have.
-- [More detail on teamwork skills](https://www.indeed.com/career-advice/career-development/teamwork-skills)
+- **Worst case:** My fallback if the shared-component theory had not held across all five apps was to bisect the change and isolate apps individually; divergence between apps, some fixed and some still failing, would have told me more than one cause was in play.
+- [More detail on time management](https://en.wikipedia.org/wiki/Time_management)
 
 ---
 
@@ -84,7 +89,8 @@
 - **Task:** Ship on time without letting a shaky trading experience go out.
 - **Action:** I narrowed down the reproduction steps first, then deliberately deprioritized cosmetic polish to concentrate on the trading path, fixed it, and verified the critical flow by hand on a real device before sign-off.
 - **Result:** The app delivered on schedule with the token trading flow working correctly, and the triage kept the fix small instead of sprawling.
-- [More detail on teamwork in the workplace](https://asana.com/resources/teamwork-in-the-workplace)
+- **Worst case:** If the trading-path fix had not converged in time, I would have asked to drop the polish entirely and cut delivery to the verified core flow rather than risk user assets; a reproduction I could not nail down on the final day would have triggered that conversation.
+- [More detail on debugging](https://en.wikipedia.org/wiki/Debugging)
 
 ---
 
@@ -100,7 +106,8 @@
 - **Task:** Settle the question with facts before committing engineering time.
 - **Action:** I instrumented the app with Sentry session telemetry and compared sessions that exhibited the issue against sessions that did not. The real user data isolated the state issues and ruled out several popular theories.
 - **Result:** The fix targeted the verified cause on the first attempt, and the telemetry became the default way the team settled future disagreements.
-- [More detail on active listening](https://en.wikipedia.org/wiki/Active_listening)
+- **Worst case:** If the session data had contradicted my read or stayed ambiguous, I would have taken the competing theories back to the team and designed a discriminating experiment; telemetry that split evenly across failing and passing sessions would have been my cue to distrust it.
+- [More detail on debugging](https://en.wikipedia.org/wiki/Debugging)
 
 ---
 
@@ -114,7 +121,8 @@
 - **Task:** Make the failures reproducible so they could actually be fixed.
 - **Action:** I built AI-driven automated testing that ran the flows repeatedly and collected the failure patterns, then fed those findings directly into the fixes.
 - **Result:** The critical flows stabilized, and the automated suite kept catching regressions that manual testing had been missing all along.
-- [More detail on leadership skills](https://www.themuse.com/advice/leadership-skills)
+- **Worst case:** If the automated runs had not stabilized the critical flows, I would have fallen back to scripted manual checklists on a strict schedule while debugging the harness itself; consistent differences between automated failures and human reports would have told me the tooling was lying.
+- [More detail on critical thinking](https://en.wikipedia.org/wiki/Critical_thinking)
 
 ---
 
@@ -128,7 +136,8 @@
 - **Task:** Pick a remediation that matched the evidence we actually had.
 - **Action:** I mapped each symptom to its specific cause, then matched tools to causes — React Query for server-state caching, Legend-State where fine-grained reactivity mattered, Redux where established structure already existed.
 - **Result:** Responsiveness improved because each cause had its own cure, and the team kept the mapping habit of symptom-to-cause-to-tool.
-- [More detail on growth mindset](https://en.wikipedia.org/wiki/Growth_mindset)
+- **Worst case:** Had the symptom-to-tool mapping not produced visible improvement, I would have reverted to one library where the team already had structure and measured again; unchanged network fetch counts after the caching change would have been the signal to stop migrating.
+- [More detail on debugging](https://en.wikipedia.org/wiki/Debugging)
 
 ---
 
@@ -144,7 +153,8 @@
 - **Task:** Turn vague needs into a concrete, buildable architecture.
 - **Action:** I enumerated real trekking scenarios, derived the sync and GPS requirements from each one, wrote down my assumptions, and validated them with the client before committing to the design.
 - **Result:** The offline-sync and GPS APIs supported real field usage instead of a misread spec, and the scenario list became the reference for later decisions.
-- [More detail on the STAR method](https://capd.mit.edu/resources/the-star-method-for-behavioral-interviews/)
+- **Worst case:** If the client had disagreed with my scenario-derived assumptions, I would have walked them through the trekking scenarios one by one and let field data arbitrate before locking the architecture; repeated clashes over the same assumption would have told me I had misread their users.
+- [More detail on ambiguity](https://en.wikipedia.org/wiki/Ambiguity)
 
 ---
 
@@ -158,7 +168,8 @@
 - **Task:** Convert soft feedback into shippable, specific features.
 - **Action:** I sat down with them, asked for the concrete user moments behind each comment, translated those moments into feature candidates, and validated a prototype with them before building the full version.
 - **Result:** We shipped high-engagement features, and the partnership settled into a routine feedback loop instead of one-off requests.
-- [More detail on Situation, Task, Action, Result](https://en.wikipedia.org/wiki/Situation,_task,_action,_result)
+- **Worst case:** If marketing and sales had rejected my translated feature candidates, I would have taken the prototype back to their concrete user moments and rebuilt from those rather than defending my version; two validation rounds without agreement would have been my signal to escalate the mismatch.
+- [More detail on problem solving](https://en.wikipedia.org/wiki/Problem_solving)
 
 ---
 
@@ -172,7 +183,8 @@
 - **Task:** Become genuinely competent and employable without any curriculum telling me what to learn next.
 - **Action:** I built real projects end to end in web and mobile, deliberately filled the gaps each project exposed, and sought out review from more experienced developers instead of trusting my own judgment alone.
 - **Result:** I shipped work across three companies, and the non-CS background ended up strengthening my business understanding on product teams.
-- [More detail on the STAR interview method](https://www.themuse.com/advice/star-interview-method)
+- **Worst case:** If self-teaching had stopped producing employable work, I would have sought structured mentorship and contributed to established codebases to calibrate against real standards; a portfolio that kept failing review from experienced developers would have been my cue to change method.
+- [More detail on ambiguity](https://en.wikipedia.org/wiki/Ambiguity)
 
 ---
 
@@ -188,7 +200,8 @@
 - **Task:** Choose an order that protected users even if the deadline arrived mid-work.
 - **Action:** I ranked flows by user impact: GPS pathing and offline sync first, because a trekker without those is stranded; map loading next. I then built the AI-driven automated tests in exactly that order.
 - **Result:** The highest-impact flows were covered first, so any interruption still left the app's core protected at release.
-- [More detail on the STAR interview technique](https://www.mindtools.com/ah8ju2d/star-interview-technique)
+- **Worst case:** If the ranked order had proven wrong, GPS covered but sync still broken at deadline, I would have reassessed impact with fresh field reports instead of defending the original ranking; the signal would be complaints clustering in flows I had sequenced last.
+- [More detail on triage](https://en.wikipedia.org/wiki/Triage)
 
 ---
 
@@ -202,7 +215,8 @@
 - **Task:** Keep releases predictable instead of reactive.
 - **Action:** I triaged work by user impact and release risk rather than by who asked loudest, sequenced code reviews to match that order, and batched similar work across apps using the shared components.
 - **Result:** Releases became predictable, the team stopped thrashing between apps, and stakeholders learned the triage rules instead of escalating everything.
-- [More detail on teamwork skills](https://www.indeed.com/career-advice/career-development/teamwork-skills)
+- **Worst case:** If stakeholders had refused the triage rules and kept escalating over my sequencing, I would have published the impact-and-risk ranking and made exceptions an explicit, visible trade; escalations that bypassed the queue would have been the signal to renegotiate the process.
+- [More detail on prioritization](https://en.wikipedia.org/wiki/Prioritization)
 
 ---
 
@@ -216,7 +230,8 @@
 - **Task:** Keep all four moving without silently dropping any of them.
 - **Action:** I sequenced work by business moments — campaigns and launches got priority windows — reused patterns and components across projects, and blocked dedicated time per project so context switching stayed deliberate.
 - **Result:** All the projects delivered, with the Next.js sites live and optimized for SEO and scalability alongside the real estate app.
-- [More detail on teamwork in the workplace](https://asana.com/resources/teamwork-in-the-workplace)
+- **Worst case:** If business owners had pulled two launches into the same window, I would have asked them to rank the conflict explicitly and resequenced around the winner rather than silently burning my buffers; a second collision in a row would have told me the sequencing model was wrong.
+- [More detail on triage](https://en.wikipedia.org/wiki/Triage)
 
 ---
 
@@ -232,7 +247,8 @@
 - **Task:** Pick a balance I could defend to both engineers and the client.
 - **Action:** I laid out the options against real trekking constraints, chose graceful degradation when connectivity dropped, kept conflict resolution predictable, and documented the reasoning so it could be challenged.
 - **Result:** Sync behavior stayed understandable and dependable on the trail, and the documented tradeoff made later changes faster to reason about.
-- [More detail on active listening](https://en.wikipedia.org/wiki/Active_listening)
+- **Worst case:** If the client had pushed back that graceful degradation felt like missing functionality, I would have demonstrated the battery and data costs of the alternatives on real devices before revisiting the design; their rejection of the documented tradeoff would have been my cue to renegotiate requirements.
+- [More detail on trade-offs](https://en.wikipedia.org/wiki/Trade-off)
 
 ---
 
@@ -246,7 +262,8 @@
 - **Task:** Find the line between shared and app-specific code.
 - **Action:** I defined a shared core of components with clear extension points, kept app-specific UI local to each app, and wrote down the boundaries so the five developers on my team could apply the same judgment.
 - **Result:** The apps reused the core and moved faster, while each kept the flexibility its product actually needed.
-- [More detail on leadership skills](https://www.themuse.com/advice/leadership-skills)
+- **Worst case:** If the shared-core boundary had slowed the team instead of speeding it, I would have moved the offending components back into app-local code and shrunk the core; repeated PRs fighting the extension points would have been the signal the line sat in the wrong place.
+- [More detail on decision-making](https://en.wikipedia.org/wiki/Decision-making)
 
 ---
 
@@ -260,7 +277,8 @@
 - **Task:** Keep discoverability and load performance without shipping a static-feeling product.
 - **Action:** I favored server-rendered output wherever SEO mattered, isolated interactive islands so they couldn't drag down the rest, and kept pages structurally lean for scalability.
 - **Result:** The sites were optimized for SEO and scalability, and the constraint became a design tool rather than a fight.
-- [More detail on growth mindset](https://en.wikipedia.org/wiki/Growth_mindset)
+- **Worst case:** If stakeholders had insisted on richer interactivity than the SEO constraint allowed, I would have built one interactive island as a measured prototype before conceding the design; a measurably slower page or indexing drop would have been the evidence that settled the disagreement.
+- [More detail on trade-offs](https://en.wikipedia.org/wiki/Trade-off)
 
 ---
 
@@ -276,7 +294,8 @@
 - **Task:** Become productive with it fast enough to matter for the release.
 - **Action:** I learned it by building the real pipeline against GPS pathing first instead of working through tutorials in isolation, ran small experiments to confirm assumptions, and kept the scope to what the release actually needed.
 - **Result:** A working E2E pipeline covered the critical flows well before it was needed, and the learning stuck because it was anchored to real work.
-- [More detail on the STAR method](https://capd.mit.edu/resources/the-star-method-for-behavioral-interviews/)
+- **Worst case:** If Maestro had proven too immature for our GPS-pathing needs, I would have cut losses to a different E2E tool or a focused manual script set rather than sinking more release time into it; flows I could not automate after a fixed trial window would have been my switch signal.
+- [More detail on the learning curve](https://en.wikipedia.org/wiki/Learning_curve)
 
 ---
 
@@ -290,7 +309,8 @@
 - **Task:** Evaluate the approach honestly and decide whether to adopt it.
 - **Action:** I ran small trials against real Uobong issues, kept only what demonstrably worked, then used our weekly cross-team sharing sessions to train other developers on the workflows that survived testing.
 - **Result:** The AI workflow was adopted by the team rather than remaining my personal experiment, and the sharing sessions spread the learning.
-- [More detail on Situation, Task, Action, Result](https://en.wikipedia.org/wiki/Situation,_task,_action,_result)
+- **Worst case:** If the trials had shown no real gain over conventional testing, I would have dropped the workflow openly instead of forcing adoption, and said so in the sharing sessions; results I could not reproduce across two different flows would have been my signal to stop advocating.
+- [More detail on growth mindset](https://en.wikipedia.org/wiki/Growth_mindset)
 
 ---
 
@@ -304,7 +324,8 @@
 - **Task:** Remove the human-error risk from staging and production deployments.
 - **Action:** I taught myself the Turbo and Fastlane pieces I was missing, built automated staging and production CI/CD pipelines, and treated each early failure as a lesson that tightened the pipeline.
 - **Result:** Deployments across all five apps became repeatable one-path operations, and release day stopped being a tense event.
-- [More detail on the STAR interview method](https://www.themuse.com/advice/star-interview-method)
+- **Worst case:** If Turbo and Fastlane had kept failing against our Expo setup, I would have staged the rollout app by app behind manual fallbacks instead of betting all five at once; a pipeline I could not make green in staging after a set window would have triggered the fallback.
+- [More detail on the learning curve](https://en.wikipedia.org/wiki/Learning_curve)
 
 ---
 
@@ -318,7 +339,8 @@
 - **Task:** Build a whole career's worth of skill without a program, professor, or cohort defining the path.
 - **Action:** I built real projects end to end, studied the fundamentals underneath each feature I shipped, and treated every gap a project exposed as the next item on my personal syllabus.
 - **Result:** That self-directed path carried me into mobile developer roles at three companies, including senior and team-lead responsibility.
-- [More detail on the STAR interview technique](https://www.mindtools.com/ah8ju2d/star-interview-technique)
+- **Worst case:** If the self-directed path had plateaued, with gaps staying gaps project after project, I would have invested in a structured curriculum for the fundamentals instead; the same gap surfacing on a third shipped project would have told me to change approach.
+- [More detail on growth mindset](https://en.wikipedia.org/wiki/Growth_mindset)
 
 ---
 
@@ -334,7 +356,8 @@
 - **Task:** Protect the release's quality without flatly refusing an important client.
 - **Action:** I presented the risk plainly: shipping new features on a fragile core endangered everything. I proposed deferring non-critical features until after a stable launch and backed the plan with automated test results as evidence.
 - **Result:** The critical flows shipped solid, we reached zero post-launch complaints, and the deferred features followed on a stable foundation.
-- [More detail on teamwork skills](https://www.indeed.com/career-advice/career-development/teamwork-skills)
+- **Worst case:** If the client had insisted on the pre-launch features regardless of the test evidence, I would have proposed cutting scope elsewhere to fund a hardening sprint rather than quietly absorbing the risk; an unmovable position after seeing the automated results would have been my signal to escalate internally.
+- [More detail on scope creep](https://en.wikipedia.org/wiki/Scope_creep)
 
 ---
 
@@ -348,7 +371,8 @@
 - **Task:** Disagree without damaging a partnership I depended on for user feedback.
 - **Action:** I asked what user problem the request was meant to solve, proposed a smaller version aimed directly at that problem, and agreed with them on how we would judge engagement once it shipped.
 - **Result:** We shipped the leaner feature, engagement validated the approach, and the stakeholders trusted my pushback more afterward, not less.
-- [More detail on teamwork in the workplace](https://asana.com/resources/teamwork-in-the-workplace)
+- **Worst case:** If they had insisted on the full-cost feature despite my smaller proposal, I would have asked for an explicit time-boxed trial of the lean version before committing the larger build; engagement still lagging on the lean version would have been the signal to concede the disagreement.
+- [More detail on negotiation](https://en.wikipedia.org/wiki/Negotiation)
 
 ---
 
@@ -362,7 +386,8 @@
 - **Task:** Argue for the slower-looking shared approach without becoming the bottleneck.
 - **Action:** I showed what five divergent copies would cost in ongoing maintenance across the monorepo, proposed shared components with extension points instead, and volunteered to build the first ones myself to prove it.
 - **Result:** The team adopted the shared approach, the duplication never happened, and later features across the five apps got cheaper to build.
-- [More detail on active listening](https://en.wikipedia.org/wiki/Active_listening)
+- **Worst case:** If the stakeholders behind the copy-paste push had held their ground after seeing the maintenance math, I would have asked for a one-sprint trial of the shared approach with a pre-agreed revert condition; the signal to switch back would have been the shared path blocking more than it saved.
+- [More detail on scope creep](https://en.wikipedia.org/wiki/Scope_creep)
 
 ---
 
@@ -378,7 +403,8 @@
 - **Task:** Make the go/no-go decision objective.
 - **Action:** I wired Maestro E2E pipelines over the critical flows — GPS pathing, map loading, and offline sync — and made a green suite the precondition for shipping.
 - **Result:** Releases stopped depending on anyone's confidence, and we reached zero post-launch complaints on the releases gated this way.
-- [More detail on leadership skills](https://www.themuse.com/advice/leadership-skills)
+- **Worst case:** If the client had pressed for shipping on a partially green suite, I would have shown which field scenario each failing test represented and offered a dated fix plan rather than waive the gate; a repeat demand after the failures were explained would have been my signal to escalate.
+- [More detail on risk management](https://en.wikipedia.org/wiki/Risk_management)
 
 ---
 
@@ -392,7 +418,8 @@
 - **Task:** Make dangerous mistakes structurally harder to make.
 - **Action:** I built the CI/CD pipelines with Turbo and Fastlane so staging and production were clearly separated, every change verified in staging first, and promotion to production was a deliberate step rather than an accident.
 - **Result:** Issues surfaced in staging where they were cheap, and production releases across all five apps became calm, repeatable events.
-- [More detail on growth mindset](https://en.wikipedia.org/wiki/Growth_mindset)
+- **Worst case:** If staging had failed to catch the issues it was built for, I would have tightened the pipeline's parity with production and added the missed check explicitly rather than trust the process on faith; a regression reaching production untouched by staging would have triggered that rebuild.
+- [More detail on software testing](https://en.wikipedia.org/wiki/Software_testing)
 
 ---
 
@@ -406,7 +433,8 @@
 - **Task:** Ship it with a level of care proportional to the stakes.
 - **Action:** I deliberately kept the trading scope tight, prioritized correctness of the trading path over adding feature breadth around it, and verified the critical paths systematically and by hand before release.
 - **Result:** The token trading functionality shipped without incident, and the discipline of matching care to stakes became how I scoped risky work.
-- [More detail on the STAR method](https://capd.mit.edu/resources/the-star-method-for-behavioral-interviews/)
+- **Worst case:** If stakeholders had pressed for broader trading features before launch, I would have held the correctness work as the non-negotiable core and offered the breadth as a fast follow-up; pressure to trade scope against verification of the asset path would have been my signal to escalate the risk.
+- [More detail on risk management](https://en.wikipedia.org/wiki/Risk_management)
 
 ---
 
@@ -420,7 +448,8 @@
 - **Task:** Co-architect GPS APIs that keep working under those conditions.
 - **Action:** I designed for graceful degradation from the start: the APIs had to tolerate bad signal and partial data rather than assume ideal conditions, and I validated the assumptions against real field usage with the client.
 - **Result:** GPS pathing stayed dependable where users actually were, and the APIs gave the rest of the app a stable foundation to build on.
-- [More detail on Situation, Task, Action, Result](https://en.wikipedia.org/wiki/Situation,_task,_action,_result)
+- **Worst case:** If field validation had shown the degradation was worse than designed for, paths lost where users actually walked, I would have renegotiated the caching and retry budgets with the client before adding complexity; sensor logs showing gaps beyond our tolerance would have been the switch signal.
+- [More detail on software testing](https://en.wikipedia.org/wiki/Software_testing)
 
 ---
 
@@ -436,7 +465,8 @@
 - **Task:** Stop useful lessons from dying inside individual teams.
 - **Action:** I organized weekly cross-team sharing sessions focused on issues and pain points, kept the format concrete — one issue, its cause, its fix — and opened them to everyone rather than a fixed invite list.
 - **Result:** Recurring problems surfaced earlier because more eyes recognized them, and fixes spread between teams instead of stopping at the team that found them.
-- [More detail on the STAR interview method](https://www.themuse.com/advice/star-interview-method)
+- **Worst case:** If attendance and contributions had faded after the first weeks, I would have cut the format to a tight slot with rotating owners rather than let it die politely; empty sessions two weeks running would have been my signal to change the format or kill it.
+- [More detail on retrospectives](https://en.wikipedia.org/wiki/Retrospective)
 
 ---
 
@@ -450,7 +480,8 @@
 - **Task:** Make the whole class of state issues less likely, not just this member of it.
 - **Action:** I mentored the developers on my team on the state-handling patterns involved, added regression coverage and Sentry telemetry that would catch similar issues early, and reviewed the related code paths for the same mistake.
 - **Result:** No repeat of that complaint class followed, and we held zero post-launch complaints.
-- [More detail on the STAR interview technique](https://www.mindtools.com/ah8ju2d/star-interview-technique)
+- **Worst case:** If the class of state issues had resurfaced despite the mentoring and coverage, I would have escalated from patterns to architecture, auditing the state model itself rather than its symptoms; telemetry flagging the same mistake in fresh code would have told me the teaching had not landed.
+- [More detail on five whys](https://en.wikipedia.org/wiki/Five_whys)
 
 ---
 
@@ -464,7 +495,8 @@
 - **Task:** Raise the team's floor so reviews could focus on substance.
 - **Action:** I established collaborative best practices and coding standards, explained the reasoning behind each rule during reviews instead of just enforcing it, and paired with the developers on the first cases so the standards landed.
 - **Result:** The recurring issues faded, and code reviews shifted from arguing style to discussing design.
-- [More detail on teamwork skills](https://www.indeed.com/career-advice/career-development/teamwork-skills)
+- **Worst case:** If the four developers had pushed back that the standards felt arbitrary, I would have opened each rule for challenge and kept only the ones we could tie to a real incident; standards surviving on my authority alone would have been the signal they would erode.
+- [More detail on retrospectives](https://en.wikipedia.org/wiki/Retrospective)
 
 ---
 
@@ -478,6 +510,7 @@
 - **Task:** Keep gaps from becoming blockers or hidden risks.
 - **Action:** I treat each gap as a concrete learning backlog item: name it precisely, learn just enough through real work to close it, then teach it back — as I did in the weekly sharing sessions I ran at Cigro.
 - **Result:** The non-CS background became a habit of continuous learning that carried me through senior roles at three companies.
-- [More detail on growth mindset](https://en.wikipedia.org/wiki/Growth_mindset)
+- **Worst case:** If a gap had outgrown what learning through work could close, say a security or architecture blind spot, I would have brought in outside material or an experienced reviewer rather than bluff competence; the same gap biting a second shipped project would have been that signal.
+- [More detail on five whys](https://en.wikipedia.org/wiki/Five_whys)
 
 ---

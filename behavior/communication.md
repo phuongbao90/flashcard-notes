@@ -13,7 +13,8 @@
 - **Action:** I swapped jargon for an analogy: a black box recorder that replays each user's session when something goes wrong. I showed two anonymized example reports and named the decision each one would unlock.
 - **Result:** The client approved it in the same meeting; telemetry let us isolate the state issues, and after the fixes we reached zero post-launch complaints.
 - Concrete artifacts beat abstract explanations.
-- [More detail on the STAR method](https://capd.mit.edu/resources/the-star-method-for-behavioral-interviews/)
+- **Worst case:** the client balked at session telemetry as invasive or costly. If I had read privacy hesitation instead of engagement in that meeting, I would have fallen back to reproducing issues from support tickets — exact device, route, and app version — and offered anonymized opt-in diagnostics, switching to telemetry only once a clearer case emerged.
+- [More detail on technical writing](https://en.wikipedia.org/wiki/Technical_writing)
 
 ---
 
@@ -27,7 +28,8 @@
 - **Task:** As the developer leading that effort, I had to explain the choice without jargon and keep the approach supported.
 - **Action:** I compared it to one shared kitchen serving five restaurants: a fix or improvement lands once and every app benefits. I walked through a real case where a shared component fix reached all five apps in a single release.
 - **Result:** The stakeholder kept backing the monorepo and stopped requesting duplicated per-app work; shared components remained the team standard.
-- [More detail on Situation, Task, Action, Result](https://en.wikipedia.org/wiki/Situation,_task,_action,_result)
+- **Worst case:** the stakeholder stayed unconvinced and kept funding duplicated per-app work anyway. If follow-up requests still asked for separate codebases, I would have stopped arguing analogies and moved to numbers — the cost of one fix shipped once versus five times — and offered a one-quarter trial of shared components with a rollback date.
+- [More detail on plain language](https://en.wikipedia.org/wiki/Plain_language)
 
 ---
 
@@ -41,7 +43,8 @@
 - **Task:** I needed non-technical partners to understand the flow well enough to represent it accurately to users.
 - **Action:** I drew the token journey on a single page as a simple storyboard and ran a short walkthrough. I kept inviting questions until each partner could re-explain the flow back to me in their own words.
 - **Result:** They described the feature consistently afterwards, and their user feedback became precise enough for us to turn into high-engagement product improvements.
-- [More detail on the STAR interview method](https://www.themuse.com/advice/star-interview-method)
+- **Worst case:** the storyboard failed and partners kept misdescribing the token flow to users. If their re-explanations still drifted after the walkthrough, I would have swapped teaching for crutches — scripted talking points and a quotable FAQ — and treated repeated misdescription reaching users as my signal to simplify the feature itself rather than keep re-teaching it.
+- [More detail on technical writing](https://en.wikipedia.org/wiki/Technical_writing)
 
 ---
 
@@ -55,7 +58,8 @@
 - **Task:** I had to earn their confidence in plain language, because they worried about trekkers losing data in the mountains.
 - **Action:** I framed the design as a travel journal: the app writes everything down locally as it happens, then mails the pages home whenever a signal appears. I listed every condition it covered — tunnels, remote summits, long treks — and what the user would see in each.
 - **Result:** The client approved the design with realistic expectations, and there were no sync-related escalations after launch.
-- [More detail on the STAR interview technique](https://www.mindtools.com/ah8ju2d/star-interview-technique)
+- **Worst case:** the client refused to sign off, still fearing trekkers would lose data in the mountains. Had the journal framing bounced off, I would have replaced the analogy with a supervised field test on a real route with their staff; continued skepticism after observed behavior would have told me to descope launch-day sync.
+- [More detail on plain language](https://en.wikipedia.org/wiki/Plain_language)
 
 ---
 
@@ -71,7 +75,8 @@
 - **Task:** As the organizer, I wanted the sessions to outlive the meeting and reach developers who could not attend.
 - **Action:** I wrote a short structured summary after each session — problem, root cause, lesson — capped at one page, and indexed them so anyone could search past issues before hitting the same wall.
 - **Result:** Developers started citing the summaries instead of re-asking questions, and attendance grew as people trusted that sessions produced a permanent artifact.
-- [More detail on teamwork skills](https://www.indeed.com/career-advice/career-development/teamwork-skills)
+- **Worst case:** nobody read the summaries and each session stayed a one-off conversation. If citations and searches had stayed flat for a month, I would have cut the format to three bullets and moved key lessons into places people already opened — release notes and PR templates — instead of defending my one-page design.
+- [More detail on technical writing](https://en.wikipedia.org/wiki/Technical_writing)
 
 ---
 
@@ -85,7 +90,8 @@
 - **Task:** As a lead on the monorepo, I needed the team aligned without adding more meetings.
 - **Action:** I pushed context-first written communication: pull request descriptions that stated the problem and user impact before the change, plus short design notes for anything touching shared components. I modeled the standard in my own reviews and held the line on incomplete descriptions.
 - **Result:** Review cycles moved faster, developers switched between apps without a hand-off call, and the written-first habit became the team's default.
-- [More detail on teamwork in the workplace](https://asana.com/resources/teamwork-in-the-workplace)
+- **Worst case:** the team treated context-first descriptions as bureaucracy and kept shipping bare diffs. If review cycles had not sped up and switch requests still needed hand-off calls, I would have shrunk the template to a single problem-and-impact line before deciding the written-first push was premature for us.
+- [More detail on telecommuting](https://en.wikipedia.org/wiki/Telecommuting)
 
 ---
 
@@ -99,7 +105,8 @@
 - **Task:** I had to get useful answers from busy, experienced strangers in online communities, where vague questions simply get ignored.
 - **Action:** I trained myself to write questions that included what I expected, what happened instead, and the smallest example that reproduced it. Before posting, I attempted two similar questions from other people, which often solved my own problem.
 - **Result:** My questions consistently attracted quality answers, and writing problems down clearly still shapes how I debug and how I report issues today.
-- [More detail on active listening](https://en.wikipedia.org/wiki/Active_listening)
+- **Worst case:** even structured questions went unanswered and online communities stopped being a learning channel for me. If weeks of minimal-example posts drew nothing, I would have flipped to answering others' questions to earn attention first, and taken recurring silence on one specific topic as my signal to find a mentor instead.
+- [More detail on technical writing](https://en.wikipedia.org/wiki/Technical_writing)
 
 ---
 
@@ -115,7 +122,8 @@
 - **Task:** My job was to convert their anecdotes into features that genuinely raised engagement, not just build whatever was shouted loudest.
 - **Action:** I sat in on their feedback reviews and asked what users were trying to accomplish rather than what they requested. I grouped the input into themes, sized the effort for each, and proposed the smallest feature that addressed the biggest theme first.
 - **Result:** We shipped high-engagement features the partners felt ownership of, and they started bringing feedback to me earlier in the process.
-- [More detail on leadership skills](https://www.themuse.com/advice/leadership-skills)
+- **Worst case:** marketing and sales rejected my theme-based ranking and pushed their single loudest anecdote instead. If proposals kept bouncing back unshipped, I would have conceded a small, cheap probe version of their pick and let its real engagement data — not my prioritization — settle whose read on users was right.
+- [More detail on active listening](https://en.wikipedia.org/wiki/Active_listening)
 
 ---
 
@@ -129,7 +137,8 @@
 - **Task:** As the senior developer on the account, I had to turn fuzzy complaints into something reproducible before we could fix anything.
 - **Action:** I interviewed the client's support contacts and asked for exact conditions each time — device, route, app version, where on the trek it happened. I mapped the answers and found the reports clustered around specific conditions rather than random failures.
 - **Result:** The pattern pointed straight to the faulty logic; I fixed the bug and we reached zero post-launch complaints.
-- [More detail on growth mindset](https://en.wikipedia.org/wiki/Growth_mindset)
+- **Worst case:** the support-contact interviews produced anecdotes that never clustered, leaving the bug unreproducible. If the mapped conditions had stayed random, I would have shipped a diagnostic build capturing device, route, and GPS state during tracking, and taken continued vagueness in fresh reports as the signal to push for telemetry over more interviews.
+- [More detail on ambiguity](https://en.wikipedia.org/wiki/Ambiguity)
 
 ---
 
@@ -143,7 +152,8 @@
 - **Task:** As the developer responsible for responsiveness, I needed to find what users actually experienced as slow.
 - **Action:** I asked them to walk me screen by screen through where users hesitated, and I listened without interrupting. The real pain was stale information after actions, not raw loading time — a data-refresh problem, not a performance one.
 - **Result:** I addressed it through scalable state management and caching choices like React Query and Legend-State, and the responsiveness complaints stopped.
-- [More detail on the STAR method](https://capd.mit.edu/resources/the-star-method-for-behavioral-interviews/)
+- **Worst case:** the partners insisted the pain really was raw loading speed and my screen-by-screen read was wrong. If their walkthrough had pointed everywhere and nowhere, I would have instrumented the suspect screens with performance marks before committing to caching and state work, letting measurements decide instead of my interpretation.
+- [More detail on active listening](https://en.wikipedia.org/wiki/Active_listening)
 
 ---
 
@@ -160,7 +170,8 @@
 - **Action:** Instead of a bare "change this," I explained the downstream cost — five apps inheriting the inconsistency — and asked what had blocked them from the shared component.
 - **Action:** It turned out the shared code was hard to find, so we fixed its discoverability together before they resubmitted.
 - **Result:** The revised change used the shared component, and the documentation improvement prevented the same trap for the rest of the team.
-- [More detail on Situation, Task, Action, Result](https://en.wikipedia.org/wiki/Situation,_task,_action,_result)
+- **Worst case:** the teammate took the pushback personally and defended the duplication instead of explaining the blocker. Had the thread turned defensive, I would have stopped reviewing the diff and paired on the shared component live; a second guarded exchange would have told me to hand the review to another lead.
+- [More detail on code review](https://en.wikipedia.org/wiki/Code_review)
 
 ---
 
@@ -174,7 +185,8 @@
 - **Task:** I needed the quality problems fixed while protecting their momentum and confidence.
 - **Action:** I tied feedback to concrete user consequences — a sync bug a trekker would hit mid-route with no signal — instead of style opinions. We agreed on a checklist they ran before every change, and I reviewed alongside them until it became habit.
 - **Result:** Their changes stopped generating follow-up bugs, and they began catching the same issues in other people's code.
-- [More detail on the STAR interview method](https://www.themuse.com/advice/star-interview-method)
+- **Worst case:** the checklist smothered the junior's speed until it bred resentment, or they skipped it under deadline pressure. If their follow-up bugs had kept appearing, I would have trimmed the list to the two highest-impact checks and gated releases on those alone before reconsidering the whole arrangement.
+- [More detail on feedback](https://en.wikipedia.org/wiki/Feedback)
 
 ---
 
@@ -189,7 +201,8 @@
 - **Action:** I brought two concrete examples side by side with the agreed standard, then asked first what made the standard hard to follow. It emerged they had never heard the reasoning behind it, so we walked through why each rule existed.
 - **Action:** I then had them lead the next standards review themselves.
 - **Result:** Their following work met the standards without prompting, and explaining the "why" became part of how the whole team onboarded.
-- [More detail on the STAR interview technique](https://www.mindtools.com/ah8ju2d/star-interview-technique)
+- **Worst case:** the conversation landed as an attack and the mentee disengaged from standards altogether. Had they shut down instead of revealing the missing reasoning, I would have deferred the standards push and rebuilt trust through pairing; one more convention-breaking change with no dialogue would have forced me to involve their lead.
+- [More detail on code review](https://en.wikipedia.org/wiki/Code_review)
 
 ---
 
@@ -206,7 +219,8 @@
 - **Action:** I acknowledged the impact to the client directly, laid out what we knew, what we did not, and when they would next hear from me — then kept that cadence without being chased.
 - **Action:** Internally I framed it as a systems gap, not one person's failure, while I hunted the root cause.
 - **Result:** The fix landed, telemetry confirmed the issue was gone, and we closed with zero post-launch complaints.
-- [More detail on teamwork skills](https://www.indeed.com/career-advice/career-development/teamwork-skills)
+- **Worst case:** the client read my update cadence as stalling and escalated over my head. If their tone had hardened or they demanded different ownership of the fix, I would have brought my manager in proactively and moved to daily written updates, treating any missed commitment as my signal to reset expectations myself, first.
+- [More detail on feedback](https://en.wikipedia.org/wiki/Feedback)
 
 ---
 
@@ -220,7 +234,8 @@
 - **Task:** I had to fix how I communicated, not defend my intent.
 - **Action:** I asked for a specific example and saw they were right: my comments stated verdicts without reasoning. I changed my format to lead with why — the risk or cost behind each point — and asked the team to flag any comment where the reason was unclear.
 - **Result:** Reviews became discussions instead of orders, my suggestions were adopted more willingly, and the team kept giving me candid style feedback afterwards.
-- [More detail on teamwork in the workplace](https://asana.com/resources/teamwork-in-the-workplace)
+- **Worst case:** the criticism spoke for the whole team and my reason-first rewrite changed nothing. If review threads had stayed adversarial or suggestions kept being resented, I would have moved contentious points to a live call and kept writing only the mechanical ones — recurring in-thread friction would be my cue.
+- [More detail on emotional intelligence](https://en.wikipedia.org/wiki/Emotional_intelligence)
 
 ---
 
@@ -234,7 +249,8 @@
 - **Task:** I had to decide whether to argue my case or let the work speak.
 - **Action:** I treated the gap as a skills list, not an identity: I built real web and mobile projects end to end and asked experienced developers to critique them harshly. When discussing my background, I connected accounting's structured analysis and attention to detail to debugging and maintainable code.
 - **Result:** I earned mobile developer roles and eventually led teams; the non-traditional background now helps me talk business with stakeholders.
-- [More detail on active listening](https://en.wikipedia.org/wiki/Active_listening)
+- **Worst case:** the critiques stayed dismissive no matter what I shipped, and defending my background became a dead end. If harsh reviews kept returning to the degree rather than the code, I would have stopped arguing and leaned on collaborators' references and shipped work, taking persistent door-closing as a signal to find better-fit teams.
+- [More detail on feedback](https://en.wikipedia.org/wiki/Feedback)
 
 ---
 
@@ -250,7 +266,8 @@
 - **Task:** As the person co-architecting it, I had to break the tie without making it personal or stalling our largest client's roadmap.
 - **Action:** I proposed we each list the trekking scenarios our own design would handle badly — attacking our own design instead of each other's. Covering those scenarios became our shared selection criteria.
 - **Result:** One design clearly handled the weak cases better, we merged the strongest parts of both, and we presented it to the client as a joint decision we both defended.
-- [More detail on leadership skills](https://www.themuse.com/advice/leadership-skills)
+- **Worst case:** my teammate refused to attack their own design and the deadlock hardened into a turf fight. If the exercise had collapsed into mutual defense, I would have tested both designs against the client's real trekking scenarios and let the results choose; another stalled week would have pushed me to ask our lead to arbitrate.
+- [More detail on nonviolent communication](https://en.wikipedia.org/wiki/Nonviolent_communication)
 
 ---
 
@@ -264,7 +281,8 @@
 - **Task:** As the lead pushing for scalable, consistent state handling, I had to build alignment rather than impose a favorite.
 - **Action:** I reframed the debate around needs — server data, local UI state, caching — instead of tool loyalty, and we mapped each library to the need it served best. We agreed on a small decision rule for new features and piloted it on one app first.
 - **Result:** The team converged on a shared approach, and the apps' responsiveness complaints faded as data handling became consistent.
-- [More detail on growth mindset](https://en.wikipedia.org/wiki/Growth_mindset)
+- **Worst case:** the pilot app's team quietly kept Redux and the split hardened anyway. If the needs-based reframing had moved nobody, I would have scoped standardization to new features only and let the pilot's responsiveness numbers make the argument, accepting documented per-app choices if a second convergence attempt failed.
+- [More detail on assertiveness](https://en.wikipedia.org/wiki/Assertiveness)
 
 ---
 
@@ -278,7 +296,8 @@
 - **Task:** I had to push back on a stakeholder's idea without damaging the relationship or simply caving.
 - **Action:** I asked to walk through their sketch as if I were a first-time user, narrating each point where I got confused. When they hit the same confusion themselves, I offered two alternatives that kept their intent but fixed the flow, and let them choose.
 - **Result:** They picked an alternative, the shipped feature felt natural to users, and they involved me much earlier on subsequent features.
-- [More detail on the STAR method](https://capd.mit.edu/resources/the-star-method-for-behavioral-interviews/)
+- **Worst case:** the stakeholder defended their sketch even after feeling the same confusion themselves, and insisted we build it as drawn. If the walkthrough had changed nothing, I would have proposed a cheap clickable prototype for real users and agreed in advance that its test results would settle the flow — their evidence, not my override.
+- [More detail on nonviolent communication](https://en.wikipedia.org/wiki/Nonviolent_communication)
 
 ---
 
@@ -294,7 +313,8 @@
 - **Task:** I had to sell invisible quality work to a client focused on shipping.
 - **Action:** I listed our most damaging recurring issues and showed, issue by issue, which ones this testing would have caught before release, alongside the manual checking effort every release currently consumed. I proposed starting with the single most critical flow.
 - **Result:** The client approved the pipelines; the critical flows stayed stable across releases, backing our record of zero post-launch complaints.
-- [More detail on Situation, Task, Action, Result](https://en.wikipedia.org/wiki/Situation,_task,_action,_result)
+- **Worst case:** the client refused the testing investment, seeing only timeline with nothing visible to show for it. If the issue-by-issue argument had not landed, I would have asked to automate the single most critical flow on our own time as a live demo, and treated their reaction to one bug caught before release as the signal to re-pitch.
+- [More detail on negotiation](https://en.wikipedia.org/wiki/Negotiation)
 
 ---
 
@@ -309,7 +329,8 @@
 - **Action:** I automated a single app's staging deployment first as a live demonstration, then ran it in parallel with the manual process until trust built.
 - **Action:** I deliberately involved the loudest skeptics in extending it to production and the other apps.
 - **Result:** Staging and production deployments became routine and consistent, and the team extended the pipeline to the remaining apps themselves.
-- [More detail on the STAR interview method](https://www.themuse.com/advice/star-interview-method)
+- **Worst case:** the staging demo broke mid-run and the skeptics' distrust of automation deepened. Had the parallel run exposed gaps instead of building trust, I would have kept manual releases primary longer and shrunk the automated slice until it was boring; another pipeline-attributable incident would have meant pausing rollout entirely.
+- [More detail on scope creep](https://en.wikipedia.org/wiki/Scope_creep)
 
 ---
 
@@ -323,7 +344,8 @@
 - **Task:** I had to negotiate a scope that served search performance without endlessly deferring their content goals.
 - **Action:** I explained the trade-off in their language: every new unoptimized page could dilute the sites' search standing. We agreed on a definition of an optimized page template, so new pages inherited quality by default instead of each one becoming a fresh negotiation.
 - **Result:** Marketing got a predictable path for launching pages, and the sites stayed optimized for SEO as they grew.
-- [More detail on the STAR interview technique](https://www.mindtools.com/ah8ju2d/star-interview-technique)
+- **Worst case:** marketing rejected the optimized-template rule as a brake on campaign speed. If page requests kept arriving outside the template, I would have negotiated a fixed fast-lane quota for bespoke pages per quarter, and watched the sites' search standing — a measurable dip there would have been my signal to tighten the rule again.
+- [More detail on negotiation](https://en.wikipedia.org/wiki/Negotiation)
 
 ---
 
@@ -337,7 +359,8 @@
 - **Task:** As co-architect, I had to protect the quality of our largest client's flagship feature without a flat refusal.
 - **Action:** I split the scope into the sync behaviors trekkers would genuinely hit on day one versus rare edge cases, and proposed shipping the first set on schedule with the rest explicitly scheduled behind it. I documented what each tier covered so the client could verify the promise.
 - **Result:** The client accepted the staged plan, launch-day sync worked reliably, and the remaining cases followed without incident.
-- [More detail on teamwork skills](https://www.indeed.com/career-advice/career-development/teamwork-skills)
+- **Worst case:** the client rejected the staged plan and demanded full sync coverage before the season. If the tiered documentation had not moved them, I would have asked which single edge case they feared most and cut scope elsewhere to buy it; a flat refusal after that would have meant bringing my manager in to renegotiate the date.
+- [More detail on scope creep](https://en.wikipedia.org/wiki/Scope_creep)
 
 ---
 
@@ -353,7 +376,8 @@
 - **Task:** I had to tell our largest client the problem was bigger than we had originally reported.
 - **Action:** I brought it to them before they discovered it themselves: what the telemetry showed, which users were affected, and the fixes in priority order. I separated what we knew from what we were still investigating, and committed only to update dates I could actually meet.
 - **Result:** The client stayed with us through the fixes; the issues were isolated and resolved, ending in zero post-launch complaints.
-- [More detail on teamwork in the workplace](https://asana.com/resources/teamwork-in-the-workplace)
+- **Worst case:** the client fixated on our earlier underestimate instead of the fix path and questioned our competence. Had the call turned to blame, I would have separated the original diagnosis from the new telemetry evidence, put the recovery plan in writing within a day, and taken a second accusatory exchange as my signal to involve account leadership.
+- [More detail on technical writing](https://en.wikipedia.org/wiki/Technical_writing)
 
 ---
 
@@ -368,7 +392,8 @@
 - **Action:** I stopped the line first — halting the pipeline — then posted a clear message: what happened, which apps were affected, the actual impact, and fix status.
 - **Action:** I proposed the guardrail that would catch this whole class of mistake, and we added it to the pipeline.
 - **Result:** Staging recovered quickly, production was untouched, and the team trusted the automation more, not less.
-- [More detail on active listening](https://en.wikipedia.org/wiki/Active_listening)
+- **Worst case:** the broken staging build made the team call for reverting to manual releases entirely. If trust had cratered instead of recovering once the guardrail landed, I would have kept automation staging-only until a clean streak accumulated, and accepted manual production releases if pressure to rip it out continued.
+- [More detail on accountability](https://en.wikipedia.org/wiki/Accountability)
 
 ---
 
@@ -382,7 +407,8 @@
 - **Task:** I had to report systemic problems upward, knowing some reflected on priorities set above me.
 - **Action:** I anonymized specifics so no team felt exposed, grouped the pain points by how often they recurred and how much rework they caused, and presented the top three — each paired with a proposed owner and a concrete next step, so problems arrived with options rather than complaints.
 - **Result:** Leadership acted on the top items, and the sharing sessions gained credibility as a channel that genuinely reached decision-makers.
-- [More detail on leadership skills](https://www.themuse.com/advice/leadership-skills)
+- **Worst case:** leadership read the report as criticism of priorities set above me and shot the messenger. If the top items came back unowned, I would have re-framed the same data as efficiency savings rather than friction, and taken a second dismissal as my signal to route findings through my direct manager instead.
+- [More detail on technical writing](https://en.wikipedia.org/wiki/Technical_writing)
 
 ---
 
@@ -398,7 +424,8 @@
 - **Task:** I had to collaborate across teams, not just hand over a tool.
 - **Action:** I ran sessions where colleagues from other teams chose which flows hurt them most, prioritized automating those first, and folded their existing manual checks into the pipeline so it complemented their work instead of replacing it.
 - **Result:** The pipelines covered the flows the whole delivery chain cared about, and colleagues treated them as shared infrastructure rather than my side project.
-- [More detail on growth mindset](https://en.wikipedia.org/wiki/Growth_mindset)
+- **Worst case:** the other teams saw the pipeline as extra review burden and never ran it. If the flows they had chosen had gone unautomated after the sessions, I would have embedded the checks directly into their existing release steps rather than asking for adoption, and watched for their manual checks creeping back in parallel.
+- [More detail on cross-functional teams](https://en.wikipedia.org/wiki/Cross-functional_team)
 
 ---
 
@@ -412,7 +439,8 @@
 - **Task:** I was the communication hinge; any gap between the client's expectations and engineering reality would land on the trekking app's quality.
 - **Action:** I kept one shared source of truth for status and decisions, translated between client language and engineering language in both directions, and raised mismatches the moment they appeared instead of waiting for delivery.
 - **Result:** Releases ran without surprise gaps between what the client expected and what shipped, and the account stayed healthy throughout.
-- [More detail on the STAR method](https://capd.mit.edu/resources/the-star-method-for-behavioral-interviews/)
+- **Worst case:** a client expectation and engineering reality still diverged, and the gap surfaced at delivery anyway. If late mismatches had kept appearing despite the shared status doc, I would have moved to short written confirmations after every client decision; a second late surprise would have told me the source of truth was not being read.
+- [More detail on team building](https://en.wikipedia.org/wiki/Team_building)
 
 ---
 
@@ -426,7 +454,8 @@
 - **Task:** I had to protect the sites' structure without becoming the department that always says no.
 - **Action:** I learned their campaign calendar and built flexibility where it mattered — templates they could populate themselves — while holding the line on the underlying structure. I also joined their planning each cycle instead of reacting to incoming requests.
 - **Result:** Marketing shipped campaigns on their own timeline, the sites stayed optimized as they grew, and our collaboration shifted from ticket ping-pong to joint planning.
-- [More detail on Situation, Task, Action, Result](https://en.wikipedia.org/wiki/Situation,_task,_action,_result)
+- **Worst case:** marketing ignored the templates and kept demanding bespoke pages on campaign timelines. If self-serve launches had stayed near zero, I would have negotiated a fixed custom-page budget per cycle and held the structure there, using the sites' search performance staying strong as the standing evidence for why it mattered.
+- [More detail on cross-functional teams](https://en.wikipedia.org/wiki/Cross-functional_team)
 
 ---
 
@@ -442,7 +471,8 @@
 - **Task:** I had to win over skeptics, not just demo to the already convinced.
 - **Action:** I started from their current pain — repetitive, low-value work — and showed the workflow applied to their own tasks, with and without AI assistance side by side. I was also explicit about where it failed and wasted time, which cost me little credibility and bought real trust.
 - **Result:** The most skeptical developers began using the workflows on real tasks, and the techniques spread across teams beyond my sessions.
-- [More detail on the STAR interview method](https://www.themuse.com/advice/star-interview-method)
+- **Worst case:** the skeptics dismissed the side-by-side comparison as cherry-picked and stayed away. If usage had kept dropping even after my honesty about where AI wasted time, I would have recruited a respected skeptic to co-run a session on their own task, and taken continued refusal as a signal to wait for organic pull.
+- [More detail on knowledge transfer](https://en.wikipedia.org/wiki/Knowledge_transfer)
 
 ---
 
@@ -456,7 +486,8 @@
 - **Task:** I had to present technical progress in a way non-technical stakeholders could genuinely evaluate and act on.
 - **Action:** I structured demos around trekker stories — walk in, lose signal, GPS path still recorded — rather than feature lists, and always showed what had been deliberately deferred and why. I ended every demo with the specific decisions I needed from them.
 - **Result:** Stakeholders engaged with real questions instead of nodding along, decisions came faster, and demos became something they requested rather than endured.
-- [More detail on the STAR interview technique](https://www.mindtools.com/ah8ju2d/star-interview-technique)
+- **Worst case:** the trekker-story demos still drew polite nods and deferred decisions. If the choices I asked for kept sliding to email afterwards, I would have shortened the demo and ended with a written options sheet requiring a same-day decision; two more deferred rounds would have pushed me to request a standing decision slot.
+- [More detail on plain language](https://en.wikipedia.org/wiki/Plain_language)
 
 ---
 
@@ -470,6 +501,7 @@
 - **Task:** I wanted them representing their own work to the client and team — for their growth, and to stop me being the bottleneck.
 - **Action:** We rehearsed with a simple frame — what changed, why it matters to trekkers, what comes next — and in early sessions I sat beside them rather than instead of them, stepping in only when truly stuck. After each session we kept one thing and changed one thing.
 - **Result:** They began running their own updates unaided, and I got to focus on architecture and mentoring instead of relaying status.
-- [More detail on teamwork skills](https://www.indeed.com/career-advice/career-development/teamwork-skills)
+- **Worst case:** they froze mid-session with the client watching and the update fell apart live. I would have stepped in only to land that one point, then returned to smaller rooms for rehearsal; a third freeze would have told me the hand-over needed more time, and I would have kept fronting that client myself.
+- [More detail on knowledge transfer](https://en.wikipedia.org/wiki/Knowledge_transfer)
 
 ---
