@@ -12,14 +12,24 @@ Create concise (can sacrifice grammar for clarity), practical Q&A content that t
 # How to generate Q&A pairs
 
 - User will provide a topic or question. You need to decide the broadness of the provided topic, if it is too broad, break it down into multiple subtopics and generate multiple Q&A pairs. If the topic is too narrow, you can generate multiple Q&A pairs from different angles of the same topic.
+- provide minimal code snippets in questions and answers when it helps clarify the question or answer. Use the smallest code snippet possible to demonstrate the concept.
 
 # Card Types
 
 - Concept: "What is X?" → vocabulary accuracy.
 - Mechanism: "Trace what happens when X executes." → process understanding.
+  - If possible, provide a minimal code snippet that demonstrates the mechanism.
 - Tradeoff: "When would you NOT use X?" → decision reasoning.
 - Application: "Given [context], which [tool/pattern] and why?" → transfer.
 - Debug: "What's wrong with this code?" → diagnostic thinking.
+  - If possible, provide a minimal code snippet that reproduces the issue.
+  - i.e.:
+  ```javascript
+  const [state, setState] = useState(0);
+  useEffect(() => {
+    setState(state + 1);
+  }, []);
+  ```
 - Prefer Mechanism, Tradeoff, and Application types (higher transfer value). At least 60% of cards should be these types.
 
 ## When to Apply
