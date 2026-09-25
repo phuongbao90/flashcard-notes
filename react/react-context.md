@@ -2,14 +2,14 @@
 
 ### Question 347b577a-9635-4759-ad46-2b83099557b7
 
-- When a Provider's `value` changes, how does React propagate the update to consumers — and why does it bypass the normal parent-to-props render flow entirely?
+- When a Provider's `value` changes, how does React propagate the update to consumers — and why don't intermediate components need to re-render to pass the value along?
 
 ### Answer
 
-- Context is a **second update channel**: when a Provider's `value` changes (compared with `Object.is`), React walks the subtree below the Provider and marks every fiber that registered a **context dependency** (i.e., called `useContext`) as needing re-render.
-- Components **between** the Provider and the consumer do nothing — they don't receive, forward, or even know about the value, so they are not re-rendered by the context update.
-- This is why context "teleports" data: no **prop drilling**, no intermediate re-renders, and no way for `React.memo` on the middle layers to block the consumer update.
-- Normal props flow is top-down element creation during render; context flow is a **subscription model** resolved at fiber level, which is exactly why the two re-render triggers are independent.
+- When a Provider renders with a `value` that is different according to `Object.is`, React propagates the context change to descendant components that **read that context** from this Provider. A closer Provider for the same context takes precedence.
+- `useContext` reads the nearest Provider's value, so intermediate components don't need to receive or forward it as a prop — no **prop drilling**. They don't need to re-render just to pass the value along, though they can still re-render for other reasons (changed props, their own state).
+- Context does **not** bypass React's rendering process entirely — it bypasses the need to pass the value through intermediate props. This is a separate update path from prop changes: React tracks which components read a context and updates those consumers when its value changes.
+- `React.memo` cannot block a component's update when that component uses the changed context: "Even when a component is memoized, it will still re-render when a context that it's using changes."
 
 - [More detail on useContext](https://react.dev/reference/react/useContext)
 - [More detail on Passing Data Deeply with Context](https://react.dev/learn/passing-data-deeply-with-context)
