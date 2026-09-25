@@ -1,3 +1,4 @@
 - When generate new Q&A pairs, must use "flashcard-creator" skill to ensure questions and answers are concise, clear, and memorable.
+- Long-form study notes for a subtopic live in `<subtopic>.notes.md` next to the flashcard file (e.g. `react/react-context.notes.md`). Keep flashcard files Question/Answer-only; never add `### Question` headings to `.notes.md` files.
 - When asked to generate **temp questions**, create a new file in the `.temp-questions` folder with the name `temp-questions-<topic>.md` and save the generated questions there (only questions without answers).
   - provide minimal code snippets in questions when it helps clarify the question. Use the smallest code snippet possible to demonstrate the concept.

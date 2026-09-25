@@ -51,7 +51,9 @@ function isIgnoredFile(relPath) {
   return (
     SKIP_FILES.has(relPath) ||
     SKIP_FILES.has(normalized) ||
-    SKIP_FILES.has(filename)
+    SKIP_FILES.has(filename) ||
+    // Long-form study notes, not decks
+    filename.toLowerCase().endsWith(".notes.md")
   );
 }
 
@@ -140,7 +142,21 @@ function relMarkdownPathsFromGit(output) {
   return output
     .split("\n")
     .map((f) => f.trim())
-    .filter((f) => f.toLowerCase().endsWith(".md") && !isIgnoredFile(f));
+    .filter(
+      (f) =>
+        f.toLowerCase().endsWith(".md") &&
+        !isIgnoredFile(f) &&
+        !isUnderSkippedDir(f),
+    );
+}
+
+/** `.temp-questions/foo.md`, `.agents/foo.md`, … — git can report these if tracked */
+function isUnderSkippedDir(relPath) {
+  const segments = relPath.replace(/\\/g, "/").split("/");
+  segments.pop();
+  return segments.some(
+    (s) => SKIP_DIRS.has(s) || (s.startsWith(".") && s !== ".github"),
+  );
 }
 
 function unique(items) {
