@@ -78,7 +78,7 @@ const Badge = memo(function Badge() {
 - This is the standard trick to make a stateful Provider cheap: move the state **into** the Provider and the rest of the app **outside** via `children`.
 
 - [More detail on useContext](https://react.dev/reference/react/useContext)
-- [More detail on memo bail-outs and children](https://react.dev/reference/react/memo#specifying-a-compare-function-with-memo)
+- [More detail on memo (children pattern under "Should you add memo everywhere?")](https://react.dev/reference/react/memo)
 
 ---
 
@@ -153,10 +153,10 @@ const v = useContext(Ctx);     // B: consumer — updates itself
 
 ### Answer
 
-- `use(Context)` can be called **conditionally**, inside loops, and after early returns — unlike `useContext`, which must follow the unconditional Hooks rules. Only reads during render, never after (no early return then read).
-- Context can be passed around as a **value/prop** (`{contextRef.current}` patterns aside, the context object itself) and read deeper in the tree where it's actually needed, instead of forcing a hook call at the top.
+- `use(Context)` can be called **conditionally**, inside loops, and after early returns — unlike `useContext`, which must be called at the top level of the component. It is technically not a Hook; its only constraints: it must be called inside a Component or a Hook (i.e., during render, not in event handlers or effects), and not inside a try-catch block.
+- Context can be passed around as a **value/prop** (the context object itself, not its value) and read deeper in the tree where it's actually needed, instead of forcing a hook call at the top.
 - `use` also unwraps **Promises and context uniformly**, integrating with Suspense for deferred reads.
-- Migration is incremental: `useContext` remains valid; `use` is a general-purpose "read a resource during render" API.
+- Migration is incremental: `useContext` remains valid; `use` is a general-purpose "read a resource during render" API — but like `useContext`, reading context with `use` is **not supported in Server Components**.
 
 - [More detail on use](https://react.dev/reference/react/use)
 - [More detail on useContext](https://react.dev/reference/react/useContext)
@@ -522,7 +522,7 @@ const Display = memo(function Display() {
 - **Yes — it changes: `Display` does NOT re-render.**
 - The re-render had two possible triggers: parent flow (App re-created the element) and context change. `memo` neutralizes the first — props are unchanged, so React bails out.
 - The second trigger never fires: `value={42}` is a stable primitive, `Object.is(42, 42)` is true, so no context propagation happens.
-- Contrast with #26: same component tree, only the bail-out wrapper differs — proving the original re-render was parent-driven, not context-driven.
+- Contrast with the previous card: same component tree, only the bail-out wrapper differs — proving the original re-render was parent-driven, not context-driven.
 
 - [More detail on memo](https://react.dev/reference/react/memo)
 - [More detail on useContext](https://react.dev/reference/react/useContext)
@@ -633,7 +633,7 @@ const Comp = memo(function Comp() {
 
 ### Answer
 
-- **`setN(5)`: no.** `Object.is(5, 5)` is true → React bails out of the state update entirely → `App` doesn't re-render → nothing happens below.
+- **`setN(5)`: no.** `Object.is(5, 5)` is true → React skips re-rendering `App` **and its children** (it may still call `App` once before bailing out, but the result is discarded) → nothing happens below.
 - **`setN(6)`: still no.** `App` re-renders, and `A`'s value changed — but `Comp` consumes **`B` only**, whose value is untouched. `memo` blocks the parent-flow re-render (no props changed), and no context dependency of `Comp` was triggered.
 - Three independent guards stack here: state bail-out, `memo` prop bail-out, and per-context subscriptions. All three must be pierced to force a re-render.
 - Senior trap: change `B.Provider`'s value to `1`→`2` and `Comp` re-renders instantly, `memo` notwithstanding.
