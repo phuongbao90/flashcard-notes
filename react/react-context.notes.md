@@ -88,13 +88,21 @@ React also supports other context-reading forms, including the older `<Context.C
 
 A Provider does not have a separate setter. Some update—often a state update—causes React to render the component that supplies the Provider’s `value`. React compares the previous and next values. The docs state: “The previous and the next values are compared with the `Object.is` comparison.” :chatgpt-content-reference{index="9"}
 
-```mermaid
-flowchart TD
-  A["Provider renders with next value"] --> B{"Object.is says it changed?"}
-  B -- "No" --> C["No context-driven update"]
-  B -- "Yes" --> D["Find Fibers that read this context"]
-  D --> E["Schedule consumers and the path to them"]
-  E --> F["Render affected consumers, then commit"]
+```
+Provider renders with next value
+        |
+        v
+Object.is says it changed? --No--> no context-driven update
+        |
+      Yes
+        v
+Find Fibers that read this context
+        |
+        v
+Schedule consumers and the path to them
+        |
+        v
+Render affected consumers, then commit
 ```
 
 In more detail:
